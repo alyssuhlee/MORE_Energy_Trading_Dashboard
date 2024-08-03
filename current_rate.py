@@ -11530,13 +11530,21 @@ def get_current_hour():
 # Function to get current rate value for the current hour (1 to 24) from Excel
 def get_current_rate_for_current_hour(excel_file, current_hour):
     # Read Excel file into a Pandas DataFrame, assuming 'HOUR' column has numbers 1 to 24
-    df = pd.read_excel(excel_file, header=None, names=['HOUR', 'BCQ_SCPC', 'RATE_SCPC_B1_FIXED_FEE', 'RATE_SCPC_B1_VARIABLE_FEE', 'RATE_SCPC_B2_FIXED_FEE', 'RATE_SCPC_B2_VARIABLE_FEE', 'RATE_SCPC_AVE_FIXED_FEE', 'RATE_SCPC_AVE_VARIABLE_FEE', 'BCQ_KSPC', 'RATE_KSPC_B1_FIXED_FEE', 'RATE_KSPC_B1_VARIABLE_FEE', 'RATE_KSPC_B2_FIXED_FEE', 'RATE_KSPC_B2_VARIABLE_FEE', 'RATE_KSPC_AVE_FIXED_FEE', 'RATE_KSPC_AVE_VARIABLE_FEE', 'BCQ_EDC', 'RATE_EDC_FIXED_FEE', 'RATE_EDC_VARIABLE_FEE', 'TOTAL_SS_LOAD', 'CONTESTABLE_ENERGY', 'TOTAL_BCQ', 'WESM_RATE', 'CURRENT_RATE'], skiprows=1)
+    df = pd.read_excel(excel_file, header=None, names=[
+        'HOUR', 'BCQ_SCPC', 'RATE_SCPC_B1_FIXED_FEE', 'RATE_SCPC_B1_VARIABLE_FEE', 
+        'RATE_SCPC_B2_FIXED_FEE', 'RATE_SCPC_B2_VARIABLE_FEE', 'RATE_SCPC_AVE_FIXED_FEE', 
+        'RATE_SCPC_AVE_VARIABLE_FEE', 'BCQ_KSPC', 'RATE_KSPC_B1_FIXED_FEE', 
+        'RATE_KSPC_B1_VARIABLE_FEE', 'RATE_KSPC_B2_FIXED_FEE', 'RATE_KSPC_B2_VARIABLE_FEE', 
+        'RATE_KSPC_AVE_FIXED_FEE', 'RATE_KSPC_AVE_VARIABLE_FEE', 'BCQ_EDC', 
+        'RATE_EDC_FIXED_FEE', 'RATE_EDC_VARIABLE_FEE', 'TOTAL_SS_LOAD', 
+        'CONTESTABLE_ENERGY', 'TOTAL_BCQ', 'WESM_RATE', 'CURRENT_RATE'], skiprows=1)
 
     # Filter the row where 'HOUR' matches the current_hour
     current_rate_value = df.loc[df['HOUR'] == current_hour, 'CURRENT_RATE']
-    
-    # If the current rate value is null or not found
-    if current_rate_value.empty or pd.isnull(current_rate_value.values[0]):
+
+    if not current_rate_value.empty:
+        return float(current_rate_value.iloc[0])
+    else:
         # Get today's date and time
         now = datetime.now()
         # Subtract one hour to get the previous hour
@@ -11545,15 +11553,11 @@ def get_current_rate_for_current_hour(excel_file, current_hour):
         previous_hour_only = previous_hour.hour
         # Filter the row where 'HOUR' matches the previous_hour
         previous_rate_value = df.loc[df['HOUR'] == previous_hour_only, 'CURRENT_RATE']
-        
-        if previous_rate_value.empty or pd.isnull(previous_rate_value.values[0]):
-            raise ValueError("No valid rate value found for the current or previous hour.")
-        
-        current_rate_value = previous_rate_value.values[0]
-    else:
-        current_rate_value = current_rate_value.values[0]
-        
-    return float(current_rate_value)
+
+        if not previous_rate_value.empty:
+            return float(previous_rate_value.iloc[0])
+        else:
+            return None
 
 # Function to insert value into MySQL database
 def insert_into_mysql(conn, float_current_rate_value):
@@ -11564,13 +11568,43 @@ def insert_into_mysql(conn, float_current_rate_value):
     cursor.close()
     print(f"Value {float_current_rate_value} inserted successfully into MySQL.")
 
+# Function to read the last rate value from a file
+def read_last_rate(file_path):
+    if os.path.exists(file_path):
+        with open(file_path, 'r') as file:
+            try:
+                return float(file.read().strip())
+            except ValueError:
+                return None
+    return None
+
+# Function to write the last rate value to a file
+def write_last_rate(file_path, rate_value):
+    with open(file_path, 'w') as file:
+        file.write(str(rate_value))
+
 # Main function to run the script
 def main(excel_file, conn):
+    last_rate_file = 'last_rate.txt'
+    last_rate_value = read_last_rate(last_rate_file)
+
     while True:
         try:
             current_hour = get_current_hour()
             current_rate_value = get_current_rate_for_current_hour(excel_file, current_hour)
-            insert_into_mysql(conn, current_rate_value)
+            
+            if current_rate_value is not None:
+                # Insert the current rate if available
+                insert_into_mysql(conn, current_rate_value)
+                last_rate_value = current_rate_value
+            elif last_rate_value is not None:
+                # Insert the last rate if current rate is not available
+                insert_into_mysql(conn, last_rate_value)
+
+            # Update the last rate value in the file
+            if current_rate_value is not None or last_rate_value is not None:
+                write_last_rate(last_rate_file, last_rate_value)
+
             # Delay for 1 minute (60 seconds) before checking again
             time.sleep(60)
         
