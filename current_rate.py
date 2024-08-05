@@ -7,7 +7,6 @@ import mysql.connector
 import time
 
 # Rates - Supplier Rates for the Month_July 2024
-
 # DEFINING THE BASE DIRECTORY
 base_directory_1 = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\MORE Energy Sourcing\013. Rate Analysis\005. 2024 Rate Analysis"
 
@@ -730,24 +729,24 @@ dest_sheet['R24'].value = edc_variable_fee
 dest_sheet['R25'].value = edc_variable_fee
 
 # TOTAL SS LOAD
+def total_ss_load():
+    total_ss_load_path = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load.xlsx"
 
-total_ss_load_path = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load.xlsx"
+    # Load source workbook
+    source_wb_2 = load_workbook(total_ss_load_path)  
+    # Sheet name of the source workbook
+    source_sheet_2 = source_wb_2['Sheet1']
 
-# Load source workbook
-source_wb_2 = load_workbook(total_ss_load_path)  
-# Sheet name of the source workbook
-source_sheet_2 = source_wb_2['Sheet1']
+    # Define source and destination ranges
+    source_ranges_2 = [('K2', 'K25')]
+    dest_ranges_2 = [('S2', 'S25')]
 
-# Define source and destination ranges
-source_ranges_2 = [('K2', 'K25')]
-dest_ranges_2 = [('S2', 'S25')]
+    # Copy data from source to destination based on specified ranges
+    for i in range(len(source_ranges_2)):
+        copy_values(source_sheet_2, dest_sheet, source_ranges_2[i], dest_ranges_2[i])
 
-# Copy data from source to destination based on specified ranges
-for i in range(len(source_ranges_2)):
-    copy_values(source_sheet_2, dest_sheet, source_ranges_2[i], dest_ranges_2[i])
-
-# Save the destination workbook
-dest_wb.save(destination_file_path)
+    # Save the destination workbook
+    dest_wb.save(destination_file_path)
 
 # CONTESTABLE ENERGY (column T)
 
@@ -10323,1201 +10322,786 @@ def find_total():
                         return float(final_total)
 
                 elif current_hour == '00':
-                    try:
-                        first_file_path = os.path.join(folder_path, files_in_folder[277])
-                        second_file_path = os.path.join(folder_path, files_in_folder[278])
-                        third_file_path = os.path.join(folder_path, files_in_folder[279])
-                        fourth_file_path = os.path.join(folder_path, files_in_folder[280])
-                        fifth_file_path = os.path.join(folder_path, files_in_folder[281])
-                        sixth_file_path = os.path.join(folder_path, files_in_folder[282])
-                        seventh_file_path = os.path.join(folder_path, files_in_folder[283])
-                        eighth_file_path = os.path.join(folder_path, files_in_folder[284])
-                        ninth_file_path = os.path.join(folder_path, files_in_folder[285])
-                        tenth_file_path = os.path.join(folder_path, files_in_folder[286])
-                        eleventh_file_path = os.path.join(folder_path, files_in_folder[287])
-                        twelvth_file_path = os.path.join(folder_path, files_in_folder[0])
-                    
-                        df = pd.read_csv(first_file_path)
-
-                        search_value_1 = '08PEDC_T1L1'
-                        matching_row_1 = df[df['RESOURCE_NAME'] == search_value_1]
-                        file_08PEDC_T1L1_1 = matching_row_1['DIPC_PRICE'].values[0]
-
-                        search_value_2 = '08PEDC_T1L2'
-                        matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
-
-                        search_value_3 = '08STBAR_T1L1'
-                        matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
-
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
-
-                        second_df = pd.read_csv(second_file_path)
-
-                        search_value_4 = '08PEDC_T1L1'
-                        matching_row_4 = second_df[second_df['RESOURCE_NAME'] == search_value_4]
-                        file_08PEDC_T1L1_4 = matching_row_4['DIPC_PRICE'].values[0]
-                        
-                        search_value_5 = '08PEDC_T1L2'
-                        matching_row_5 = second_df[second_df['RESOURCE_NAME'] == search_value_5]
-                        file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
-
-                        search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
-                        file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
-
-                        average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
-
-                        third_df = pd.read_csv(third_file_path)
-
-                        search_value_7 = '08PEDC_T1L1'
-                        matching_row_7 = third_df[third_df['RESOURCE_NAME'] == search_value_7]
-                        file_08PEDC_T1L1_7 = matching_row_7['DIPC_PRICE'].values[0]
-
-                        search_value_8 = '08PEDC_T1L2'
-                        matching_row_8 = third_df[third_df['RESOURCE_NAME'] == search_value_8]
-                        file_08PEDC_T1L2_8 = matching_row_8['DIPC_PRICE'].values[0]
-
-                        search_value_9 = '08STBAR_T1L1'
-                        matching_row_9 = third_df[third_df['RESOURCE_NAME'] == search_value_9]
-                        file_08STBAR_T1L1_9 = matching_row_9['DIPC_PRICE'].values[0]
-
-                        average_3 = (file_08PEDC_T1L1_7 + file_08PEDC_T1L2_8 + file_08STBAR_T1L1_9)/3
-
-                        fourth_df = pd.read_csv(fourth_file_path)
-
-                        search_value_10 = '08PEDC_T1L1'
-                        matching_row_10 = fourth_df[fourth_df['RESOURCE_NAME'] == search_value_10]
-                        file_08PEDC_T1L1_10 = matching_row_10['DIPC_PRICE'].values[0]
-
-                        search_value_11 = '08PEDC_T1L2'
-                        matching_row_11 = fourth_df[fourth_df['RESOURCE_NAME'] == search_value_11]
-                        file_08PEDC_T1L2_11 = matching_row_11['DIPC_PRICE'].values[0]
-
-                        search_value_12 = '08STBAR_T1L1'
-                        matching_row_12 = fourth_df[fourth_df['RESOURCE_NAME'] == search_value_12]
-                        file_08STBAR_T1L1_12 = matching_row_12['DIPC_PRICE'].values[0]
-
-                        average_4 = (file_08PEDC_T1L1_10 + file_08PEDC_T1L2_11 + file_08STBAR_T1L1_12)/3
-
-                        fifth_df = pd.read_csv(fifth_file_path)
-
-                        search_value_13 = '08PEDC_T1L1'
-                        matching_row_13 = fifth_df[fifth_df['RESOURCE_NAME'] == search_value_13]
-                        file_08PEDC_T1L1_13 = matching_row_13['DIPC_PRICE'].values[0]
-
-                        search_value_14 = '08PEDC_T1L2'
-                        matching_row_14 = fifth_df[fifth_df['RESOURCE_NAME'] == search_value_14]
-                        file_08PEDC_T1L2_14 = matching_row_14['DIPC_PRICE'].values[0]
-
-                        search_value_15 = '08STBAR_T1L1'
-                        matching_row_15 = fifth_df[fifth_df['RESOURCE_NAME'] == search_value_15]
-                        file_08STBAR_T1L1_15 = matching_row_15['DIPC_PRICE'].values[0]
-
-                        average_5 = (file_08PEDC_T1L1_13 + file_08PEDC_T1L2_14 + file_08STBAR_T1L1_15)/3
-
-                        sixth_df = pd.read_csv(sixth_file_path)
-
-                        search_value_16 = '08PEDC_T1L1'
-                        matching_row_16 = sixth_df[sixth_df['RESOURCE_NAME'] == search_value_16]
-                        file_08PEDC_T1L1_16 = matching_row_16['DIPC_PRICE'].values[0]
-
-                        search_value_17 = '08PEDC_T1L2'
-                        matching_row_17 = sixth_df[sixth_df['RESOURCE_NAME'] == search_value_17]
-                        file_08PEDC_T1L2_17 = matching_row_17['DIPC_PRICE'].values[0]
-
-                        search_value_18 = '08STBAR_T1L1'
-                        matching_row_18 = sixth_df[sixth_df['RESOURCE_NAME'] == search_value_18]
-                        file_08STBAR_T1L1_18 = matching_row_18['DIPC_PRICE'].values[0]
-
-                        average_6 = (file_08PEDC_T1L1_16 + file_08PEDC_T1L2_17 + file_08STBAR_T1L1_18)/3
-
-                        seventh_df = pd.read_csv(seventh_file_path)
-
-                        search_value_19 = '08PEDC_T1L1'
-                        matching_row_19 = seventh_df[seventh_df['RESOURCE_NAME'] == search_value_19]
-                        file_08PEDC_T1L1_19 = matching_row_19['DIPC_PRICE'].values[0]
-
-                        search_value_20 = '08PEDC_T1L2'
-                        matching_row_20 = seventh_df[seventh_df['RESOURCE_NAME'] == search_value_20]
-                        file_08PEDC_T1L2_20 = matching_row_20['DIPC_PRICE'].values[0]
-
-                        search_value_21 = '08STBAR_T1L1'
-                        matching_row_21 = seventh_df[seventh_df['RESOURCE_NAME'] == search_value_21]
-                        file_08STBAR_T1L1_21 = matching_row_21['DIPC_PRICE'].values[0]
-
-                        average_7 = (file_08PEDC_T1L1_19 + file_08PEDC_T1L2_20 + file_08STBAR_T1L1_21)/3
-
-                        eighth_df = pd.read_csv(eighth_file_path)
-
-                        search_value_22 = '08PEDC_T1L1'
-                        matching_row_22 = eighth_df[eighth_df['RESOURCE_NAME'] == search_value_22]
-                        file_08PEDC_T1L1_22 = matching_row_22['DIPC_PRICE'].values[0]
-
-                        search_value_23 = '08PEDC_T1L2'
-                        matching_row_23 = eighth_df[eighth_df['RESOURCE_NAME'] == search_value_23]
-                        file_08PEDC_T1L2_23 = matching_row_23['DIPC_PRICE'].values[0]
-
-                        search_value_24 = '08STBAR_T1L1'
-                        matching_row_24 = eighth_df[eighth_df['RESOURCE_NAME'] == search_value_24]
-                        file_08STBAR_T1L1_24 = matching_row_24['DIPC_PRICE'].values[0]
-
-                        average_8 = (file_08PEDC_T1L1_22 + file_08PEDC_T1L2_23 + file_08STBAR_T1L1_24)/3
-                            
-                        ninth_df = pd.read_csv(ninth_file_path)
-
-                        search_value_25 = '08PEDC_T1L1'
-                        matching_row_25 = ninth_df[ninth_df['RESOURCE_NAME'] == search_value_25]
-                        file_08PEDC_T1L1_25 = matching_row_25['DIPC_PRICE'].values[0]
-
-                        search_value_26 = '08PEDC_T1L2'
-                        matching_row_26 = ninth_df[ninth_df['RESOURCE_NAME'] == search_value_26]
-                        file_08PEDC_T1L2_26 = matching_row_26['DIPC_PRICE'].values[0]
-
-                        search_value_27 = '08STBAR_T1L1'
-                        matching_row_27 = ninth_df[ninth_df['RESOURCE_NAME'] == search_value_27]
-                        file_08STBAR_T1L1_27 = matching_row_27['DIPC_PRICE'].values[0]
-
-                        average_9 = (file_08PEDC_T1L1_25 + file_08PEDC_T1L2_26 + file_08STBAR_T1L1_27)/3
-
-                        tenth_df = pd.read_csv(tenth_file_path)
-
-                        search_value_28 = '08PEDC_T1L1'
-                        matching_row_28 = tenth_df[tenth_df['RESOURCE_NAME'] == search_value_28]
-                        file_08PEDC_T1L1_28 = matching_row_28['DIPC_PRICE'].values[0]
-
-                        search_value_29 = '08PEDC_T1L2'
-                        matching_row_29 = tenth_df[tenth_df['RESOURCE_NAME'] == search_value_29]
-                        file_08PEDC_T1L2_29 = matching_row_29['DIPC_PRICE'].values[0]
-
-                        search_value_30 = '08STBAR_T1L1'
-                        matching_row_30 = tenth_df[tenth_df['RESOURCE_NAME'] == search_value_30]
-                        file_08STBAR_T1L1_30 = matching_row_30['DIPC_PRICE'].values[0]
-
-                        average_10 = (file_08PEDC_T1L1_28 + file_08PEDC_T1L2_29 + file_08STBAR_T1L1_30)/3
-
-                        eleventh_df = pd.read_csv(eleventh_file_path)
-
-                        search_value_31 = '08PEDC_T1L1'
-                        matching_row_31 = eleventh_df[eleventh_df['RESOURCE_NAME'] == search_value_31]
-                        file_08PEDC_T1L1_31 = matching_row_31['DIPC_PRICE'].values[0]
-
-                        search_value_32 = '08PEDC_T1L2'
-                        matching_row_32 = eleventh_df[eleventh_df['RESOURCE_NAME'] == search_value_32]
-                        file_08PEDC_T1L2_32 = matching_row_32['DIPC_PRICE'].values[0]
-
-                        search_value_33 = '08STBAR_T1L1'
-                        matching_row_33 = eleventh_df[eleventh_df['RESOURCE_NAME'] == search_value_33]
-                        file_08STBAR_T1L1_33 = matching_row_33['DIPC_PRICE'].values[0]
-
-                        average_11 = (file_08PEDC_T1L1_31 + file_08PEDC_T1L2_32 + file_08STBAR_T1L1_33)/3
-
-                        twelvth_df = pd.read_csv(twelvth_file_path)
-
-                        search_value_34 = '08PEDC_T1L1'
-                        matching_row_34 = twelvth_df[twelvth_df['RESOURCE_NAME'] == search_value_34]
-                        file_08PEDC_T1L1_34 = matching_row_34['DIPC_PRICE'].values[0]
-                        
-                        search_value_35 = '08PEDC_T1L2'
-                        matching_row_35 = twelvth_df[twelvth_df['RESOURCE_NAME'] == search_value_35]
-                        file_08PEDC_T1L2_35 = matching_row_35['DIPC_PRICE'].values[0]
-
-                        search_value_36 = '08STBAR_T1L1'
-                        matching_row_36 = twelvth_df[twelvth_df['RESOURCE_NAME'] == search_value_36]
-                        file_08STBAR_T1L1_36 = matching_row_36['DIPC_PRICE'].values[0]
-
-                        average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
-
-                        final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
-                    
-                    except:
-                        
-                        first_file_path = os.path.join(folder_path, files_in_folder[265])
-                        second_file_path = os.path.join(folder_path, files_in_folder[266])
-                        third_file_path = os.path.join(folder_path, files_in_folder[267])
-                        fourth_file_path = os.path.join(folder_path, files_in_folder[268])
-                        fifth_file_path = os.path.join(folder_path, files_in_folder[269])
-                        sixth_file_path = os.path.join(folder_path, files_in_folder[270])
-                        seventh_file_path = os.path.join(folder_path, files_in_folder[271])
-                        eighth_file_path = os.path.join(folder_path, files_in_folder[272])
-                        ninth_file_path = os.path.join(folder_path, files_in_folder[273])
-                        tenth_file_path = os.path.join(folder_path, files_in_folder[274])
-                        eleventh_file_path = os.path.join(folder_path, files_in_folder[275])
-                        twelvth_file_path = os.path.join(folder_path, files_in_folder[276])
-
-                        df = pd.read_csv(first_file_path)
-
-                        search_value_1 = '08PEDC_T1L1'
-                        matching_row_1 = df[df['RESOURCE_NAME'] == search_value_1]
-                        file_08PEDC_T1L1_1 = matching_row_1['DIPC_PRICE'].values[0]
-
-                        search_value_2 = '08PEDC_T1L2'
-                        matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
-
-                        search_value_3 = '08STBAR_T1L1'
-                        matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
-
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
-
-                        second_df = pd.read_csv(second_file_path)
-
-                        search_value_4 = '08PEDC_T1L1'
-                        matching_row_4 = second_df[second_df['RESOURCE_NAME'] == search_value_4]
-                        file_08PEDC_T1L1_4 = matching_row_4['DIPC_PRICE'].values[0]
-                        
-                        search_value_5 = '08PEDC_T1L2'
-                        matching_row_5 = second_df[second_df['RESOURCE_NAME'] == search_value_5]
-                        file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
-
-                        search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
-                        file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
-
-                        average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
-
-                        third_df = pd.read_csv(third_file_path)
-
-                        search_value_7 = '08PEDC_T1L1'
-                        matching_row_7 = third_df[third_df['RESOURCE_NAME'] == search_value_7]
-                        file_08PEDC_T1L1_7 = matching_row_7['DIPC_PRICE'].values[0]
-
-                        search_value_8 = '08PEDC_T1L2'
-                        matching_row_8 = third_df[third_df['RESOURCE_NAME'] == search_value_8]
-                        file_08PEDC_T1L2_8 = matching_row_8['DIPC_PRICE'].values[0]
-
-                        search_value_9 = '08STBAR_T1L1'
-                        matching_row_9 = third_df[third_df['RESOURCE_NAME'] == search_value_9]
-                        file_08STBAR_T1L1_9 = matching_row_9['DIPC_PRICE'].values[0]
-
-                        average_3 = (file_08PEDC_T1L1_7 + file_08PEDC_T1L2_8 + file_08STBAR_T1L1_9)/3
-
-                        fourth_df = pd.read_csv(fourth_file_path)
-
-                        search_value_10 = '08PEDC_T1L1'
-                        matching_row_10 = fourth_df[fourth_df['RESOURCE_NAME'] == search_value_10]
-                        file_08PEDC_T1L1_10 = matching_row_10['DIPC_PRICE'].values[0]
-
-                        search_value_11 = '08PEDC_T1L2'
-                        matching_row_11 = fourth_df[fourth_df['RESOURCE_NAME'] == search_value_11]
-                        file_08PEDC_T1L2_11 = matching_row_11['DIPC_PRICE'].values[0]
-
-                        search_value_12 = '08STBAR_T1L1'
-                        matching_row_12 = fourth_df[fourth_df['RESOURCE_NAME'] == search_value_12]
-                        file_08STBAR_T1L1_12 = matching_row_12['DIPC_PRICE'].values[0]
-
-                        average_4 = (file_08PEDC_T1L1_10 + file_08PEDC_T1L2_11 + file_08STBAR_T1L1_12)/3
-
-                        fifth_df = pd.read_csv(fifth_file_path)
-
-                        search_value_13 = '08PEDC_T1L1'
-                        matching_row_13 = fifth_df[fifth_df['RESOURCE_NAME'] == search_value_13]
-                        file_08PEDC_T1L1_13 = matching_row_13['DIPC_PRICE'].values[0]
-
-                        search_value_14 = '08PEDC_T1L2'
-                        matching_row_14 = fifth_df[fifth_df['RESOURCE_NAME'] == search_value_14]
-                        file_08PEDC_T1L2_14 = matching_row_14['DIPC_PRICE'].values[0]
-
-                        search_value_15 = '08STBAR_T1L1'
-                        matching_row_15 = fifth_df[fifth_df['RESOURCE_NAME'] == search_value_15]
-                        file_08STBAR_T1L1_15 = matching_row_15['DIPC_PRICE'].values[0]
-
-                        average_5 = (file_08PEDC_T1L1_13 + file_08PEDC_T1L2_14 + file_08STBAR_T1L1_15)/3
-
-                        sixth_df = pd.read_csv(sixth_file_path)
-
-                        search_value_16 = '08PEDC_T1L1'
-                        matching_row_16 = sixth_df[sixth_df['RESOURCE_NAME'] == search_value_16]
-                        file_08PEDC_T1L1_16 = matching_row_16['DIPC_PRICE'].values[0]
-
-                        search_value_17 = '08PEDC_T1L2'
-                        matching_row_17 = sixth_df[sixth_df['RESOURCE_NAME'] == search_value_17]
-                        file_08PEDC_T1L2_17 = matching_row_17['DIPC_PRICE'].values[0]
-
-                        search_value_18 = '08STBAR_T1L1'
-                        matching_row_18 = sixth_df[sixth_df['RESOURCE_NAME'] == search_value_18]
-                        file_08STBAR_T1L1_18 = matching_row_18['DIPC_PRICE'].values[0]
-
-                        average_6 = (file_08PEDC_T1L1_16 + file_08PEDC_T1L2_17 + file_08STBAR_T1L1_18)/3
-
-                        seventh_df = pd.read_csv(seventh_file_path)
-
-                        search_value_19 = '08PEDC_T1L1'
-                        matching_row_19 = seventh_df[seventh_df['RESOURCE_NAME'] == search_value_19]
-                        file_08PEDC_T1L1_19 = matching_row_19['DIPC_PRICE'].values[0]
-
-                        search_value_20 = '08PEDC_T1L2'
-                        matching_row_20 = seventh_df[seventh_df['RESOURCE_NAME'] == search_value_20]
-                        file_08PEDC_T1L2_20 = matching_row_20['DIPC_PRICE'].values[0]
-
-                        search_value_21 = '08STBAR_T1L1'
-                        matching_row_21 = seventh_df[seventh_df['RESOURCE_NAME'] == search_value_21]
-                        file_08STBAR_T1L1_21 = matching_row_21['DIPC_PRICE'].values[0]
-
-                        average_7 = (file_08PEDC_T1L1_19 + file_08PEDC_T1L2_20 + file_08STBAR_T1L1_21)/3
-
-                        eighth_df = pd.read_csv(eighth_file_path)
-
-                        search_value_22 = '08PEDC_T1L1'
-                        matching_row_22 = eighth_df[eighth_df['RESOURCE_NAME'] == search_value_22]
-                        file_08PEDC_T1L1_22 = matching_row_22['DIPC_PRICE'].values[0]
-
-                        search_value_23 = '08PEDC_T1L2'
-                        matching_row_23 = eighth_df[eighth_df['RESOURCE_NAME'] == search_value_23]
-                        file_08PEDC_T1L2_23 = matching_row_23['DIPC_PRICE'].values[0]
-
-                        search_value_24 = '08STBAR_T1L1'
-                        matching_row_24 = eighth_df[eighth_df['RESOURCE_NAME'] == search_value_24]
-                        file_08STBAR_T1L1_24 = matching_row_24['DIPC_PRICE'].values[0]
-
-                        average_8 = (file_08PEDC_T1L1_22 + file_08PEDC_T1L2_23 + file_08STBAR_T1L1_24)/3
-                            
-                        ninth_df = pd.read_csv(ninth_file_path)
-
-                        search_value_25 = '08PEDC_T1L1'
-                        matching_row_25 = ninth_df[ninth_df['RESOURCE_NAME'] == search_value_25]
-                        file_08PEDC_T1L1_25 = matching_row_25['DIPC_PRICE'].values[0]
-
-                        search_value_26 = '08PEDC_T1L2'
-                        matching_row_26 = ninth_df[ninth_df['RESOURCE_NAME'] == search_value_26]
-                        file_08PEDC_T1L2_26 = matching_row_26['DIPC_PRICE'].values[0]
-
-                        search_value_27 = '08STBAR_T1L1'
-                        matching_row_27 = ninth_df[ninth_df['RESOURCE_NAME'] == search_value_27]
-                        file_08STBAR_T1L1_27 = matching_row_27['DIPC_PRICE'].values[0]
-
-                        average_9 = (file_08PEDC_T1L1_25 + file_08PEDC_T1L2_26 + file_08STBAR_T1L1_27)/3
-
-                        tenth_df = pd.read_csv(tenth_file_path)
-
-                        search_value_28 = '08PEDC_T1L1'
-                        matching_row_28 = tenth_df[tenth_df['RESOURCE_NAME'] == search_value_28]
-                        file_08PEDC_T1L1_28 = matching_row_28['DIPC_PRICE'].values[0]
-
-                        search_value_29 = '08PEDC_T1L2'
-                        matching_row_29 = tenth_df[tenth_df['RESOURCE_NAME'] == search_value_29]
-                        file_08PEDC_T1L2_29 = matching_row_29['DIPC_PRICE'].values[0]
-
-                        search_value_30 = '08STBAR_T1L1'
-                        matching_row_30 = tenth_df[tenth_df['RESOURCE_NAME'] == search_value_30]
-                        file_08STBAR_T1L1_30 = matching_row_30['DIPC_PRICE'].values[0]
-
-                        average_10 = (file_08PEDC_T1L1_28 + file_08PEDC_T1L2_29 + file_08STBAR_T1L1_30)/3
-
-                        eleventh_df = pd.read_csv(eleventh_file_path)
-
-                        search_value_31 = '08PEDC_T1L1'
-                        matching_row_31 = eleventh_df[eleventh_df['RESOURCE_NAME'] == search_value_31]
-                        file_08PEDC_T1L1_31 = matching_row_31['DIPC_PRICE'].values[0]
-
-                        search_value_32 = '08PEDC_T1L2'
-                        matching_row_32 = eleventh_df[eleventh_df['RESOURCE_NAME'] == search_value_32]
-                        file_08PEDC_T1L2_32 = matching_row_32['DIPC_PRICE'].values[0]
-
-                        search_value_33 = '08STBAR_T1L1'
-                        matching_row_33 = eleventh_df[eleventh_df['RESOURCE_NAME'] == search_value_33]
-                        file_08STBAR_T1L1_33 = matching_row_33['DIPC_PRICE'].values[0]
-
-                        average_11 = (file_08PEDC_T1L1_31 + file_08PEDC_T1L2_32 + file_08STBAR_T1L1_33)/3
-
-                        twelvth_df = pd.read_csv(twelvth_file_path)
-
-                        search_value_34 = '08PEDC_T1L1'
-                        matching_row_34 = twelvth_df[twelvth_df['RESOURCE_NAME'] == search_value_34]
-                        file_08PEDC_T1L1_34 = matching_row_34['DIPC_PRICE'].values[0]
-                        
-                        search_value_35 = '08PEDC_T1L2'
-                        matching_row_35 = twelvth_df[twelvth_df['RESOURCE_NAME'] == search_value_35]
-                        file_08PEDC_T1L2_35 = matching_row_35['DIPC_PRICE'].values[0]
-
-                        search_value_36 = '08STBAR_T1L1'
-                        matching_row_36 = twelvth_df[twelvth_df['RESOURCE_NAME'] == search_value_36]
-                        file_08STBAR_T1L1_36 = matching_row_36['DIPC_PRICE'].values[0]
-
-                        average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
-
-                        final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                    return None
                     
 c = datetime.now()
 hour_now = c.strftime('%H')
 
-if hour_now == '01':
-    wesm_rate_var = find_total()
-    # cell N2
-    dest_sheet['V2'] = wesm_rate_var
-    dest_wb.save(destination_file_path)
-elif hour_now == '02':
-    wesm_rate_var = find_total()
-    # cell N3
-    dest_sheet['V3'] = wesm_rate_var
-    dest_wb.save(destination_file_path)
-elif hour_now == '03':
-    wesm_rate_var = find_total()
-    # cell N4
-    dest_sheet['V4'] = wesm_rate_var
-    dest_wb.save(destination_file_path)
-elif hour_now == '04':
-    wesm_rate_var = find_total()
-    # cell N5
-    dest_sheet['V5'] = wesm_rate_var
-    dest_wb.save(destination_file_path)
-elif hour_now == '05':
-    wesm_rate_var = find_total()
-    # cell N6
-    dest_sheet['V6'] = wesm_rate_var
-    dest_wb.save(destination_file_path)
-elif hour_now == '06':
-    wesm_rate_var = find_total()
-    # cell N7
-    dest_sheet['V7'] = wesm_rate_var
-    dest_wb.save(destination_file_path)
-elif hour_now == '07':
-    wesm_rate_var = find_total()
-    # cell N8
-    dest_sheet['V8'] = wesm_rate_var
-    dest_wb.save(destination_file_path)
-elif hour_now == '08':
-    wesm_rate_var = find_total()
-    # cell N9
-    dest_sheet['V9'] = wesm_rate_var
-    dest_wb.save(destination_file_path)
-elif hour_now == '09':
-    wesm_rate_var = find_total()
-    # cell N10
-    dest_sheet['V10'] = wesm_rate_var
-    dest_wb.save(destination_file_path)
-elif hour_now == '10':
-    wesm_rate_var = find_total()
-    # cell N11
-    dest_sheet['V11'] = wesm_rate_var
-    dest_wb.save(destination_file_path)
-elif hour_now == '11':
-    wesm_rate_var = find_total()
-    # cell N12
-    dest_sheet['V12'] = wesm_rate_var
-    dest_wb.save(destination_file_path)
-elif hour_now == '12':
-    wesm_rate_var = find_total()
-    # cell N13
-    dest_sheet['V13'] = wesm_rate_var
-    dest_wb.save(destination_file_path)
-elif hour_now == '13':
-    wesm_rate_var = find_total()
-    # cell N14
-    dest_sheet['V14'] = wesm_rate_var
-    dest_wb.save(destination_file_path)
-elif hour_now == '14':
-    wesm_rate_var = find_total()
-    # cell N15
-    dest_sheet['V15'] = wesm_rate_var
-    dest_wb.save(destination_file_path)
-elif hour_now == '15':
-    wesm_rate_var = find_total()
-    # cell N16
-    dest_sheet['V16'] = wesm_rate_var
-    dest_wb.save(destination_file_path)
-elif hour_now == '16':
-    wesm_rate_var = find_total()
-    # cell N17
-    dest_sheet['V17'] = wesm_rate_var
-    dest_wb.save(destination_file_path)
-elif hour_now == '17':
-    wesm_rate_var = find_total()
-    # cell N18
-    dest_sheet['V18'] = wesm_rate_var
-    dest_wb.save(destination_file_path)
-elif hour_now == '18':
-    wesm_rate_var = find_total()
-    # cell N19
-    dest_sheet['V19'] = wesm_rate_var
-    dest_wb.save(destination_file_path)
-elif hour_now == '19':
-    wesm_rate_var = find_total()
-    # cell N20
-    dest_sheet['V20'] = wesm_rate_var
-    dest_wb.save(destination_file_path)
-elif hour_now == '20':
-    wesm_rate_var = find_total()
-    # cell N21
-    dest_sheet['V21'] = wesm_rate_var
-    dest_wb.save(destination_file_path)
-elif hour_now == '21':
-    wesm_rate_var = find_total()
-    # cell N22
-    dest_sheet['V22'] = wesm_rate_var
-    dest_wb.save(destination_file_path)
-elif hour_now == '22':
-    wesm_rate_var = find_total()
-    # cell N23
-    dest_sheet['V23'] = wesm_rate_var
-    dest_wb.save(destination_file_path)
-elif hour_now == '23':
-    wesm_rate_var = find_total()
-    # cell N24
-    dest_sheet['V24'] = wesm_rate_var
-    dest_wb.save(destination_file_path)
-elif hour_now == '00':
-    wesm_rate_var = find_total()
-    # cell N25
-    dest_sheet['V25'] = wesm_rate_var
-    dest_wb.save(destination_file_path)
+# STORE WESM RATE IN THE EXCEL FILE
+def find_total_2():
+    if hour_now == '01':
+        wesm_rate_var = find_total()
+        # cell N2
+        dest_sheet['V2'] = wesm_rate_var
+        dest_wb.save(destination_file_path)
+    elif hour_now == '02':
+        wesm_rate_var = find_total()
+        # cell N3
+        dest_sheet['V3'] = wesm_rate_var
+        dest_wb.save(destination_file_path)
+    elif hour_now == '03':
+        wesm_rate_var = find_total()
+        # cell N4
+        dest_sheet['V4'] = wesm_rate_var
+        dest_wb.save(destination_file_path)
+    elif hour_now == '04':
+        wesm_rate_var = find_total()
+        # cell N5
+        dest_sheet['V5'] = wesm_rate_var
+        dest_wb.save(destination_file_path)
+    elif hour_now == '05':
+        wesm_rate_var = find_total()
+        # cell N6
+        dest_sheet['V6'] = wesm_rate_var
+        dest_wb.save(destination_file_path)
+    elif hour_now == '06':
+        wesm_rate_var = find_total()
+        # cell N7
+        dest_sheet['V7'] = wesm_rate_var
+        dest_wb.save(destination_file_path)
+    elif hour_now == '07':
+        wesm_rate_var = find_total()
+        # cell N8
+        dest_sheet['V8'] = wesm_rate_var
+        dest_wb.save(destination_file_path)
+    elif hour_now == '08':
+        wesm_rate_var = find_total()
+        # cell N9
+        dest_sheet['V9'] = wesm_rate_var
+        dest_wb.save(destination_file_path)
+    elif hour_now == '09':
+        wesm_rate_var = find_total()
+        # cell N10
+        dest_sheet['V10'] = wesm_rate_var
+        dest_wb.save(destination_file_path)
+    elif hour_now == '10':
+        wesm_rate_var = find_total()
+        # cell N11
+        dest_sheet['V11'] = wesm_rate_var
+        dest_wb.save(destination_file_path)
+    elif hour_now == '11':
+        wesm_rate_var = find_total()
+        # cell N12
+        dest_sheet['V12'] = wesm_rate_var
+        dest_wb.save(destination_file_path)
+    elif hour_now == '12':
+        wesm_rate_var = find_total()
+        # cell N13
+        dest_sheet['V13'] = wesm_rate_var
+        dest_wb.save(destination_file_path)
+    elif hour_now == '13':
+        wesm_rate_var = find_total()
+        # cell N14
+        dest_sheet['V14'] = wesm_rate_var
+        dest_wb.save(destination_file_path)
+    elif hour_now == '14':
+        wesm_rate_var = find_total()
+        # cell N15
+        dest_sheet['V15'] = wesm_rate_var
+        dest_wb.save(destination_file_path)
+    elif hour_now == '15':
+        wesm_rate_var = find_total()
+        # cell N16
+        dest_sheet['V16'] = wesm_rate_var
+        dest_wb.save(destination_file_path)
+    elif hour_now == '16':
+        wesm_rate_var = find_total()
+        # cell N17
+        dest_sheet['V17'] = wesm_rate_var
+        dest_wb.save(destination_file_path)
+    elif hour_now == '17':
+        wesm_rate_var = find_total()
+        # cell N18
+        dest_sheet['V18'] = wesm_rate_var
+        dest_wb.save(destination_file_path)
+    elif hour_now == '18':
+        wesm_rate_var = find_total()
+        # cell N19
+        dest_sheet['V19'] = wesm_rate_var
+        dest_wb.save(destination_file_path)
+    elif hour_now == '19':
+        wesm_rate_var = find_total()
+        # cell N20
+        dest_sheet['V20'] = wesm_rate_var
+        dest_wb.save(destination_file_path)
+    elif hour_now == '20':
+        wesm_rate_var = find_total()
+        # cell N21
+        dest_sheet['V21'] = wesm_rate_var
+        dest_wb.save(destination_file_path)
+    elif hour_now == '21':
+        wesm_rate_var = find_total()
+        # cell N22
+        dest_sheet['V22'] = wesm_rate_var
+        dest_wb.save(destination_file_path)
+    elif hour_now == '22':
+        wesm_rate_var = find_total()
+        # cell N23
+        dest_sheet['V23'] = wesm_rate_var
+        dest_wb.save(destination_file_path)
+    elif hour_now == '23':
+        wesm_rate_var = find_total()
+        # cell N24
+        dest_sheet['V24'] = wesm_rate_var
+        dest_wb.save(destination_file_path)
+    elif hour_now == '00':
+        wesm_rate_var = 0
+        # cell N25
+        dest_sheet['V25'] = wesm_rate_var
+        dest_wb.save(destination_file_path)
 
 # Calculating the Current Rate
 # Current Rate = [((25000 x Fixed Fee)+(BCQSCPCxVariable Fee)) + ((20000xFixed Fee)+(BCQKSPCxVariable Fee)) + ((20000xFixed Fee)+(BCQEDCxVariable Fee)) + (TotalSSLoad-Contestable Energy-SummationBCQ) x DIPC HOURLY]/Total SS Load - Contestable Energy 
 
-if hour_now == '01':
-    # HOUR 1
-    scpc_value_1 = 25000
-    scpc_fixed_cost_1 = dest_sheet['G2'].value
-    bcq_scpc_1 = dest_sheet['B2'].value
-    scpc_variable_cost_1 = dest_sheet['H2'].value
+# CALCULATE CURRENT RATE AND STORE IN THE EXCEL FILE
+def find_total_3():
+    if hour_now == '01':
+        # HOUR 1
+        scpc_value_1 = 25000
+        scpc_fixed_cost_1 = dest_sheet['G2'].value
+        bcq_scpc_1 = dest_sheet['B2'].value
+        scpc_variable_cost_1 = dest_sheet['H2'].value
 
-    kspc_value_1 = 20000
-    kspc_fixed_cost_1 = dest_sheet['N2'].value
-    bcq_kspc_1 = dest_sheet['I2'].value
-    kspc_variable_cost_1 = dest_sheet['O2'].value
+        kspc_value_1 = 20000
+        kspc_fixed_cost_1 = dest_sheet['N2'].value
+        bcq_kspc_1 = dest_sheet['I2'].value
+        kspc_variable_cost_1 = dest_sheet['O2'].value
 
-    edc_value_1 = 20000
-    edc_fixed_cost_1 = dest_sheet['Q2'].value
-    bcq_edc_1 = dest_sheet['P2'].value
-    edc_variable_cost_1 = dest_sheet['R2'].value
+        edc_value_1 = 20000
+        edc_fixed_cost_1 = dest_sheet['Q2'].value
+        bcq_edc_1 = dest_sheet['P2'].value
+        edc_variable_cost_1 = dest_sheet['R2'].value
 
-    total_ssload_var_1 = dest_sheet['S2'].value
-    contestable_energy_var_1 = dest_sheet['T2'].value
-    total_bcq_var_1 = dest_sheet['U2'].value
-    wesm_rate_var_1 = (dest_sheet['V2'].value)/1000
+        total_ssload_var_1 = dest_sheet['S2'].value
+        contestable_energy_var_1 = dest_sheet['T2'].value
+        total_bcq_var_1 = dest_sheet['U2'].value
+        wesm_rate_var_1 = (dest_sheet['V2'].value)/1000
 
-    current_rate_formula_1 = (((scpc_value_1 * scpc_fixed_cost_1) + (bcq_scpc_1 * scpc_variable_cost_1)) + ((kspc_value_1 * kspc_fixed_cost_1) + (bcq_kspc_1 * kspc_variable_cost_1)) + ((edc_value_1 * edc_fixed_cost_1) + (bcq_edc_1 * edc_variable_cost_1)) + (total_ssload_var_1 - contestable_energy_var_1 - total_bcq_var_1) * wesm_rate_var_1)/(total_ssload_var_1 - contestable_energy_var_1)
+        current_rate_formula_1 = (((scpc_value_1 * scpc_fixed_cost_1) + (bcq_scpc_1 * scpc_variable_cost_1)) + ((kspc_value_1 * kspc_fixed_cost_1) + (bcq_kspc_1 * kspc_variable_cost_1)) + ((edc_value_1 * edc_fixed_cost_1) + (bcq_edc_1 * edc_variable_cost_1)) + (total_ssload_var_1 - contestable_energy_var_1 - total_bcq_var_1) * wesm_rate_var_1)/(total_ssload_var_1 - contestable_energy_var_1)
+        
+        dest_sheet['W2'] = current_rate_formula_1
+        dest_wb.save(destination_file_path)
+
+    elif hour_now == '02':
+        # HOUR 2
+        scpc_value_2 = 25000
+        scpc_fixed_cost_2 = dest_sheet['G3'].value
+        bcq_scpc_2 = dest_sheet['B3'].value
+        scpc_variable_cost_2 = dest_sheet['H3'].value
+
+        kspc_value_2 = 20000
+        kspc_fixed_cost_2 = dest_sheet['N3'].value
+        bcq_kspc_2 = dest_sheet['I3'].value
+        kspc_variable_cost_2 = dest_sheet['O3'].value
+
+        edc_value_2 = 20000
+        edc_fixed_cost_2 = dest_sheet['Q3'].value
+        bcq_edc_2 = dest_sheet['P3'].value
+        edc_variable_cost_2 = dest_sheet['R3'].value
+
+        total_ssload_var_2 = dest_sheet['S3'].value
+        contestable_energy_var_2 = dest_sheet['T3'].value
+        total_bcq_var_2 = dest_sheet['U3'].value
+        wesm_rate_var_2 = (dest_sheet['V3'].value)/1000
+
+        current_rate_formula_2 = (((scpc_value_2 * scpc_fixed_cost_2) + (bcq_scpc_2 * scpc_variable_cost_2)) + ((kspc_value_2 * kspc_fixed_cost_2) + (bcq_kspc_2 * kspc_variable_cost_2)) + ((edc_value_2 * edc_fixed_cost_2) + (bcq_edc_2 * edc_variable_cost_2)) + (total_ssload_var_2 - contestable_energy_var_2 - total_bcq_var_2) * wesm_rate_var_2)/(total_ssload_var_2 - contestable_energy_var_2)
+        
+        dest_sheet['W3'] = current_rate_formula_2
+        dest_wb.save(destination_file_path)
+
+    elif hour_now == '03':
+        # HOUR 3
+        scpc_value_3 = 25000
+        scpc_fixed_cost_3 = dest_sheet['G4'].value
+        bcq_scpc_3 = dest_sheet['B4'].value
+        scpc_variable_cost_3 = dest_sheet['H4'].value
+
+        kspc_value_3 = 20000
+        kspc_fixed_cost_3 = dest_sheet['N4'].value
+        bcq_kspc_3 = dest_sheet['I4'].value
+        kspc_variable_cost_3 = dest_sheet['O4'].value
+
+        edc_value_3 = 20000
+        edc_fixed_cost_3 = dest_sheet['Q4'].value
+        bcq_edc_3 = dest_sheet['P4'].value
+        edc_variable_cost_3 = dest_sheet['R4'].value
+
+        total_ssload_var_3 = dest_sheet['S4'].value
+        contestable_energy_var_3 = dest_sheet['T4'].value
+        total_bcq_var_3 = dest_sheet['U4'].value
+        wesm_rate_var_3 = (dest_sheet['V4'].value)/1000
+
+        current_rate_formula_3 = (((scpc_value_3 * scpc_fixed_cost_3) + (bcq_scpc_3 * scpc_variable_cost_3)) + ((kspc_value_3 * kspc_fixed_cost_3) + (bcq_kspc_3 * kspc_variable_cost_3)) + ((edc_value_3 * edc_fixed_cost_3) + (bcq_edc_3 * edc_variable_cost_3)) + (total_ssload_var_3 - contestable_energy_var_3 - total_bcq_var_3) * wesm_rate_var_3)/(total_ssload_var_3 - contestable_energy_var_3)
+        
+        dest_sheet['W4'] = current_rate_formula_3
+        dest_wb.save(destination_file_path)
+        
+    elif hour_now == '04':
+        # HOUR 4
+        scpc_value_4 = 25000
+        scpc_fixed_cost_4 = dest_sheet['G5'].value
+        bcq_scpc_4 = dest_sheet['B5'].value
+        scpc_variable_cost_4 = dest_sheet['H5'].value
+
+        kspc_value_4 = 20000
+        kspc_fixed_cost_4 = dest_sheet['N5'].value
+        bcq_kspc_4 = dest_sheet['I5'].value
+        kspc_variable_cost_4 = dest_sheet['O5'].value
+
+        edc_value_4 = 20000
+        edc_fixed_cost_4 = dest_sheet['Q5'].value
+        bcq_edc_4 = dest_sheet['P5'].value
+        edc_variable_cost_4 = dest_sheet['R5'].value
+
+        total_ssload_var_4 = dest_sheet['S5'].value
+        contestable_energy_var_4 = dest_sheet['T5'].value
+        total_bcq_var_4 = dest_sheet['U5'].value
+        wesm_rate_var_4 = (dest_sheet['V5'].value)/1000
+
+        current_rate_formula_4 = (((scpc_value_4 * scpc_fixed_cost_4) + (bcq_scpc_4 * scpc_variable_cost_4)) + ((kspc_value_4 * kspc_fixed_cost_4) + (bcq_kspc_4 * kspc_variable_cost_4)) + ((edc_value_4 * edc_fixed_cost_4) + (bcq_edc_4 * edc_variable_cost_4)) + (total_ssload_var_4 - contestable_energy_var_4 - total_bcq_var_4) * wesm_rate_var_4)/(total_ssload_var_4 - contestable_energy_var_4)
+        
+        dest_sheet['W5'] = current_rate_formula_4
+        dest_wb.save(destination_file_path)
+        
+    elif hour_now == '05':
+        # HOUR 5
+        scpc_value_5 = 25000
+        scpc_fixed_cost_5 = dest_sheet['G6'].value
+        bcq_scpc_5 = dest_sheet['B6'].value
+        scpc_variable_cost_5 = dest_sheet['H6'].value
+
+        kspc_value_5 = 20000
+        kspc_fixed_cost_5 = dest_sheet['N6'].value
+        bcq_kspc_5 = dest_sheet['I6'].value
+        kspc_variable_cost_5 = dest_sheet['O6'].value
+
+        edc_value_5 = 20000
+        edc_fixed_cost_5 = dest_sheet['Q6'].value
+        bcq_edc_5 = dest_sheet['P6'].value
+        edc_variable_cost_5 = dest_sheet['R6'].value
+
+        total_ssload_var_5 = dest_sheet['S6'].value
+        contestable_energy_var_5 = dest_sheet['T6'].value
+        total_bcq_var_5 = dest_sheet['U6'].value
+        wesm_rate_var_5 = (dest_sheet['V6'].value)/1000
+
+        current_rate_formula_5 = (((scpc_value_5 * scpc_fixed_cost_5) + (bcq_scpc_5 * scpc_variable_cost_5)) + ((kspc_value_5 * kspc_fixed_cost_5) + (bcq_kspc_5 * kspc_variable_cost_5)) + ((edc_value_5 * edc_fixed_cost_5) + (bcq_edc_5 * edc_variable_cost_5)) + (total_ssload_var_5 - contestable_energy_var_5 - total_bcq_var_5) * wesm_rate_var_5)/(total_ssload_var_5 - contestable_energy_var_5)
+        
+        dest_sheet['W6'] = current_rate_formula_5
+        dest_wb.save(destination_file_path)
+
+    elif hour_now == '06':
+        # HOUR 6
+        scpc_value_6 = 25000
+        scpc_fixed_cost_6 = dest_sheet['G7'].value
+        bcq_scpc_6 = dest_sheet['B7'].value
+        scpc_variable_cost_6 = dest_sheet['H7'].value
+
+        kspc_value_6 = 20000
+        kspc_fixed_cost_6 = dest_sheet['N7'].value
+        bcq_kspc_6 = dest_sheet['I7'].value
+        kspc_variable_cost_6 = dest_sheet['O7'].value
+
+        edc_value_6 = 20000
+        edc_fixed_cost_6 = dest_sheet['Q7'].value
+        bcq_edc_6 = dest_sheet['P7'].value
+        edc_variable_cost_6 = dest_sheet['R7'].value
+
+        total_ssload_var_6 = dest_sheet['S7'].value
+        contestable_energy_var_6 = dest_sheet['T7'].value
+        total_bcq_var_6 = dest_sheet['U7'].value
+        wesm_rate_var_6 = (dest_sheet['V7'].value)/1000
+
+        current_rate_formula_6 = (((scpc_value_6 * scpc_fixed_cost_6) + (bcq_scpc_6 * scpc_variable_cost_6)) + ((kspc_value_6 * kspc_fixed_cost_6) + (bcq_kspc_6 * kspc_variable_cost_6)) + ((edc_value_6 * edc_fixed_cost_6) + (bcq_edc_6 * edc_variable_cost_6)) + (total_ssload_var_6 - contestable_energy_var_6 - total_bcq_var_6) * wesm_rate_var_6)/(total_ssload_var_6 - contestable_energy_var_6)
+        
+        dest_sheet['W7'] = current_rate_formula_6
+        dest_wb.save(destination_file_path)
+
+    elif hour_now == '07':
+        # HOUR 7
+        scpc_value_7 = 25000
+        scpc_fixed_cost_7 = dest_sheet['G8'].value
+        bcq_scpc_7 = dest_sheet['B8'].value
+        scpc_variable_cost_7 = dest_sheet['H8'].value
+
+        kspc_value_7 = 20000
+        kspc_fixed_cost_7 = dest_sheet['N8'].value
+        bcq_kspc_7 = dest_sheet['I8'].value
+        kspc_variable_cost_7 = dest_sheet['O8'].value
+
+        edc_value_7 = 20000
+        edc_fixed_cost_7 = dest_sheet['Q8'].value
+        bcq_edc_7 = dest_sheet['P8'].value
+        edc_variable_cost_7 = dest_sheet['R8'].value
+
+        total_ssload_var_7 = dest_sheet['S8'].value
+        contestable_energy_var_7 = dest_sheet['T8'].value
+        total_bcq_var_7 = dest_sheet['U8'].value
+        wesm_rate_var_7 = (dest_sheet['V8'].value)/1000
+
+        current_rate_formula_7 = (((scpc_value_7 * scpc_fixed_cost_7) + (bcq_scpc_7 * scpc_variable_cost_7)) + ((kspc_value_7 * kspc_fixed_cost_7) + (bcq_kspc_7 * kspc_variable_cost_7)) + ((edc_value_7 * edc_fixed_cost_7) + (bcq_edc_7 * edc_variable_cost_7)) + (total_ssload_var_7 - contestable_energy_var_7 - total_bcq_var_7) * wesm_rate_var_7)/(total_ssload_var_7 - contestable_energy_var_7)
+        
+        dest_sheet['W8'] = current_rate_formula_7
+        dest_wb.save(destination_file_path)
+
+    elif hour_now == '08':
+        # HOUR 8
+        scpc_value_8 = 25000
+        scpc_fixed_cost_8 = dest_sheet['G9'].value
+        bcq_scpc_8 = dest_sheet['B9'].value
+        scpc_variable_cost_8 = dest_sheet['H9'].value
+
+        kspc_value_8 = 20000
+        kspc_fixed_cost_8 = dest_sheet['N9'].value
+        bcq_kspc_8 = dest_sheet['I9'].value
+        kspc_variable_cost_8 = dest_sheet['O9'].value
+
+        edc_value_8 = 20000
+        edc_fixed_cost_8 = dest_sheet['Q9'].value
+        bcq_edc_8 = dest_sheet['P9'].value
+        edc_variable_cost_8 = dest_sheet['R9'].value
+
+        total_ssload_var_8 = dest_sheet['S9'].value
+        contestable_energy_var_8 = dest_sheet['T9'].value
+        total_bcq_var_8 = dest_sheet['U9'].value
+        wesm_rate_var_8 = (dest_sheet['V9'].value)/1000
+
+        current_rate_formula_8 = (((scpc_value_8 * scpc_fixed_cost_8) + (bcq_scpc_8 * scpc_variable_cost_8)) + ((kspc_value_8 * kspc_fixed_cost_8) + (bcq_kspc_8 * kspc_variable_cost_8)) + ((edc_value_8 * edc_fixed_cost_8) + (bcq_edc_8 * edc_variable_cost_8)) + (total_ssload_var_8 - contestable_energy_var_8 - total_bcq_var_8) * wesm_rate_var_8)/(total_ssload_var_8 - contestable_energy_var_8)
+        
+        dest_sheet['W9'] = current_rate_formula_8
+        dest_wb.save(destination_file_path)
+
+    elif hour_now == '09':
+        # HOUR 9
+        scpc_value_9 = 25000
+        scpc_fixed_cost_9 = dest_sheet['G10'].value
+        bcq_scpc_9 = dest_sheet['B10'].value
+        scpc_variable_cost_9 = dest_sheet['H10'].value
+
+        kspc_value_9 = 20000
+        kspc_fixed_cost_9 = dest_sheet['N10'].value
+        bcq_kspc_9 = dest_sheet['I10'].value
+        kspc_variable_cost_9 = dest_sheet['O10'].value
+
+        edc_value_9 = 20000
+        edc_fixed_cost_9 = dest_sheet['Q10'].value
+        bcq_edc_9 = dest_sheet['P10'].value
+        edc_variable_cost_9 = dest_sheet['R10'].value
+
+        total_ssload_var_9 = dest_sheet['S10'].value
+        contestable_energy_var_9 = dest_sheet['T10'].value
+        total_bcq_var_9 = dest_sheet['U10'].value
+        wesm_rate_var_9 = (dest_sheet['V10'].value)/1000
+
+        current_rate_formula_9 = (((scpc_value_9 * scpc_fixed_cost_9) + (bcq_scpc_9 * scpc_variable_cost_9)) + ((kspc_value_9 * kspc_fixed_cost_9) + (bcq_kspc_9 * kspc_variable_cost_9)) + ((edc_value_9 * edc_fixed_cost_9) + (bcq_edc_9 * edc_variable_cost_9)) + (total_ssload_var_9 - contestable_energy_var_9 - total_bcq_var_9) * wesm_rate_var_9)/(total_ssload_var_9 - contestable_energy_var_9)
+        
+        dest_sheet['W10'] = current_rate_formula_9
+        dest_wb.save(destination_file_path)
+
+    elif hour_now == '10':
+        # HOUR 10
+        scpc_value_10 = 25000
+        scpc_fixed_cost_10 = dest_sheet['G11'].value
+        bcq_scpc_10 = dest_sheet['B11'].value
+        scpc_variable_cost_10 = dest_sheet['H11'].value
+
+        kspc_value_10 = 20000
+        kspc_fixed_cost_10 = dest_sheet['N11'].value
+        bcq_kspc_10 = dest_sheet['I11'].value
+        kspc_variable_cost_10 = dest_sheet['O11'].value
+
+        edc_value_10 = 20000
+        edc_fixed_cost_10 = dest_sheet['Q11'].value
+        bcq_edc_10 = dest_sheet['P11'].value
+        edc_variable_cost_10 = dest_sheet['R11'].value
+
+        total_ssload_var_10 = dest_sheet['S11'].value
+        contestable_energy_var_10 = dest_sheet['T11'].value
+        total_bcq_var_10 = dest_sheet['U11'].value
+        wesm_rate_var_10 = (dest_sheet['V11'].value)/1000
+
+        current_rate_formula_10 = (((scpc_value_10 * scpc_fixed_cost_10) + (bcq_scpc_10 * scpc_variable_cost_10)) + ((kspc_value_10 * kspc_fixed_cost_10) + (bcq_kspc_10 * kspc_variable_cost_10)) + ((edc_value_10 * edc_fixed_cost_10) + (bcq_edc_10 * edc_variable_cost_10)) + (total_ssload_var_10 - contestable_energy_var_10 - total_bcq_var_10) * wesm_rate_var_10)/(total_ssload_var_10 - contestable_energy_var_10)
+        
+        dest_sheet['W11'] = current_rate_formula_10
+        dest_wb.save(destination_file_path)
+
+    elif hour_now == '11':
+        # HOUR 11
+        scpc_value_11 = 25000
+        scpc_fixed_cost_11 = dest_sheet['G12'].value
+        bcq_scpc_11 = dest_sheet['B12'].value
+        scpc_variable_cost_11 = dest_sheet['H12'].value
+
+        kspc_value_11 = 20000
+        kspc_fixed_cost_11 = dest_sheet['N12'].value
+        bcq_kspc_11 = dest_sheet['I12'].value
+        kspc_variable_cost_11 = dest_sheet['O12'].value
+
+        edc_value_11 = 20000
+        edc_fixed_cost_11 = dest_sheet['Q12'].value
+        bcq_edc_11 = dest_sheet['P12'].value
+        edc_variable_cost_11 = dest_sheet['R12'].value
+
+        total_ssload_var_11 = dest_sheet['S12'].value
+        contestable_energy_var_11 = dest_sheet['T12'].value
+        total_bcq_var_11 = dest_sheet['U12'].value
+        wesm_rate_var_11 = (dest_sheet['V12'].value)/1000
+
+        current_rate_formula_11 = (((scpc_value_11 * scpc_fixed_cost_11) + (bcq_scpc_11 * scpc_variable_cost_11)) + ((kspc_value_11 * kspc_fixed_cost_11) + (bcq_kspc_11 * kspc_variable_cost_11)) + ((edc_value_11 * edc_fixed_cost_11) + (bcq_edc_11 * edc_variable_cost_11)) + (total_ssload_var_11 - contestable_energy_var_11 - total_bcq_var_11) * wesm_rate_var_11)/(total_ssload_var_11 - contestable_energy_var_11)
+        
+        dest_sheet['W12'] = current_rate_formula_11
+        dest_wb.save(destination_file_path)
+
+    elif hour_now == '12':
+        # HOUR 12
+        scpc_value_12 = 25000
+        scpc_fixed_cost_12 = dest_sheet['G13'].value
+        bcq_scpc_12 = dest_sheet['B13'].value
+        scpc_variable_cost_12 = dest_sheet['H13'].value
+
+        kspc_value_12 = 20000
+        kspc_fixed_cost_12 = dest_sheet['N13'].value
+        bcq_kspc_12 = dest_sheet['I13'].value
+        kspc_variable_cost_12 = dest_sheet['O13'].value
+
+        edc_value_12 = 20000
+        edc_fixed_cost_12 = dest_sheet['Q13'].value
+        bcq_edc_12 = dest_sheet['P13'].value
+        edc_variable_cost_12 = dest_sheet['R13'].value
+
+        total_ssload_var_12 = dest_sheet['S13'].value
+        contestable_energy_var_12 = dest_sheet['T13'].value
+        total_bcq_var_12 = dest_sheet['U13'].value
+        wesm_rate_var_12 = (dest_sheet['V13'].value)/1000
+
+        current_rate_formula_12 = (((scpc_value_12 * scpc_fixed_cost_12) + (bcq_scpc_12 * scpc_variable_cost_12)) + ((kspc_value_12 * kspc_fixed_cost_12) + (bcq_kspc_12 * kspc_variable_cost_12)) + ((edc_value_12 * edc_fixed_cost_12) + (bcq_edc_12 * edc_variable_cost_12)) + (total_ssload_var_12 - contestable_energy_var_12 - total_bcq_var_12) * wesm_rate_var_12)/(total_ssload_var_12 - contestable_energy_var_12)
+        
+        dest_sheet['W13'] = current_rate_formula_12
+        dest_wb.save(destination_file_path)
+
+    elif hour_now == '13':
+        # HOUR 13
+        scpc_value_13 = 25000
+        scpc_fixed_cost_13 = dest_sheet['G14'].value
+        bcq_scpc_13 = dest_sheet['B14'].value
+        scpc_variable_cost_13 = dest_sheet['H14'].value
+
+        kspc_value_13 = 20000
+        kspc_fixed_cost_13 = dest_sheet['N14'].value
+        bcq_kspc_13 = dest_sheet['I14'].value
+        kspc_variable_cost_13 = dest_sheet['O14'].value
+
+        edc_value_13 = 20000
+        edc_fixed_cost_13 = dest_sheet['Q14'].value
+        bcq_edc_13 = dest_sheet['P14'].value
+        edc_variable_cost_13 = dest_sheet['R14'].value
+
+        total_ssload_var_13 = dest_sheet['S14'].value
+        contestable_energy_var_13 = dest_sheet['T14'].value
+        total_bcq_var_13 = dest_sheet['U14'].value
+        wesm_rate_var_13 = (dest_sheet['V14'].value)/1000
+
+        current_rate_formula_13 = (((scpc_value_13 * scpc_fixed_cost_13) + (bcq_scpc_13 * scpc_variable_cost_13)) + ((kspc_value_13 * kspc_fixed_cost_13) + (bcq_kspc_13 * kspc_variable_cost_13)) + ((edc_value_13 * edc_fixed_cost_13) + (bcq_edc_13 * edc_variable_cost_13)) + (total_ssload_var_13 - contestable_energy_var_13 - total_bcq_var_13) * wesm_rate_var_13)/(total_ssload_var_13 - contestable_energy_var_13)
+        
+        dest_sheet['W14'] = current_rate_formula_13
+        dest_wb.save(destination_file_path)
+
+    elif hour_now == '14':
+        # HOUR 14
+        scpc_value_14 = 25000
+        scpc_fixed_cost_14 = dest_sheet['G15'].value
+        bcq_scpc_14 = dest_sheet['B15'].value
+        scpc_variable_cost_14 = dest_sheet['H15'].value
+
+        kspc_value_14 = 20000
+        kspc_fixed_cost_14 = dest_sheet['N15'].value
+        bcq_kspc_14 = dest_sheet['I15'].value
+        kspc_variable_cost_14 = dest_sheet['O15'].value
+
+        edc_value_14 = 20000
+        edc_fixed_cost_14 = dest_sheet['Q15'].value
+        bcq_edc_14 = dest_sheet['P15'].value
+        edc_variable_cost_14 = dest_sheet['R15'].value
+
+        total_ssload_var_14 = dest_sheet['S15'].value
+        contestable_energy_var_14 = dest_sheet['T15'].value
+        total_bcq_var_14 = dest_sheet['U15'].value
+        wesm_rate_var_14 = (dest_sheet['V15'].value)/1000
+
+        current_rate_formula_14 = (((scpc_value_14 * scpc_fixed_cost_14) + (bcq_scpc_14 * scpc_variable_cost_14)) + ((kspc_value_14 * kspc_fixed_cost_14) + (bcq_kspc_14 * kspc_variable_cost_14)) + ((edc_value_14 * edc_fixed_cost_14) + (bcq_edc_14 * edc_variable_cost_14)) + (total_ssload_var_14 - contestable_energy_var_14 - total_bcq_var_14) * wesm_rate_var_14)/(total_ssload_var_14 - contestable_energy_var_14)
+        
+        dest_sheet['W15'] = current_rate_formula_14
+        dest_wb.save(destination_file_path)
+
+    elif hour_now == '15':
+        # HOUR 15
+        scpc_value_15 = 25000
+        scpc_fixed_cost_15 = dest_sheet['G16'].value
+        bcq_scpc_15 = dest_sheet['B16'].value
+        scpc_variable_cost_15 = dest_sheet['H16'].value
+
+        kspc_value_15 = 20000
+        kspc_fixed_cost_15 = dest_sheet['N16'].value
+        bcq_kspc_15 = dest_sheet['I16'].value
+        kspc_variable_cost_15 = dest_sheet['O16'].value
+
+        edc_value_15 = 20000
+        edc_fixed_cost_15 = dest_sheet['Q16'].value
+        bcq_edc_15 = dest_sheet['P16'].value
+        edc_variable_cost_15 = dest_sheet['R16'].value
+
+        total_ssload_var_15 = dest_sheet['S16'].value
+        contestable_energy_var_15 = dest_sheet['T16'].value
+        total_bcq_var_15 = dest_sheet['U16'].value
+        wesm_rate_var_15 = (dest_sheet['V16'].value)/1000
+
+        current_rate_formula_15 = (((scpc_value_15 * scpc_fixed_cost_15) + (bcq_scpc_15 * scpc_variable_cost_15)) + ((kspc_value_15 * kspc_fixed_cost_15) + (bcq_kspc_15 * kspc_variable_cost_15)) + ((edc_value_15 * edc_fixed_cost_15) + (bcq_edc_15 * edc_variable_cost_15)) + (total_ssload_var_15 - contestable_energy_var_15 - total_bcq_var_15) * wesm_rate_var_15)/(total_ssload_var_15 - contestable_energy_var_15)
+        
+        dest_sheet['W16'] = current_rate_formula_15
+        dest_wb.save(destination_file_path)
+
+    elif hour_now == '16':
+        # HOUR 16
+        scpc_value_16 = 25000
+        scpc_fixed_cost_16 = dest_sheet['G17'].value
+        bcq_scpc_16 = dest_sheet['B17'].value
+        scpc_variable_cost_16 = dest_sheet['H17'].value
+
+        kspc_value_16 = 20000
+        kspc_fixed_cost_16 = dest_sheet['N17'].value
+        bcq_kspc_16 = dest_sheet['I17'].value
+        kspc_variable_cost_16 = dest_sheet['O17'].value
+
+        edc_value_16 = 20000
+        edc_fixed_cost_16 = dest_sheet['Q17'].value
+        bcq_edc_16 = dest_sheet['P17'].value
+        edc_variable_cost_16 = dest_sheet['R17'].value
+
+        total_ssload_var_16 = dest_sheet['S17'].value
+        contestable_energy_var_16 = dest_sheet['T17'].value
+        total_bcq_var_16 = dest_sheet['U17'].value
+        wesm_rate_var_16 = (dest_sheet['V17'].value)/1000
+
+        current_rate_formula_16 = (((scpc_value_16 * scpc_fixed_cost_16) + (bcq_scpc_16 * scpc_variable_cost_16)) + ((kspc_value_16 * kspc_fixed_cost_16) + (bcq_kspc_16 * kspc_variable_cost_16)) + ((edc_value_16 * edc_fixed_cost_16) + (bcq_edc_16 * edc_variable_cost_16)) + (total_ssload_var_16 - contestable_energy_var_16 - total_bcq_var_16) * wesm_rate_var_16)/(total_ssload_var_16 - contestable_energy_var_16)
+        
+        dest_sheet['W17'] = current_rate_formula_16
+        dest_wb.save(destination_file_path)
+
+    elif hour_now == '17':
+        # HOUR 17
+        scpc_value_17 = 25000
+        scpc_fixed_cost_17 = dest_sheet['G18'].value
+        bcq_scpc_17 = dest_sheet['B18'].value
+        scpc_variable_cost_17 = dest_sheet['H18'].value
+
+        kspc_value_17 = 20000
+        kspc_fixed_cost_17 = dest_sheet['N18'].value
+        bcq_kspc_17 = dest_sheet['I18'].value
+        kspc_variable_cost_17 = dest_sheet['O18'].value
+
+        edc_value_17 = 20000
+        edc_fixed_cost_17 = dest_sheet['Q18'].value
+        bcq_edc_17 = dest_sheet['P18'].value
+        edc_variable_cost_17 = dest_sheet['R18'].value
+
+        total_ssload_var_17 = dest_sheet['S18'].value
+        contestable_energy_var_17 = dest_sheet['T18'].value
+        total_bcq_var_17 = dest_sheet['U18'].value
+        wesm_rate_var_17 = (dest_sheet['V18'].value)/1000
+
+        current_rate_formula_17 = (((scpc_value_17 * scpc_fixed_cost_17) + (bcq_scpc_17 * scpc_variable_cost_17)) + ((kspc_value_17 * kspc_fixed_cost_17) + (bcq_kspc_17 * kspc_variable_cost_17)) + ((edc_value_17 * edc_fixed_cost_17) + (bcq_edc_17 * edc_variable_cost_17)) + (total_ssload_var_17 - contestable_energy_var_17 - total_bcq_var_17) * wesm_rate_var_17)/(total_ssload_var_17 - contestable_energy_var_17)
+        
+        dest_sheet['W18'] = current_rate_formula_17
+        dest_wb.save(destination_file_path)
+
+    elif hour_now == '18':
+        # HOUR 18
+        scpc_value_18 = 25000
+        scpc_fixed_cost_18 = dest_sheet['G19'].value
+        bcq_scpc_18 = dest_sheet['B19'].value
+        scpc_variable_cost_18 = dest_sheet['H19'].value
+
+        kspc_value_18 = 20000
+        kspc_fixed_cost_18 = dest_sheet['N19'].value
+        bcq_kspc_18 = dest_sheet['I19'].value
+        kspc_variable_cost_18 = dest_sheet['O19'].value
+
+        edc_value_18 = 20000
+        edc_fixed_cost_18 = dest_sheet['Q19'].value
+        bcq_edc_18 = dest_sheet['P19'].value
+        edc_variable_cost_18 = dest_sheet['R19'].value
+
+        total_ssload_var_18 = dest_sheet['S19'].value
+        contestable_energy_var_18 = dest_sheet['T19'].value
+        total_bcq_var_18 = dest_sheet['U19'].value
+        wesm_rate_var_18 = (dest_sheet['V19'].value)/1000
+
+        current_rate_formula_18 = (((scpc_value_18 * scpc_fixed_cost_18) + (bcq_scpc_18 * scpc_variable_cost_18)) + ((kspc_value_18 * kspc_fixed_cost_18) + (bcq_kspc_18 * kspc_variable_cost_18)) + ((edc_value_18 * edc_fixed_cost_18) + (bcq_edc_18 * edc_variable_cost_18)) + (total_ssload_var_18 - contestable_energy_var_18 - total_bcq_var_18) * wesm_rate_var_18)/(total_ssload_var_18 - contestable_energy_var_18)
+        
+        dest_sheet['W19'] = current_rate_formula_18
+        dest_wb.save(destination_file_path)
+
+    elif hour_now == '19':
+        # HOUR 19 
+        scpc_value_19 = 25000
+        scpc_fixed_cost_19 = dest_sheet['G20'].value
+        bcq_scpc_19 = dest_sheet['B20'].value
+        scpc_variable_cost_19 = dest_sheet['H20'].value
+
+        kspc_value_19 = 20000
+        kspc_fixed_cost_19 = dest_sheet['N20'].value
+        bcq_kspc_19 = dest_sheet['I20'].value
+        kspc_variable_cost_19 = dest_sheet['O20'].value
+
+        edc_value_19 = 20000
+        edc_fixed_cost_19 = dest_sheet['Q20'].value
+        bcq_edc_19 = dest_sheet['P20'].value
+        edc_variable_cost_19 = dest_sheet['R20'].value
+
+        total_ssload_var_19 = dest_sheet['S20'].value
+        contestable_energy_var_19 = dest_sheet['T20'].value
+        total_bcq_var_19 = dest_sheet['U20'].value
+        wesm_rate_var_19 = (dest_sheet['V20'].value)/1000
+
+        current_rate_formula_19 = (((scpc_value_19 * scpc_fixed_cost_19) + (bcq_scpc_19 * scpc_variable_cost_19)) + ((kspc_value_19 * kspc_fixed_cost_19) + (bcq_kspc_19 * kspc_variable_cost_19)) + ((edc_value_19 * edc_fixed_cost_19) + (bcq_edc_19 * edc_variable_cost_19)) + (total_ssload_var_19 - contestable_energy_var_19 - total_bcq_var_19) * wesm_rate_var_19)/(total_ssload_var_19 - contestable_energy_var_19)
+        
+        dest_sheet['W20'] = current_rate_formula_19
+        dest_wb.save(destination_file_path)    
+
+    elif hour_now == '20':
+        # HOUR 20
+        scpc_value_20 = 25000
+        scpc_fixed_cost_20 = dest_sheet['G21'].value
+        bcq_scpc_20 = dest_sheet['B21'].value
+        scpc_variable_cost_20 = dest_sheet['H21'].value
+
+        kspc_value_20 = 20000
+        kspc_fixed_cost_20 = dest_sheet['N21'].value
+        bcq_kspc_20 = dest_sheet['I21'].value
+        kspc_variable_cost_20 = dest_sheet['O21'].value
+
+        edc_value_20 = 20000
+        edc_fixed_cost_20 = dest_sheet['Q21'].value
+        bcq_edc_20 = dest_sheet['P21'].value
+        edc_variable_cost_20 = dest_sheet['R21'].value
+
+        total_ssload_var_20 = dest_sheet['S21'].value
+        contestable_energy_var_20 = dest_sheet['T21'].value
+        total_bcq_var_20 = dest_sheet['U21'].value
+        wesm_rate_var_20 = (dest_sheet['V21'].value)/1000
+
+        current_rate_formula_20 = (((scpc_value_20 * scpc_fixed_cost_20) + (bcq_scpc_20 * scpc_variable_cost_20)) + ((kspc_value_20 * kspc_fixed_cost_20) + (bcq_kspc_20 * kspc_variable_cost_20)) + ((edc_value_20 * edc_fixed_cost_20) + (bcq_edc_20 * edc_variable_cost_20)) + (total_ssload_var_20 - contestable_energy_var_20 - total_bcq_var_20) * wesm_rate_var_20)/(total_ssload_var_20 - contestable_energy_var_20)
+        
+        dest_sheet['W21'] = current_rate_formula_20
+        dest_wb.save(destination_file_path)
+
+    elif hour_now == '21':
+        # HOUR 21
+        scpc_value_21 = 25000
+        scpc_fixed_cost_21 = dest_sheet['G22'].value
+        bcq_scpc_21 = dest_sheet['B22'].value
+        scpc_variable_cost_21 = dest_sheet['H22'].value
+
+        kspc_value_21 = 20000
+        kspc_fixed_cost_21 = dest_sheet['N22'].value
+        bcq_kspc_21 = dest_sheet['I22'].value
+        kspc_variable_cost_21 = dest_sheet['O22'].value
+
+        edc_value_21 = 20000
+        edc_fixed_cost_21 = dest_sheet['Q22'].value
+        bcq_edc_21 = dest_sheet['P22'].value
+        edc_variable_cost_21 = dest_sheet['R22'].value
+
+        total_ssload_var_21 = dest_sheet['S22'].value
+        contestable_energy_var_21 = dest_sheet['T22'].value
+        total_bcq_var_21 = dest_sheet['U22'].value
+        wesm_rate_var_21 = (dest_sheet['V22'].value)/1000
+
+        current_rate_formula_21 = (((scpc_value_21 * scpc_fixed_cost_21) + (bcq_scpc_21 * scpc_variable_cost_21)) + ((kspc_value_21 * kspc_fixed_cost_21) + (bcq_kspc_21 * kspc_variable_cost_21)) + ((edc_value_21 * edc_fixed_cost_21) + (bcq_edc_21 * edc_variable_cost_21)) + (total_ssload_var_21 - contestable_energy_var_21 - total_bcq_var_21) * wesm_rate_var_21)/(total_ssload_var_21 - contestable_energy_var_21)
+        
+        dest_sheet['W22'] = current_rate_formula_21
+        dest_wb.save(destination_file_path)
     
-    dest_sheet['W2'] = current_rate_formula_1
-    dest_wb.save(destination_file_path)
-
-elif hour_now == '02':
-    # HOUR 2
-    scpc_value_2 = 25000
-    scpc_fixed_cost_2 = dest_sheet['G3'].value
-    bcq_scpc_2 = dest_sheet['B3'].value
-    scpc_variable_cost_2 = dest_sheet['H3'].value
-
-    kspc_value_2 = 20000
-    kspc_fixed_cost_2 = dest_sheet['N3'].value
-    bcq_kspc_2 = dest_sheet['I3'].value
-    kspc_variable_cost_2 = dest_sheet['O3'].value
-
-    edc_value_2 = 20000
-    edc_fixed_cost_2 = dest_sheet['Q3'].value
-    bcq_edc_2 = dest_sheet['P3'].value
-    edc_variable_cost_2 = dest_sheet['R3'].value
-
-    total_ssload_var_2 = dest_sheet['S3'].value
-    contestable_energy_var_2 = dest_sheet['T3'].value
-    total_bcq_var_2 = dest_sheet['U3'].value
-    wesm_rate_var_2 = (dest_sheet['V3'].value)/1000
-
-    current_rate_formula_2 = (((scpc_value_2 * scpc_fixed_cost_2) + (bcq_scpc_2 * scpc_variable_cost_2)) + ((kspc_value_2 * kspc_fixed_cost_2) + (bcq_kspc_2 * kspc_variable_cost_2)) + ((edc_value_2 * edc_fixed_cost_2) + (bcq_edc_2 * edc_variable_cost_2)) + (total_ssload_var_2 - contestable_energy_var_2 - total_bcq_var_2) * wesm_rate_var_2)/(total_ssload_var_2 - contestable_energy_var_2)
-    
-    dest_sheet['W3'] = current_rate_formula_2
-    dest_wb.save(destination_file_path)
-
-elif hour_now == '03':
-    # HOUR 3
-    scpc_value_3 = 25000
-    scpc_fixed_cost_3 = dest_sheet['G4'].value
-    bcq_scpc_3 = dest_sheet['B4'].value
-    scpc_variable_cost_3 = dest_sheet['H4'].value
-
-    kspc_value_3 = 20000
-    kspc_fixed_cost_3 = dest_sheet['N4'].value
-    bcq_kspc_3 = dest_sheet['I4'].value
-    kspc_variable_cost_3 = dest_sheet['O4'].value
-
-    edc_value_3 = 20000
-    edc_fixed_cost_3 = dest_sheet['Q4'].value
-    bcq_edc_3 = dest_sheet['P4'].value
-    edc_variable_cost_3 = dest_sheet['R4'].value
-
-    total_ssload_var_3 = dest_sheet['S4'].value
-    contestable_energy_var_3 = dest_sheet['T4'].value
-    total_bcq_var_3 = dest_sheet['U4'].value
-    wesm_rate_var_3 = (dest_sheet['V4'].value)/1000
-
-    current_rate_formula_3 = (((scpc_value_3 * scpc_fixed_cost_3) + (bcq_scpc_3 * scpc_variable_cost_3)) + ((kspc_value_3 * kspc_fixed_cost_3) + (bcq_kspc_3 * kspc_variable_cost_3)) + ((edc_value_3 * edc_fixed_cost_3) + (bcq_edc_3 * edc_variable_cost_3)) + (total_ssload_var_3 - contestable_energy_var_3 - total_bcq_var_3) * wesm_rate_var_3)/(total_ssload_var_3 - contestable_energy_var_3)
-    
-    dest_sheet['W4'] = current_rate_formula_3
-    dest_wb.save(destination_file_path)
-    
-elif hour_now == '04':
-    # HOUR 4
-    scpc_value_4 = 25000
-    scpc_fixed_cost_4 = dest_sheet['G5'].value
-    bcq_scpc_4 = dest_sheet['B5'].value
-    scpc_variable_cost_4 = dest_sheet['H5'].value
-
-    kspc_value_4 = 20000
-    kspc_fixed_cost_4 = dest_sheet['N5'].value
-    bcq_kspc_4 = dest_sheet['I5'].value
-    kspc_variable_cost_4 = dest_sheet['O5'].value
-
-    edc_value_4 = 20000
-    edc_fixed_cost_4 = dest_sheet['Q5'].value
-    bcq_edc_4 = dest_sheet['P5'].value
-    edc_variable_cost_4 = dest_sheet['R5'].value
-
-    total_ssload_var_4 = dest_sheet['S5'].value
-    contestable_energy_var_4 = dest_sheet['T5'].value
-    total_bcq_var_4 = dest_sheet['U5'].value
-    wesm_rate_var_4 = (dest_sheet['V5'].value)/1000
-
-    current_rate_formula_4 = (((scpc_value_4 * scpc_fixed_cost_4) + (bcq_scpc_4 * scpc_variable_cost_4)) + ((kspc_value_4 * kspc_fixed_cost_4) + (bcq_kspc_4 * kspc_variable_cost_4)) + ((edc_value_4 * edc_fixed_cost_4) + (bcq_edc_4 * edc_variable_cost_4)) + (total_ssload_var_4 - contestable_energy_var_4 - total_bcq_var_4) * wesm_rate_var_4)/(total_ssload_var_4 - contestable_energy_var_4)
-    
-    dest_sheet['W5'] = current_rate_formula_4
-    dest_wb.save(destination_file_path)
-    
-elif hour_now == '05':
-    # HOUR 5
-    scpc_value_5 = 25000
-    scpc_fixed_cost_5 = dest_sheet['G6'].value
-    bcq_scpc_5 = dest_sheet['B6'].value
-    scpc_variable_cost_5 = dest_sheet['H6'].value
-
-    kspc_value_5 = 20000
-    kspc_fixed_cost_5 = dest_sheet['N6'].value
-    bcq_kspc_5 = dest_sheet['I6'].value
-    kspc_variable_cost_5 = dest_sheet['O6'].value
-
-    edc_value_5 = 20000
-    edc_fixed_cost_5 = dest_sheet['Q6'].value
-    bcq_edc_5 = dest_sheet['P6'].value
-    edc_variable_cost_5 = dest_sheet['R6'].value
-
-    total_ssload_var_5 = dest_sheet['S6'].value
-    contestable_energy_var_5 = dest_sheet['T6'].value
-    total_bcq_var_5 = dest_sheet['U6'].value
-    wesm_rate_var_5 = (dest_sheet['V6'].value)/1000
-
-    current_rate_formula_5 = (((scpc_value_5 * scpc_fixed_cost_5) + (bcq_scpc_5 * scpc_variable_cost_5)) + ((kspc_value_5 * kspc_fixed_cost_5) + (bcq_kspc_5 * kspc_variable_cost_5)) + ((edc_value_5 * edc_fixed_cost_5) + (bcq_edc_5 * edc_variable_cost_5)) + (total_ssload_var_5 - contestable_energy_var_5 - total_bcq_var_5) * wesm_rate_var_5)/(total_ssload_var_5 - contestable_energy_var_5)
-    
-    dest_sheet['W6'] = current_rate_formula_5
-    dest_wb.save(destination_file_path)
-
-elif hour_now == '06':
-    # HOUR 6
-    scpc_value_6 = 25000
-    scpc_fixed_cost_6 = dest_sheet['G7'].value
-    bcq_scpc_6 = dest_sheet['B7'].value
-    scpc_variable_cost_6 = dest_sheet['H7'].value
-
-    kspc_value_6 = 20000
-    kspc_fixed_cost_6 = dest_sheet['N7'].value
-    bcq_kspc_6 = dest_sheet['I7'].value
-    kspc_variable_cost_6 = dest_sheet['O7'].value
-
-    edc_value_6 = 20000
-    edc_fixed_cost_6 = dest_sheet['Q7'].value
-    bcq_edc_6 = dest_sheet['P7'].value
-    edc_variable_cost_6 = dest_sheet['R7'].value
-
-    total_ssload_var_6 = dest_sheet['S7'].value
-    contestable_energy_var_6 = dest_sheet['T7'].value
-    total_bcq_var_6 = dest_sheet['U7'].value
-    wesm_rate_var_6 = (dest_sheet['V7'].value)/1000
-
-    current_rate_formula_6 = (((scpc_value_6 * scpc_fixed_cost_6) + (bcq_scpc_6 * scpc_variable_cost_6)) + ((kspc_value_6 * kspc_fixed_cost_6) + (bcq_kspc_6 * kspc_variable_cost_6)) + ((edc_value_6 * edc_fixed_cost_6) + (bcq_edc_6 * edc_variable_cost_6)) + (total_ssload_var_6 - contestable_energy_var_6 - total_bcq_var_6) * wesm_rate_var_6)/(total_ssload_var_6 - contestable_energy_var_6)
-    
-    dest_sheet['W7'] = current_rate_formula_6
-    dest_wb.save(destination_file_path)
-
-elif hour_now == '07':
-    # HOUR 7
-    scpc_value_7 = 25000
-    scpc_fixed_cost_7 = dest_sheet['G8'].value
-    bcq_scpc_7 = dest_sheet['B8'].value
-    scpc_variable_cost_7 = dest_sheet['H8'].value
-
-    kspc_value_7 = 20000
-    kspc_fixed_cost_7 = dest_sheet['N8'].value
-    bcq_kspc_7 = dest_sheet['I8'].value
-    kspc_variable_cost_7 = dest_sheet['O8'].value
-
-    edc_value_7 = 20000
-    edc_fixed_cost_7 = dest_sheet['Q8'].value
-    bcq_edc_7 = dest_sheet['P8'].value
-    edc_variable_cost_7 = dest_sheet['R8'].value
-
-    total_ssload_var_7 = dest_sheet['S8'].value
-    contestable_energy_var_7 = dest_sheet['T8'].value
-    total_bcq_var_7 = dest_sheet['U8'].value
-    wesm_rate_var_7 = (dest_sheet['V8'].value)/1000
-
-    current_rate_formula_7 = (((scpc_value_7 * scpc_fixed_cost_7) + (bcq_scpc_7 * scpc_variable_cost_7)) + ((kspc_value_7 * kspc_fixed_cost_7) + (bcq_kspc_7 * kspc_variable_cost_7)) + ((edc_value_7 * edc_fixed_cost_7) + (bcq_edc_7 * edc_variable_cost_7)) + (total_ssload_var_7 - contestable_energy_var_7 - total_bcq_var_7) * wesm_rate_var_7)/(total_ssload_var_7 - contestable_energy_var_7)
-    
-    dest_sheet['W8'] = current_rate_formula_7
-    dest_wb.save(destination_file_path)
-
-elif hour_now == '08':
-    # HOUR 8
-    scpc_value_8 = 25000
-    scpc_fixed_cost_8 = dest_sheet['G9'].value
-    bcq_scpc_8 = dest_sheet['B9'].value
-    scpc_variable_cost_8 = dest_sheet['H9'].value
-
-    kspc_value_8 = 20000
-    kspc_fixed_cost_8 = dest_sheet['N9'].value
-    bcq_kspc_8 = dest_sheet['I9'].value
-    kspc_variable_cost_8 = dest_sheet['O9'].value
-
-    edc_value_8 = 20000
-    edc_fixed_cost_8 = dest_sheet['Q9'].value
-    bcq_edc_8 = dest_sheet['P9'].value
-    edc_variable_cost_8 = dest_sheet['R9'].value
-
-    total_ssload_var_8 = dest_sheet['S9'].value
-    contestable_energy_var_8 = dest_sheet['T9'].value
-    total_bcq_var_8 = dest_sheet['U9'].value
-    wesm_rate_var_8 = (dest_sheet['V9'].value)/1000
-
-    current_rate_formula_8 = (((scpc_value_8 * scpc_fixed_cost_8) + (bcq_scpc_8 * scpc_variable_cost_8)) + ((kspc_value_8 * kspc_fixed_cost_8) + (bcq_kspc_8 * kspc_variable_cost_8)) + ((edc_value_8 * edc_fixed_cost_8) + (bcq_edc_8 * edc_variable_cost_8)) + (total_ssload_var_8 - contestable_energy_var_8 - total_bcq_var_8) * wesm_rate_var_8)/(total_ssload_var_8 - contestable_energy_var_8)
-    
-    dest_sheet['W9'] = current_rate_formula_8
-    dest_wb.save(destination_file_path)
-
-elif hour_now == '09':
-    # HOUR 9
-    scpc_value_9 = 25000
-    scpc_fixed_cost_9 = dest_sheet['G10'].value
-    bcq_scpc_9 = dest_sheet['B10'].value
-    scpc_variable_cost_9 = dest_sheet['H10'].value
-
-    kspc_value_9 = 20000
-    kspc_fixed_cost_9 = dest_sheet['N10'].value
-    bcq_kspc_9 = dest_sheet['I10'].value
-    kspc_variable_cost_9 = dest_sheet['O10'].value
-
-    edc_value_9 = 20000
-    edc_fixed_cost_9 = dest_sheet['Q10'].value
-    bcq_edc_9 = dest_sheet['P10'].value
-    edc_variable_cost_9 = dest_sheet['R10'].value
-
-    total_ssload_var_9 = dest_sheet['S10'].value
-    contestable_energy_var_9 = dest_sheet['T10'].value
-    total_bcq_var_9 = dest_sheet['U10'].value
-    wesm_rate_var_9 = (dest_sheet['V10'].value)/1000
-
-    current_rate_formula_9 = (((scpc_value_9 * scpc_fixed_cost_9) + (bcq_scpc_9 * scpc_variable_cost_9)) + ((kspc_value_9 * kspc_fixed_cost_9) + (bcq_kspc_9 * kspc_variable_cost_9)) + ((edc_value_9 * edc_fixed_cost_9) + (bcq_edc_9 * edc_variable_cost_9)) + (total_ssload_var_9 - contestable_energy_var_9 - total_bcq_var_9) * wesm_rate_var_9)/(total_ssload_var_9 - contestable_energy_var_9)
-    
-    dest_sheet['W10'] = current_rate_formula_9
-    dest_wb.save(destination_file_path)
-
-elif hour_now == '10':
-    # HOUR 10
-    scpc_value_10 = 25000
-    scpc_fixed_cost_10 = dest_sheet['G11'].value
-    bcq_scpc_10 = dest_sheet['B11'].value
-    scpc_variable_cost_10 = dest_sheet['H11'].value
-
-    kspc_value_10 = 20000
-    kspc_fixed_cost_10 = dest_sheet['N11'].value
-    bcq_kspc_10 = dest_sheet['I11'].value
-    kspc_variable_cost_10 = dest_sheet['O11'].value
-
-    edc_value_10 = 20000
-    edc_fixed_cost_10 = dest_sheet['Q11'].value
-    bcq_edc_10 = dest_sheet['P11'].value
-    edc_variable_cost_10 = dest_sheet['R11'].value
-
-    total_ssload_var_10 = dest_sheet['S11'].value
-    contestable_energy_var_10 = dest_sheet['T11'].value
-    total_bcq_var_10 = dest_sheet['U11'].value
-    wesm_rate_var_10 = (dest_sheet['V11'].value)/1000
-
-    current_rate_formula_10 = (((scpc_value_10 * scpc_fixed_cost_10) + (bcq_scpc_10 * scpc_variable_cost_10)) + ((kspc_value_10 * kspc_fixed_cost_10) + (bcq_kspc_10 * kspc_variable_cost_10)) + ((edc_value_10 * edc_fixed_cost_10) + (bcq_edc_10 * edc_variable_cost_10)) + (total_ssload_var_10 - contestable_energy_var_10 - total_bcq_var_10) * wesm_rate_var_10)/(total_ssload_var_10 - contestable_energy_var_10)
-    
-    dest_sheet['W11'] = current_rate_formula_10
-    dest_wb.save(destination_file_path)
-
-elif hour_now == '11':
-    # HOUR 11
-    scpc_value_11 = 25000
-    scpc_fixed_cost_11 = dest_sheet['G12'].value
-    bcq_scpc_11 = dest_sheet['B12'].value
-    scpc_variable_cost_11 = dest_sheet['H12'].value
-
-    kspc_value_11 = 20000
-    kspc_fixed_cost_11 = dest_sheet['N12'].value
-    bcq_kspc_11 = dest_sheet['I12'].value
-    kspc_variable_cost_11 = dest_sheet['O12'].value
-
-    edc_value_11 = 20000
-    edc_fixed_cost_11 = dest_sheet['Q12'].value
-    bcq_edc_11 = dest_sheet['P12'].value
-    edc_variable_cost_11 = dest_sheet['R12'].value
-
-    total_ssload_var_11 = dest_sheet['S12'].value
-    contestable_energy_var_11 = dest_sheet['T12'].value
-    total_bcq_var_11 = dest_sheet['U12'].value
-    wesm_rate_var_11 = (dest_sheet['V12'].value)/1000
-
-    current_rate_formula_11 = (((scpc_value_11 * scpc_fixed_cost_11) + (bcq_scpc_11 * scpc_variable_cost_11)) + ((kspc_value_11 * kspc_fixed_cost_11) + (bcq_kspc_11 * kspc_variable_cost_11)) + ((edc_value_11 * edc_fixed_cost_11) + (bcq_edc_11 * edc_variable_cost_11)) + (total_ssload_var_11 - contestable_energy_var_11 - total_bcq_var_11) * wesm_rate_var_11)/(total_ssload_var_11 - contestable_energy_var_11)
-    
-    dest_sheet['W12'] = current_rate_formula_11
-    dest_wb.save(destination_file_path)
-
-elif hour_now == '12':
-    # HOUR 12
-    scpc_value_12 = 25000
-    scpc_fixed_cost_12 = dest_sheet['G13'].value
-    bcq_scpc_12 = dest_sheet['B13'].value
-    scpc_variable_cost_12 = dest_sheet['H13'].value
-
-    kspc_value_12 = 20000
-    kspc_fixed_cost_12 = dest_sheet['N13'].value
-    bcq_kspc_12 = dest_sheet['I13'].value
-    kspc_variable_cost_12 = dest_sheet['O13'].value
-
-    edc_value_12 = 20000
-    edc_fixed_cost_12 = dest_sheet['Q13'].value
-    bcq_edc_12 = dest_sheet['P13'].value
-    edc_variable_cost_12 = dest_sheet['R13'].value
-
-    total_ssload_var_12 = dest_sheet['S13'].value
-    contestable_energy_var_12 = dest_sheet['T13'].value
-    total_bcq_var_12 = dest_sheet['U13'].value
-    wesm_rate_var_12 = (dest_sheet['V13'].value)/1000
-
-    current_rate_formula_12 = (((scpc_value_12 * scpc_fixed_cost_12) + (bcq_scpc_12 * scpc_variable_cost_12)) + ((kspc_value_12 * kspc_fixed_cost_12) + (bcq_kspc_12 * kspc_variable_cost_12)) + ((edc_value_12 * edc_fixed_cost_12) + (bcq_edc_12 * edc_variable_cost_12)) + (total_ssload_var_12 - contestable_energy_var_12 - total_bcq_var_12) * wesm_rate_var_12)/(total_ssload_var_12 - contestable_energy_var_12)
-    
-    dest_sheet['W13'] = current_rate_formula_12
-    dest_wb.save(destination_file_path)
-
-elif hour_now == '13':
-    # HOUR 13
-    scpc_value_13 = 25000
-    scpc_fixed_cost_13 = dest_sheet['G14'].value
-    bcq_scpc_13 = dest_sheet['B14'].value
-    scpc_variable_cost_13 = dest_sheet['H14'].value
-
-    kspc_value_13 = 20000
-    kspc_fixed_cost_13 = dest_sheet['N14'].value
-    bcq_kspc_13 = dest_sheet['I14'].value
-    kspc_variable_cost_13 = dest_sheet['O14'].value
-
-    edc_value_13 = 20000
-    edc_fixed_cost_13 = dest_sheet['Q14'].value
-    bcq_edc_13 = dest_sheet['P14'].value
-    edc_variable_cost_13 = dest_sheet['R14'].value
-
-    total_ssload_var_13 = dest_sheet['S14'].value
-    contestable_energy_var_13 = dest_sheet['T14'].value
-    total_bcq_var_13 = dest_sheet['U14'].value
-    wesm_rate_var_13 = (dest_sheet['V14'].value)/1000
-
-    current_rate_formula_13 = (((scpc_value_13 * scpc_fixed_cost_13) + (bcq_scpc_13 * scpc_variable_cost_13)) + ((kspc_value_13 * kspc_fixed_cost_13) + (bcq_kspc_13 * kspc_variable_cost_13)) + ((edc_value_13 * edc_fixed_cost_13) + (bcq_edc_13 * edc_variable_cost_13)) + (total_ssload_var_13 - contestable_energy_var_13 - total_bcq_var_13) * wesm_rate_var_13)/(total_ssload_var_13 - contestable_energy_var_13)
-    
-    dest_sheet['W14'] = current_rate_formula_13
-    dest_wb.save(destination_file_path)
-
-elif hour_now == '14':
-    # HOUR 14
-    scpc_value_14 = 25000
-    scpc_fixed_cost_14 = dest_sheet['G15'].value
-    bcq_scpc_14 = dest_sheet['B15'].value
-    scpc_variable_cost_14 = dest_sheet['H15'].value
-
-    kspc_value_14 = 20000
-    kspc_fixed_cost_14 = dest_sheet['N15'].value
-    bcq_kspc_14 = dest_sheet['I15'].value
-    kspc_variable_cost_14 = dest_sheet['O15'].value
-
-    edc_value_14 = 20000
-    edc_fixed_cost_14 = dest_sheet['Q15'].value
-    bcq_edc_14 = dest_sheet['P15'].value
-    edc_variable_cost_14 = dest_sheet['R15'].value
-
-    total_ssload_var_14 = dest_sheet['S15'].value
-    contestable_energy_var_14 = dest_sheet['T15'].value
-    total_bcq_var_14 = dest_sheet['U15'].value
-    wesm_rate_var_14 = (dest_sheet['V15'].value)/1000
-
-    current_rate_formula_14 = (((scpc_value_14 * scpc_fixed_cost_14) + (bcq_scpc_14 * scpc_variable_cost_14)) + ((kspc_value_14 * kspc_fixed_cost_14) + (bcq_kspc_14 * kspc_variable_cost_14)) + ((edc_value_14 * edc_fixed_cost_14) + (bcq_edc_14 * edc_variable_cost_14)) + (total_ssload_var_14 - contestable_energy_var_14 - total_bcq_var_14) * wesm_rate_var_14)/(total_ssload_var_14 - contestable_energy_var_14)
-    
-    dest_sheet['W15'] = current_rate_formula_14
-    dest_wb.save(destination_file_path)
-
-elif hour_now == '15':
-    # HOUR 15
-    scpc_value_15 = 25000
-    scpc_fixed_cost_15 = dest_sheet['G16'].value
-    bcq_scpc_15 = dest_sheet['B16'].value
-    scpc_variable_cost_15 = dest_sheet['H16'].value
-
-    kspc_value_15 = 20000
-    kspc_fixed_cost_15 = dest_sheet['N16'].value
-    bcq_kspc_15 = dest_sheet['I16'].value
-    kspc_variable_cost_15 = dest_sheet['O16'].value
-
-    edc_value_15 = 20000
-    edc_fixed_cost_15 = dest_sheet['Q16'].value
-    bcq_edc_15 = dest_sheet['P16'].value
-    edc_variable_cost_15 = dest_sheet['R16'].value
-
-    total_ssload_var_15 = dest_sheet['S16'].value
-    contestable_energy_var_15 = dest_sheet['T16'].value
-    total_bcq_var_15 = dest_sheet['U16'].value
-    wesm_rate_var_15 = (dest_sheet['V16'].value)/1000
-
-    current_rate_formula_15 = (((scpc_value_15 * scpc_fixed_cost_15) + (bcq_scpc_15 * scpc_variable_cost_15)) + ((kspc_value_15 * kspc_fixed_cost_15) + (bcq_kspc_15 * kspc_variable_cost_15)) + ((edc_value_15 * edc_fixed_cost_15) + (bcq_edc_15 * edc_variable_cost_15)) + (total_ssload_var_15 - contestable_energy_var_15 - total_bcq_var_15) * wesm_rate_var_15)/(total_ssload_var_15 - contestable_energy_var_15)
-    
-    dest_sheet['W16'] = current_rate_formula_15
-    dest_wb.save(destination_file_path)
-
-elif hour_now == '16':
-    # HOUR 16
-    scpc_value_16 = 25000
-    scpc_fixed_cost_16 = dest_sheet['G17'].value
-    bcq_scpc_16 = dest_sheet['B17'].value
-    scpc_variable_cost_16 = dest_sheet['H17'].value
-
-    kspc_value_16 = 20000
-    kspc_fixed_cost_16 = dest_sheet['N17'].value
-    bcq_kspc_16 = dest_sheet['I17'].value
-    kspc_variable_cost_16 = dest_sheet['O17'].value
-
-    edc_value_16 = 20000
-    edc_fixed_cost_16 = dest_sheet['Q17'].value
-    bcq_edc_16 = dest_sheet['P17'].value
-    edc_variable_cost_16 = dest_sheet['R17'].value
-
-    total_ssload_var_16 = dest_sheet['S17'].value
-    contestable_energy_var_16 = dest_sheet['T17'].value
-    total_bcq_var_16 = dest_sheet['U17'].value
-    wesm_rate_var_16 = (dest_sheet['V17'].value)/1000
-
-    current_rate_formula_16 = (((scpc_value_16 * scpc_fixed_cost_16) + (bcq_scpc_16 * scpc_variable_cost_16)) + ((kspc_value_16 * kspc_fixed_cost_16) + (bcq_kspc_16 * kspc_variable_cost_16)) + ((edc_value_16 * edc_fixed_cost_16) + (bcq_edc_16 * edc_variable_cost_16)) + (total_ssload_var_16 - contestable_energy_var_16 - total_bcq_var_16) * wesm_rate_var_16)/(total_ssload_var_16 - contestable_energy_var_16)
-    
-    dest_sheet['W17'] = current_rate_formula_16
-    dest_wb.save(destination_file_path)
-
-elif hour_now == '17':
-    # HOUR 17
-    scpc_value_17 = 25000
-    scpc_fixed_cost_17 = dest_sheet['G18'].value
-    bcq_scpc_17 = dest_sheet['B18'].value
-    scpc_variable_cost_17 = dest_sheet['H18'].value
-
-    kspc_value_17 = 20000
-    kspc_fixed_cost_17 = dest_sheet['N18'].value
-    bcq_kspc_17 = dest_sheet['I18'].value
-    kspc_variable_cost_17 = dest_sheet['O18'].value
-
-    edc_value_17 = 20000
-    edc_fixed_cost_17 = dest_sheet['Q18'].value
-    bcq_edc_17 = dest_sheet['P18'].value
-    edc_variable_cost_17 = dest_sheet['R18'].value
-
-    total_ssload_var_17 = dest_sheet['S18'].value
-    contestable_energy_var_17 = dest_sheet['T18'].value
-    total_bcq_var_17 = dest_sheet['U18'].value
-    wesm_rate_var_17 = (dest_sheet['V18'].value)/1000
-
-    current_rate_formula_17 = (((scpc_value_17 * scpc_fixed_cost_17) + (bcq_scpc_17 * scpc_variable_cost_17)) + ((kspc_value_17 * kspc_fixed_cost_17) + (bcq_kspc_17 * kspc_variable_cost_17)) + ((edc_value_17 * edc_fixed_cost_17) + (bcq_edc_17 * edc_variable_cost_17)) + (total_ssload_var_17 - contestable_energy_var_17 - total_bcq_var_17) * wesm_rate_var_17)/(total_ssload_var_17 - contestable_energy_var_17)
-    
-    dest_sheet['W18'] = current_rate_formula_17
-    dest_wb.save(destination_file_path)
-
-elif hour_now == '18':
-    # HOUR 18
-    scpc_value_18 = 25000
-    scpc_fixed_cost_18 = dest_sheet['G19'].value
-    bcq_scpc_18 = dest_sheet['B19'].value
-    scpc_variable_cost_18 = dest_sheet['H19'].value
-
-    kspc_value_18 = 20000
-    kspc_fixed_cost_18 = dest_sheet['N19'].value
-    bcq_kspc_18 = dest_sheet['I19'].value
-    kspc_variable_cost_18 = dest_sheet['O19'].value
-
-    edc_value_18 = 20000
-    edc_fixed_cost_18 = dest_sheet['Q19'].value
-    bcq_edc_18 = dest_sheet['P19'].value
-    edc_variable_cost_18 = dest_sheet['R19'].value
-
-    total_ssload_var_18 = dest_sheet['S19'].value
-    contestable_energy_var_18 = dest_sheet['T19'].value
-    total_bcq_var_18 = dest_sheet['U19'].value
-    wesm_rate_var_18 = (dest_sheet['V19'].value)/1000
-
-    current_rate_formula_18 = (((scpc_value_18 * scpc_fixed_cost_18) + (bcq_scpc_18 * scpc_variable_cost_18)) + ((kspc_value_18 * kspc_fixed_cost_18) + (bcq_kspc_18 * kspc_variable_cost_18)) + ((edc_value_18 * edc_fixed_cost_18) + (bcq_edc_18 * edc_variable_cost_18)) + (total_ssload_var_18 - contestable_energy_var_18 - total_bcq_var_18) * wesm_rate_var_18)/(total_ssload_var_18 - contestable_energy_var_18)
-    
-    dest_sheet['W19'] = current_rate_formula_18
-    dest_wb.save(destination_file_path)
-
-elif hour_now == '19':
-    # HOUR 19 
-    scpc_value_19 = 25000
-    scpc_fixed_cost_19 = dest_sheet['G20'].value
-    bcq_scpc_19 = dest_sheet['B20'].value
-    scpc_variable_cost_19 = dest_sheet['H20'].value
-
-    kspc_value_19 = 20000
-    kspc_fixed_cost_19 = dest_sheet['N20'].value
-    bcq_kspc_19 = dest_sheet['I20'].value
-    kspc_variable_cost_19 = dest_sheet['O20'].value
-
-    edc_value_19 = 20000
-    edc_fixed_cost_19 = dest_sheet['Q20'].value
-    bcq_edc_19 = dest_sheet['P20'].value
-    edc_variable_cost_19 = dest_sheet['R20'].value
-
-    total_ssload_var_19 = dest_sheet['S20'].value
-    contestable_energy_var_19 = dest_sheet['T20'].value
-    total_bcq_var_19 = dest_sheet['U20'].value
-    wesm_rate_var_19 = (dest_sheet['V20'].value)/1000
-
-    current_rate_formula_19 = (((scpc_value_19 * scpc_fixed_cost_19) + (bcq_scpc_19 * scpc_variable_cost_19)) + ((kspc_value_19 * kspc_fixed_cost_19) + (bcq_kspc_19 * kspc_variable_cost_19)) + ((edc_value_19 * edc_fixed_cost_19) + (bcq_edc_19 * edc_variable_cost_19)) + (total_ssload_var_19 - contestable_energy_var_19 - total_bcq_var_19) * wesm_rate_var_19)/(total_ssload_var_19 - contestable_energy_var_19)
-    
-    dest_sheet['W20'] = current_rate_formula_19
-    dest_wb.save(destination_file_path)    
-
-elif hour_now == '20':
-    # HOUR 20
-    scpc_value_20 = 25000
-    scpc_fixed_cost_20 = dest_sheet['G21'].value
-    bcq_scpc_20 = dest_sheet['B21'].value
-    scpc_variable_cost_20 = dest_sheet['H21'].value
-
-    kspc_value_20 = 20000
-    kspc_fixed_cost_20 = dest_sheet['N21'].value
-    bcq_kspc_20 = dest_sheet['I21'].value
-    kspc_variable_cost_20 = dest_sheet['O21'].value
-
-    edc_value_20 = 20000
-    edc_fixed_cost_20 = dest_sheet['Q21'].value
-    bcq_edc_20 = dest_sheet['P21'].value
-    edc_variable_cost_20 = dest_sheet['R21'].value
-
-    total_ssload_var_20 = dest_sheet['S21'].value
-    contestable_energy_var_20 = dest_sheet['T21'].value
-    total_bcq_var_20 = dest_sheet['U21'].value
-    wesm_rate_var_20 = (dest_sheet['V21'].value)/1000
-
-    current_rate_formula_20 = (((scpc_value_20 * scpc_fixed_cost_20) + (bcq_scpc_20 * scpc_variable_cost_20)) + ((kspc_value_20 * kspc_fixed_cost_20) + (bcq_kspc_20 * kspc_variable_cost_20)) + ((edc_value_20 * edc_fixed_cost_20) + (bcq_edc_20 * edc_variable_cost_20)) + (total_ssload_var_20 - contestable_energy_var_20 - total_bcq_var_20) * wesm_rate_var_20)/(total_ssload_var_20 - contestable_energy_var_20)
-    
-    dest_sheet['W21'] = current_rate_formula_20
-    dest_wb.save(destination_file_path)
-
-elif hour_now == '21':
-    # HOUR 21
-    scpc_value_21 = 25000
-    scpc_fixed_cost_21 = dest_sheet['G22'].value
-    bcq_scpc_21 = dest_sheet['B22'].value
-    scpc_variable_cost_21 = dest_sheet['H22'].value
-
-    kspc_value_21 = 20000
-    kspc_fixed_cost_21 = dest_sheet['N22'].value
-    bcq_kspc_21 = dest_sheet['I22'].value
-    kspc_variable_cost_21 = dest_sheet['O22'].value
-
-    edc_value_21 = 20000
-    edc_fixed_cost_21 = dest_sheet['Q22'].value
-    bcq_edc_21 = dest_sheet['P22'].value
-    edc_variable_cost_21 = dest_sheet['R22'].value
-
-    total_ssload_var_21 = dest_sheet['S22'].value
-    contestable_energy_var_21 = dest_sheet['T22'].value
-    total_bcq_var_21 = dest_sheet['U22'].value
-    wesm_rate_var_21 = (dest_sheet['V22'].value)/1000
-
-    current_rate_formula_21 = (((scpc_value_21 * scpc_fixed_cost_21) + (bcq_scpc_21 * scpc_variable_cost_21)) + ((kspc_value_21 * kspc_fixed_cost_21) + (bcq_kspc_21 * kspc_variable_cost_21)) + ((edc_value_21 * edc_fixed_cost_21) + (bcq_edc_21 * edc_variable_cost_21)) + (total_ssload_var_21 - contestable_energy_var_21 - total_bcq_var_21) * wesm_rate_var_21)/(total_ssload_var_21 - contestable_energy_var_21)
-    
-    dest_sheet['W22'] = current_rate_formula_21
-    dest_wb.save(destination_file_path)
-   
-elif hour_now == '22':
-    # HOUR 22
-    scpc_value_22 = 25000
-    scpc_fixed_cost_22 = dest_sheet['G23'].value
-    bcq_scpc_22 = dest_sheet['B23'].value
-    scpc_variable_cost_22 = dest_sheet['H23'].value
-
-    kspc_value_22 = 20000
-    kspc_fixed_cost_22 = dest_sheet['N23'].value
-    bcq_kspc_22 = dest_sheet['I23'].value
-    kspc_variable_cost_22 = dest_sheet['O23'].value
-
-    edc_value_22 = 20000
-    edc_fixed_cost_22 = dest_sheet['Q23'].value
-    bcq_edc_22 = dest_sheet['P23'].value
-    edc_variable_cost_22 = dest_sheet['R23'].value
-
-    total_ssload_var_22 = dest_sheet['S23'].value
-    contestable_energy_var_22 = dest_sheet['T23'].value
-    total_bcq_var_22 = dest_sheet['U23'].value
-    wesm_rate_var_22 = (dest_sheet['V23'].value)/1000
-
-    current_rate_formula_22 = (((scpc_value_22 * scpc_fixed_cost_22) + (bcq_scpc_22 * scpc_variable_cost_22)) + ((kspc_value_22 * kspc_fixed_cost_22) + (bcq_kspc_22 * kspc_variable_cost_22)) + ((edc_value_22 * edc_fixed_cost_22) + (bcq_edc_22 * edc_variable_cost_22)) + (total_ssload_var_22 - contestable_energy_var_22 - total_bcq_var_22) * wesm_rate_var_22)/(total_ssload_var_22 - contestable_energy_var_22)
-    
-    dest_sheet['W23'] = current_rate_formula_22
-    dest_wb.save(destination_file_path)
-
-elif hour_now == '23':
-    # HOUR 23
-    scpc_value_23 = 25000
-    scpc_fixed_cost_23 = dest_sheet['G24'].value
-    bcq_scpc_23 = dest_sheet['B24'].value
-    scpc_variable_cost_23 = dest_sheet['H24'].value
-
-    kspc_value_23 = 20000
-    kspc_fixed_cost_23 = dest_sheet['N24'].value
-    bcq_kspc_23 = dest_sheet['I24'].value
-    kspc_variable_cost_23 = dest_sheet['O24'].value
-
-    edc_value_23 = 20000
-    edc_fixed_cost_23 = dest_sheet['Q24'].value
-    bcq_edc_23 = dest_sheet['P24'].value
-    edc_variable_cost_23 = dest_sheet['R24'].value
-
-    total_ssload_var_23 = dest_sheet['S24'].value
-    contestable_energy_var_23 = dest_sheet['T24'].value
-    total_bcq_var_23 = dest_sheet['U24'].value
-    wesm_rate_var_23 = (dest_sheet['V24'].value)/1000
-
-    current_rate_formula_23 = (((scpc_value_23 * scpc_fixed_cost_23) + (bcq_scpc_23 * scpc_variable_cost_23)) + ((kspc_value_23 * kspc_fixed_cost_23) + (bcq_kspc_23 * kspc_variable_cost_23)) + ((edc_value_23 * edc_fixed_cost_23) + (bcq_edc_23 * edc_variable_cost_23)) + (total_ssload_var_23 - contestable_energy_var_23 - total_bcq_var_23) * wesm_rate_var_23)/(total_ssload_var_23 - contestable_energy_var_23)
-    
-    dest_sheet['W24'] = current_rate_formula_23
-    dest_wb.save(destination_file_path)
-
-elif hour_now == '00':
-    # HOUR 24
-    scpc_value_24 = 25000
-    scpc_fixed_cost_24 = dest_sheet['G25'].value
-    bcq_scpc_24 = dest_sheet['B25'].value
-    scpc_variable_cost_24 = dest_sheet['H25'].value
-
-    kspc_value_24 = 20000
-    kspc_fixed_cost_24 = dest_sheet['N25'].value
-    bcq_kspc_24 = dest_sheet['I25'].value
-    kspc_variable_cost_24 = dest_sheet['O25'].value
-
-    edc_value_24 = 20000
-    edc_fixed_cost_24 = dest_sheet['Q25'].value
-    bcq_edc_24 = dest_sheet['P25'].value
-    edc_variable_cost_24 = dest_sheet['R25'].value
-
-    total_ssload_var_24 = dest_sheet['S25'].value
-    contestable_energy_var_24 = dest_sheet['T25'].value
-    total_bcq_var_24 = dest_sheet['U25'].value
-    wesm_rate_var_24 = (dest_sheet['V25'].value)/1000
-
-    current_rate_formula_24 = (((scpc_value_24 * scpc_fixed_cost_24) + (bcq_scpc_24 * scpc_variable_cost_24)) + ((kspc_value_24 * kspc_fixed_cost_24) + (bcq_kspc_24 * kspc_variable_cost_24)) + ((edc_value_24 * edc_fixed_cost_24) + (bcq_edc_24 * edc_variable_cost_24)) + (total_ssload_var_24 - contestable_energy_var_24 - total_bcq_var_24) * wesm_rate_var_24)/(total_ssload_var_24 - contestable_energy_var_24)
-    
-    dest_sheet['W25'] = current_rate_formula_24
-    dest_wb.save(destination_file_path)   
+    elif hour_now == '22':
+        # HOUR 22
+        scpc_value_22 = 25000
+        scpc_fixed_cost_22 = dest_sheet['G23'].value
+        bcq_scpc_22 = dest_sheet['B23'].value
+        scpc_variable_cost_22 = dest_sheet['H23'].value
+
+        kspc_value_22 = 20000
+        kspc_fixed_cost_22 = dest_sheet['N23'].value
+        bcq_kspc_22 = dest_sheet['I23'].value
+        kspc_variable_cost_22 = dest_sheet['O23'].value
+
+        edc_value_22 = 20000
+        edc_fixed_cost_22 = dest_sheet['Q23'].value
+        bcq_edc_22 = dest_sheet['P23'].value
+        edc_variable_cost_22 = dest_sheet['R23'].value
+
+        total_ssload_var_22 = dest_sheet['S23'].value
+        contestable_energy_var_22 = dest_sheet['T23'].value
+        total_bcq_var_22 = dest_sheet['U23'].value
+        wesm_rate_var_22 = (dest_sheet['V23'].value)/1000
+
+        current_rate_formula_22 = (((scpc_value_22 * scpc_fixed_cost_22) + (bcq_scpc_22 * scpc_variable_cost_22)) + ((kspc_value_22 * kspc_fixed_cost_22) + (bcq_kspc_22 * kspc_variable_cost_22)) + ((edc_value_22 * edc_fixed_cost_22) + (bcq_edc_22 * edc_variable_cost_22)) + (total_ssload_var_22 - contestable_energy_var_22 - total_bcq_var_22) * wesm_rate_var_22)/(total_ssload_var_22 - contestable_energy_var_22)
+        
+        dest_sheet['W23'] = current_rate_formula_22
+        dest_wb.save(destination_file_path)
+
+    elif hour_now == '23':
+        # HOUR 23
+        scpc_value_23 = 25000
+        scpc_fixed_cost_23 = dest_sheet['G24'].value
+        bcq_scpc_23 = dest_sheet['B24'].value
+        scpc_variable_cost_23 = dest_sheet['H24'].value
+
+        kspc_value_23 = 20000
+        kspc_fixed_cost_23 = dest_sheet['N24'].value
+        bcq_kspc_23 = dest_sheet['I24'].value
+        kspc_variable_cost_23 = dest_sheet['O24'].value
+
+        edc_value_23 = 20000
+        edc_fixed_cost_23 = dest_sheet['Q24'].value
+        bcq_edc_23 = dest_sheet['P24'].value
+        edc_variable_cost_23 = dest_sheet['R24'].value
+
+        total_ssload_var_23 = dest_sheet['S24'].value
+        contestable_energy_var_23 = dest_sheet['T24'].value
+        total_bcq_var_23 = dest_sheet['U24'].value
+        wesm_rate_var_23 = (dest_sheet['V24'].value)/1000
+
+        current_rate_formula_23 = (((scpc_value_23 * scpc_fixed_cost_23) + (bcq_scpc_23 * scpc_variable_cost_23)) + ((kspc_value_23 * kspc_fixed_cost_23) + (bcq_kspc_23 * kspc_variable_cost_23)) + ((edc_value_23 * edc_fixed_cost_23) + (bcq_edc_23 * edc_variable_cost_23)) + (total_ssload_var_23 - contestable_energy_var_23 - total_bcq_var_23) * wesm_rate_var_23)/(total_ssload_var_23 - contestable_energy_var_23)
+        
+        dest_sheet['W24'] = current_rate_formula_23
+        dest_wb.save(destination_file_path)
+
+    elif hour_now == '00':
+        # HOUR 24
+        scpc_value_24 = 25000
+        scpc_fixed_cost_24 = dest_sheet['G25'].value
+        bcq_scpc_24 = dest_sheet['B25'].value
+        scpc_variable_cost_24 = dest_sheet['H25'].value
+
+        kspc_value_24 = 20000
+        kspc_fixed_cost_24 = dest_sheet['N25'].value
+        bcq_kspc_24 = dest_sheet['I25'].value
+        kspc_variable_cost_24 = dest_sheet['O25'].value
+
+        edc_value_24 = 20000
+        edc_fixed_cost_24 = dest_sheet['Q25'].value
+        bcq_edc_24 = dest_sheet['P25'].value
+        edc_variable_cost_24 = dest_sheet['R25'].value
+
+        total_ssload_var_24 = dest_sheet['S25'].value
+        contestable_energy_var_24 = dest_sheet['T25'].value
+        total_bcq_var_24 = dest_sheet['U25'].value
+        wesm_rate_var_24 = (dest_sheet['V25'].value)/1000
+
+        current_rate_formula_24 = 0
+        
+        dest_sheet['W25'] = current_rate_formula_24
+        dest_wb.save(destination_file_path)   
 
 # Function to retrieve the current hour in 24-hour format
 def get_current_hour():
@@ -11528,23 +11112,22 @@ def get_current_hour():
     return current_hour
 
 # Function to get current rate value for the current hour (1 to 24) from Excel
-def get_current_rate_for_current_hour(excel_file, current_hour):
-    # Read Excel file into a Pandas DataFrame, assuming 'HOUR' column has numbers 1 to 24
-    df = pd.read_excel(excel_file, header=None, names=[
-        'HOUR', 'BCQ_SCPC', 'RATE_SCPC_B1_FIXED_FEE', 'RATE_SCPC_B1_VARIABLE_FEE', 
-        'RATE_SCPC_B2_FIXED_FEE', 'RATE_SCPC_B2_VARIABLE_FEE', 'RATE_SCPC_AVE_FIXED_FEE', 
-        'RATE_SCPC_AVE_VARIABLE_FEE', 'BCQ_KSPC', 'RATE_KSPC_B1_FIXED_FEE', 
-        'RATE_KSPC_B1_VARIABLE_FEE', 'RATE_KSPC_B2_FIXED_FEE', 'RATE_KSPC_B2_VARIABLE_FEE', 
-        'RATE_KSPC_AVE_FIXED_FEE', 'RATE_KSPC_AVE_VARIABLE_FEE', 'BCQ_EDC', 
-        'RATE_EDC_FIXED_FEE', 'RATE_EDC_VARIABLE_FEE', 'TOTAL_SS_LOAD', 
-        'CONTESTABLE_ENERGY', 'TOTAL_BCQ', 'WESM_RATE', 'CURRENT_RATE'], skiprows=1)
+def get_current_rate_for_current_hour(excel_file, current_hour, default_value=0.0):
+    # Read Excel file into a Pandas DataFrame
+    df = pd.read_excel(excel_file, header=None, names=['HOUR', 'BCQ_SCPC', 'RATE_SCPC_B1_FIXED_FEE', 
+                                                        'RATE_SCPC_B1_VARIABLE_FEE', 'RATE_SCPC_B2_FIXED_FEE', 
+                                                        'RATE_SCPC_B2_VARIABLE_FEE', 'RATE_SCPC_AVE_FIXED_FEE', 
+                                                        'RATE_SCPC_AVE_VARIABLE_FEE', 'BCQ_KSPC', 'RATE_KSPC_B1_FIXED_FEE', 
+                                                        'RATE_KSPC_B1_VARIABLE_FEE', 'RATE_KSPC_B2_FIXED_FEE', 
+                                                        'RATE_KSPC_B2_VARIABLE_FEE', 'RATE_KSPC_AVE_FIXED_FEE', 
+                                                        'RATE_KSPC_AVE_VARIABLE_FEE', 'BCQ_EDC', 'RATE_EDC_FIXED_FEE', 
+                                                        'RATE_EDC_VARIABLE_FEE', 'TOTAL_SS_LOAD', 'CONTESTABLE_ENERGY', 
+                                                        'TOTAL_BCQ', 'WESM_RATE', 'CURRENT_RATE'], skiprows=1)
 
     # Filter the row where 'HOUR' matches the current_hour
     current_rate_value = df.loc[df['HOUR'] == current_hour, 'CURRENT_RATE']
 
-    if not current_rate_value.empty:
-        return float(current_rate_value.iloc[0])
-    else:
+    if current_rate_value.empty or pd.isna(current_rate_value.iloc[0]):
         # Get today's date and time
         now = datetime.now()
         # Subtract one hour to get the previous hour
@@ -11553,99 +11136,69 @@ def get_current_rate_for_current_hour(excel_file, current_hour):
         previous_hour_only = previous_hour.hour
         # Filter the row where 'HOUR' matches the previous_hour
         previous_rate_value = df.loc[df['HOUR'] == previous_hour_only, 'CURRENT_RATE']
-
-        if not previous_rate_value.empty:
-            return float(previous_rate_value.iloc[0])
+        # Check if the previous rate value is not empty or NaN, and convert it to float
+        if not previous_rate_value.empty and not pd.isna(previous_rate_value.iloc[0]):
+            float_current_rate_value = float(previous_rate_value.iloc[0])
         else:
-            return None
+            float_current_rate_value = float(default_value)
+    else:
+        float_current_rate_value = float(current_rate_value.iloc[0])
+
+    return float_current_rate_value
 
 # Function to insert value into MySQL database
 def insert_into_mysql(conn, float_current_rate_value):
+    # Create a cursor object
     cursor = conn.cursor()
+    # SQL Insert Statement
     sql = "INSERT INTO current_rate (rate) VALUES (%s)"
+    # Execute the SQL Query
     cursor.execute(sql, (float_current_rate_value,))
+    # Commit the transaction
     conn.commit()
+    # Close the cursor
     cursor.close()
+    # Print a confirmation message
     print(f"Value {float_current_rate_value} inserted successfully into MySQL.")
-
-# Function to read the last rate value from a file
-def read_last_rate(file_path):
-    if os.path.exists(file_path):
-        with open(file_path, 'r') as file:
-            try:
-                return float(file.read().strip())
-            except ValueError:
-                return None
-    return None
-
-# Function to write the last rate value to a file
-def write_last_rate(file_path, rate_value):
-    with open(file_path, 'w') as file:
-        file.write(str(rate_value))
 
 # Main function to run the script
 def main(excel_file, conn):
-    last_rate_file = 'last_rate.txt'
-    last_rate_value = read_last_rate(last_rate_file)
-
     while True:
-        try:
-            current_hour = get_current_hour()
-            current_rate_value = get_current_rate_for_current_hour(excel_file, current_hour)
-            
-            if current_rate_value is not None:
-                # Insert the current rate if available
-                insert_into_mysql(conn, current_rate_value)
-                last_rate_value = current_rate_value
-            elif last_rate_value is not None:
-                # Insert the last rate if current rate is not available
-                insert_into_mysql(conn, last_rate_value)
-
-            # Update the last rate value in the file
-            if current_rate_value is not None or last_rate_value is not None:
-                write_last_rate(last_rate_file, last_rate_value)
-
-            # Delay for 1 minute (60 seconds) before checking again
-            time.sleep(60)
+        # Get current hour
+        current_hour = get_current_hour()
+        total_ss_load()
+        find_total_2()
+        find_total_3()
+        float_current_rate_value = get_current_rate_for_current_hour(excel_file, current_hour)
+        if float_current_rate_value is not None:
+            # Insert into MySQL database
+            insert_into_mysql(conn, float_current_rate_value)
+        else: 
+            print(f"Invalid current rate value: {float_current_rate_value}")
         
-        except KeyboardInterrupt:
-            print("\nTerminating the script.")
-            break
-
-        except Exception as e:
-            print(f"Error in main loop: {e}")
-            time.sleep(60)  # Delay before retrying
+        # Wait for 120 seconds before next update
+        time.sleep(120)
 
 if __name__ == "__main__":
     excel_file = 'current_rate.xlsx'
 
-    try:
-        conn = mysql.connector.connect(
-            host='localhost',
-            database='myDb',
-            user='root',
-            password=''
+    conn = mysql.connector.connect(
+        host='localhost',
+        database='myDb',
+        user='root',
+        password=''
+    )
+
+    # Create MySQL table if it doesn't exist
+    cursor = conn.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS current_rate (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            rate FLOAT(10, 2) NOT NULL,
+            insert_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
+    """)
+    cursor.close()
 
-        # Create MySQL table if it doesn't exist
-        cursor = conn.cursor()
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS current_rate (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                rate FLOAT(10, 2) NOT NULL,
-                insert_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        """)
-        cursor.close()
-
-        # Run main function to continuously check and update database
-        main(excel_file, conn)
-    
-    except mysql.connector.Error as e:
-        print(f"Error connecting to MySQL: {e}")
-    except Exception as e:
-        print(f"Unexpected error: {e}")
-    finally:
-        if 'conn' in locals() and conn.is_connected():
-            conn.close()
-            print("MySQL connection closed.")
+    # Run main function to continuously check and update database
+    main(excel_file, conn)

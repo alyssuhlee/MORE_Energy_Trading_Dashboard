@@ -9585,9 +9585,11 @@ def run_continuously(conn):
         final_total = find_total()
         if final_total is not None:
             insert_into_mysql(conn, final_total)
+        else:
+            print(f"Invalid value: {final_total}")
         time.sleep(60)
     
-def main():
+if __name__ == "__main__":
     try:
         conn = mysql.connector.connect(
             host='localhost',
@@ -9604,10 +9606,9 @@ def main():
             )
         """)
         cursor.close()
-        continuous_thread = threading.Thread(target=run_continuously, args=(conn,))
-        continuous_thread.start()
-        continuous_thread.join()
-
+        # Run main function to continuously check and update database
+        run_continuously(conn)
+    
     except mysql.connector.Error as e:
         print(f"Error connecting to MySQL: {e}")
     except Exception as e:
@@ -9616,6 +9617,3 @@ def main():
         if 'conn' in locals() and conn.is_connected():
             conn.close()
             print("MySQL connection closed.")
-
-if __name__ == "__main__":
-    main()
