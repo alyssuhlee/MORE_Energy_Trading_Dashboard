@@ -281,52 +281,223 @@ def current_interval_summary():
     temperature = df10['temp'].iloc[-1]
     weather_condition = df10['weather'].iloc[-1]
 
+    # # Datetime
+    # st.markdown("""
+    # <div style="background-color: #FFEB3B; padding: 10px; border-radius: 5px;">
+    #     <h2 style="color: black;">Current Date 📅</h2>
+    #     <p style="font-size: 18px;">{}</p>
+    # </div>
+    # """.format(datetime.now().strftime("%Y-%m-%d")), unsafe_allow_html=True)
+
+    # # Current Interval
+    # st.markdown("""
+    # <div style="background-color: #9C27B0; padding: 10px; border-radius: 5px;">
+    #     <h2 style="color: white;">Current Interval ⏱</h2>
+    #     <p style="font-size: 18px;">{}</p>
+    # </div>
+    # """.format(last_interval), unsafe_allow_html=True)
+
+    # # Temperature and Weather Condition
+    # st.markdown("""
+    # <div style="background-color: #B3E5FC; padding: 10px; border-radius: 5px;">
+    #     <h2 style="color: black;">Temperature and Weather Condition 🌤️</h2>
+    #     <p style="font-size: 18px;">Temperature: {}°C</p>
+    #     <p style="font-size: 18px;">Weather Condition: {}</p>
+    # </div>
+    # """.format(temperature, weather_condition), unsafe_allow_html=True)
+
+    # # Total Substation Load
+    # st.markdown("""
+    # <div style="background-color: #FFEB3B; padding: 10px; border-radius: 5px;">
+    #     <h2 style="color: black;">Total Substation Load (kW) 🏭</h2>
+    #     <p style="font-size: 18px;">{}</p>
+    # </div>
+    # """.format(total_substation_load), unsafe_allow_html=True)
+
+    # # Actual Energy and Forecasted Energy
+    # st.markdown("""
+    # <div style="background-color: #9C27B0; padding: 10px; border-radius: 5px;">
+    #     <h2 style="color: white;">Actual Energy (kWh) vs Forecasted Energy (kWh) ⚡</h2>
+    #     <p style="font-size: 18px;">Actual Energy: {}</p>
+    #     <p style="font-size: 18px;">Forecasted Energy: {}</p>
+    # </div>
+    # """.format(actual_energy, forecasted_energy), unsafe_allow_html=True)
+
+    # # WESM Exposure and Contestable Energy
+    # st.markdown("""
+    # <div style="background-color: #B3E5FC; padding: 10px; border-radius: 5px;">
+    #     <h2 style="color: black;">WESM Exposure (kWh) and Contestable Energy (kWh) ⚡</h2>
+    #     <p style="font-size: 18px;">WESM Exposure: {}</p>
+    #     <p style="font-size: 18px;">Contestable Energy: {}</p>
+    # </div>
+    # """.format(wesm_exposure, contestable_energy), unsafe_allow_html=True)
+
+    # # Total BCQ Nomination
+    # st.markdown("""
+    # <div style="background-color: #FFEB3B; padding: 10px; border-radius: 5px;">
+    #     <h2 style="color: black;">Total BCQ Nomination (kW)</h2>
+    #     <p style="font-size: 18px;">{}</p>
+    # </div>
+    # """.format(total_bcq), unsafe_allow_html=True)
+
+    # # MORE Trading Node
+    # st.markdown("""
+    # <div style="background-color: #9C27B0; padding: 10px; border-radius: 5px;">
+    #     <h2 style="color: white;">MORE Trading Node (PhP/kWh)</h2>
+    #     <p style="font-size: 18px;">{}</p>
+    # </div>
+    # """.format(final_total), unsafe_allow_html=True)
+
+    # # PEDC Trading Node
+    # st.markdown("""
+    # <div style="background-color: #B3E5FC; padding: 10px; border-radius: 5px;">
+    #     <h2 style="color: black;">PEDC Trading Node (PhP/kWh)</h2>
+    #     <p style="font-size: 18px;">On Probation</p>
+    # </div>
+    # """, unsafe_allow_html=True)
+
+    # # Current Rate
+    # st.markdown("""
+    # <div style="background-color: #FFEB3B; padding: 10px; border-radius: 5px;">
+    #     <h2 style="color: black;">Current Rate (PhP/kWh) 📉</h2>
+    #     <p style="font-size: 18px;">{}</p>
+    # </div>
+    # """.format(current_rate), unsafe_allow_html=True)
+
+    # Define the current date
+    c = datetime.now()
+    formatted_date = c.strftime("%Y-%m-%d")
+
+    # Create columns with small gap
     card1, card2, card3, card4, card5, card6, card7, card8, card9, card10 = st.columns(10, gap='small')
+
+    # Custom CSS for styling
+    st.markdown("""
+        <style>
+        /* Shorter in width */
+        .custom-box {
+            border: 1px solid #ddd;
+            border-radius: 0px;
+            padding: 0px;
+            margin: 0px;
+            background-color: #00B74C;
+            height: 150px;
+            width: 120%;
+        }
+        .custom-box h4, .custom-box p {
+            display: inline-block;
+            margin: 0;
+            padding: 0;
+        }
+        .custom-box-2 h4, .custom-box p {
+            display: inline-block;
+            margin: 0;
+            padding: 0;
+        }
+        .custom-box h4 {
+            font-size: 14px;
+            font-family: Helvetica;
+            font-weight: normal;
+            color: #000000;
+        }
+        .custom-box-2 h4 {
+            font-size: 14px;
+            font-family: Helvetica;
+            font-weight: normal;
+            color: #000000;
+        }
+        .custom-box p {
+            font-size: 20px;
+            font-family: Helvetica;
+            font-weight: bold;
+            color: #000000;
+        }
+        .custom-box-2 p {
+            font-size: 20px;
+            font-family: Helvetica;
+            font-weight: bold;
+            color: #000000;
+        }
+        </style>
+    """, unsafe_allow_html=True)
     
     with card1:
-        st.info('Current Date', icon="📅")
-        c = datetime.now()
-        formatted_date = c.strftime("%Y-%m-%d")
-        st.metric(label="", value = formatted_date)
-    
+        st.markdown('<div class="custom-box"><h4>Current Date</h4><p>{}</p></div>'.format(formatted_date), unsafe_allow_html=True)
+
     with card2:
-        st.info('Current Interval', icon="⏱")
-        st.metric(label='', value = last_interval)
+        st.markdown('<div class="custom-box"><h4>Current Interval</h4><p>{}</p></div>'.format(last_interval), unsafe_allow_html=True)
 
     with card3:
-        st.info('Temperature and Weather Condition', icon="🌤️")
-        st.metric(label = 'Temperature', value=f"{temperature}°C")
-        st.metric(label = 'Weather Condition', value = weather_condition)
+        st.markdown('<div class="custom-box"><h4>Temperature</h4><p>{}°C</p><h4>Weather Condition</h4><p>{}</p></div>'.format(temperature, weather_condition), unsafe_allow_html=True)
 
     with card4:
-        st.info('Total Substation Load (kW)',icon="🏭")
-        st.metric(label='', value = total_substation_load)
+        st.markdown('<div class="custom-box"><h4>Total Substation Load (kW)</h4><p>{}</p></div>'.format(total_substation_load), unsafe_allow_html=True)
 
     with card5:
-        st.info('Actual Energy (kWh) vs Forecasted Energy (kWh)',icon = "⚡")
-        st.metric(label = 'Actual Energy', value = actual_energy)
-        st.metric(label = 'Forecasted Energy', value = forecasted_energy)
+        st.markdown('<div class="custom-box"><h4>Actual Energy (kWh)</h4><p>{}</p><h4>Contestable Energy (kWh)</h4><p>{}</p></div>'.format(actual_energy, forecasted_energy), unsafe_allow_html=True)
 
     with card6:
-        st.info('WESM Exposure (kWh) and Contestable Energy (kWh)', icon = "⚡")
-        st.metric(label='WESM Exposure (kWh)', value = wesm_exposure)
-        st.metric(label='Contestable Energy (kWh)', value = contestable_energy)
+        st.markdown('<div class="custom-box"><h4>WESM Exposure (kWh)</h4><p>{}</p><h4>Contestable Energy (kWh)</h4><p>{}</p></div>'.format(wesm_exposure, contestable_energy), unsafe_allow_html=True)
 
     with card7:
-        st.info('Total BCQ Nomination (kW)')
-        st.metric(label='', value = total_bcq)
+        st.markdown('<div class="custom-box"><h4>Total BCQ Nomination (kW)</h4><p>{}</p></div>'.format(total_bcq), unsafe_allow_html=True)
 
     with card8:
-        st.info('MORE Trading Node (PhP/kWh)')
-        st.metric(label='', value = final_total)
+        st.markdown('<div class="custom-box"><h4>MORE Trading Node (PhP/kWh)</h4><p>{}</p></div>'.format(final_total), unsafe_allow_html=True)
 
     with card9:
-        st.info('PEDC Trading Node (PhP/kWh)')
-        st.markdown('On Probation')
+        st.markdown('<div class="custom-box"><h4>PEDC Trading Node (PhP/kWh)</h4><p>On Probation</p></div>', unsafe_allow_html=True)
 
     with card10:
-        st.info('Current Rate (PhP/kWh)', icon = "📉")
-        st.metric(label='', value = current_rate)
+        st.markdown('<div class="custom-box"><h4>Current Rate (PhP/kWh)</h4><p>{}</p></div>'.format(current_rate), unsafe_allow_html=True)
+
+
+    # card1, card2, card3, card4, card5, card6, card7, card8, card9, card10 = st.columns(10, gap='small')
+    
+    # with card1:
+    #     st.info('Current Date', icon="📅")
+    #     c = datetime.now()
+    #     formatted_date = c.strftime("%Y-%m-%d")
+    #     st.metric(label="", value = formatted_date)
+    
+    # with card2:
+    #     st.info('Current Interval', icon="⏱")
+    #     st.metric(label='', value = last_interval)
+
+    # with card3:
+    #     st.info('Temperature and Weather Condition', icon="🌤️")
+    #     st.metric(label = 'Temperature', value=f"{temperature}°C")
+    #     st.metric(label = 'Weather Condition', value = weather_condition)
+
+    # with card4:
+    #     st.info('Total Substation Load (kW)',icon="🏭")
+    #     st.metric(label='', value = total_substation_load)
+
+    # with card5:
+    #     st.info('Actual Energy (kWh) vs Forecasted Energy (kWh)',icon = "⚡")
+    #     st.metric(label = 'Actual Energy', value = actual_energy)
+    #     st.metric(label = 'Forecasted Energy', value = forecasted_energy)
+
+    # with card6:
+    #     st.info('WESM Exposure (kWh) and Contestable Energy (kWh)', icon = "⚡")
+    #     st.metric(label='WESM Exposure (kWh)', value = wesm_exposure)
+    #     st.metric(label='Contestable Energy (kWh)', value = contestable_energy)
+
+    # with card7:
+    #     st.info('Total BCQ Nomination (kW)')
+    #     st.metric(label='', value = total_bcq)
+
+    # with card8:
+    #     st.info('MORE Trading Node (PhP/kWh)')
+    #     st.metric(label='', value = final_total)
+
+    # with card9:
+    #     st.info('PEDC Trading Node (PhP/kWh)')
+    #     st.markdown('On Probation')
+
+    # with card10:
+    #     st.info('Current Rate (PhP/kWh)', icon = "📉")
+    #     st.metric(label='', value = current_rate)
 
 # -- END OF CURRENT INTERVAL SUMMARY --
 
