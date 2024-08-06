@@ -1102,7 +1102,7 @@ def find_total():
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
                         
                         return float(final_total)
-                    
+
                 elif current_hour == '04':
                     try: 
                         first_file_path = os.path.join(folder_path, files_in_folder[37])

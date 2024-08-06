@@ -16,13 +16,25 @@ import plotly.express as px
 import numpy as np
 import openpyxl
 import altair as alt
-import time
+import base64
 
 # Set page config
 st.set_page_config(page_title="MEPC Energy Trading Dashboard", page_icon="📊", layout="wide")
 
-# Header image
-st.image("data/more-power-logo.png")
+# Function to load an image and convert it to a base64 string
+def get_image_as_base64(image_path):
+    try:
+        with open(image_path, "rb") as image_file:
+            return base64.b64encode(image_file.read()).decode()
+    except FileNotFoundError:
+        st.error(f"File not found: {image_path}")
+        return None
+
+# Path to your image
+image_path = 'data/MORE_Power_Logo.png'
+
+# Set the image's width to the column width
+st.image(image_path, use_column_width=True)
 
 #connection
 conn=mysql.connector.connect(
@@ -32,6 +44,7 @@ conn=mysql.connector.connect(
     passwd = "",
     db = "myDb"
 )
+
 c=conn.cursor()
 
 def view_all_data():
@@ -171,7 +184,7 @@ html_code = f"""
   width: 100%;
   overflow: hidden;
   height: 2.5rem;
-  background-color: #FFFFFF; 
+  background-color: #000000; 
   padding-left: 100%;
   box-sizing: content-box;
 }}
@@ -197,7 +210,7 @@ html_code = f"""
   font-size: 1rem;
   font-family: Helvetica;
   font-weight: bold;
-  color: #008000;   
+  color: #FFFFFF;   
 }}
 body {{ margin: 0; padding-bottom: 5rem; }}
 h1, h2, p {{ padding: 0 5%; }}
@@ -488,11 +501,11 @@ fig.add_trace(go.Scatter(
     y=df_3['TOTAL_BCQ'],# Example values for the crooked line
     mode='lines+markers', # Set the mode to lines and markers
     name='BCQ Nomination',
-    line=dict(color='black')
+    line=dict(color='white')
 ))
 
 # Update the layout to set the bar mode to stacked and add a title
-fig.update_layout(barmode='stack', height=300, width=700)
+fig.update_layout(barmode='stack', height=300, width=600)
 
 # -- END OF DISPLAYING THE ACTUAL VS FORECASTED ENERGY CHART --
 
@@ -649,7 +662,7 @@ chart_data = pd.DataFrame({
 })
 
 # Create the bar chart with Plotly
-fig_ss_load = px.bar(chart_data, x='Substation', y='kW', text='kW', width=600, height=500)
+fig_ss_load = px.bar(chart_data, x='Substation', y='kW', text='kW')
 
 # Customize the bar colors
 colors = ['#e74c3c', '#e67e22', '#239b56', '#2874a6', '#5dade2', '#a569bd', '#FF69B4', '#48c9b0'] # COLORS: Red, Orange, Green, Dark Blue, Light Blue, Purple, Pink, Turquoise
@@ -657,7 +670,13 @@ fig_ss_load.update_traces(marker_color=colors)
 
 # Customize the layout
 fig_ss_load.update_traces(texttemplate='%{text:.2s}', textposition='outside')
-fig_ss_load.update_layout(uniformtext_minsize=8, uniformtext_mode='hide')
+
+fig_ss_load.update_layout(
+    uniformtext_minsize=8,
+    uniformtext_mode='hide',
+    width=600,  # Set the width of the bar chart
+    height=300  # Set the height of the bar chart
+)
 
 # -- END OF DISPLAYING THE SUBSTATION LOAD (KW) BAR CHART -- 
 
@@ -1232,56 +1251,6 @@ for item in contents:
 
 current_date = datetime.now()
 
-# static_time_1 = " 01:00 AM"
-# static_time_2 = " 02:00 AM"
-# static_time_3 = " 03:00 AM"
-# static_time_4 = " 04:00 AM"
-# static_time_5 = " 05:00 AM"
-# static_time_6 = " 06:00 AM"
-# static_time_7 = " 07:00 AM"
-# static_time_8 = " 08:00 AM"
-# static_time_9 = " 09:00 AM"
-# static_time_10 = " 10:00 AM"
-# static_time_11 = " 11:00 AM"
-# static_time_12 = " 12:00 PM"
-# static_time_13 = " 01:00 PM"
-# static_time_14 = " 02:00 PM"
-# static_time_15 = " 03:00 PM"
-# static_time_16 = " 04:00 PM"
-# static_time_17 = " 05:00 PM"
-# static_time_18 = " 06:00 PM"
-# static_time_19 = " 07:00 PM"
-# static_time_20 = " 08:00 PM"
-# static_time_21 = " 09:00 PM"
-# static_time_22 = " 10:00 PM"
-# static_time_23 = " 11:00 PM"
-# static_time_24 = " 12:00 AM"
-
-# hour_1 = current_date.strftime("%d/%m/%Y") + static_time_1
-# hour_2 = current_date.strftime("%d/%m/%Y") + static_time_2
-# hour_3 = current_date.strftime("%d/%m/%Y") + static_time_3
-# hour_4 = current_date.strftime("%d/%m/%Y") + static_time_4
-# hour_5 = current_date.strftime("%d/%m/%Y") + static_time_5
-# hour_6 = current_date.strftime("%d/%m/%Y") + static_time_6
-# hour_7 = current_date.strftime("%d/%m/%Y") + static_time_7
-# hour_8 = current_date.strftime("%d/%m/%Y") + static_time_8
-# hour_9 = current_date.strftime("%d/%m/%Y") + static_time_9
-# hour_10 = current_date.strftime("%d/%m/%Y") + static_time_10
-# hour_11 = current_date.strftime("%d/%m/%Y") + static_time_11
-# hour_12 = current_date.strftime("%d/%m/%Y") + static_time_12
-# hour_13 = current_date.strftime("%d/%m/%Y") + static_time_13
-# hour_14 = current_date.strftime("%d/%m/%Y") + static_time_14
-# hour_15 = current_date.strftime("%d/%m/%Y") + static_time_15
-# hour_16 = current_date.strftime("%d/%m/%Y") + static_time_16
-# hour_17 = current_date.strftime("%d/%m/%Y") + static_time_17
-# hour_18 = current_date.strftime("%d/%m/%Y") + static_time_18
-# hour_19 = current_date.strftime("%d/%m/%Y") + static_time_19
-# hour_20 = current_date.strftime("%d/%m/%Y") + static_time_20
-# hour_21 = current_date.strftime("%d/%m/%Y") + static_time_21
-# hour_22 = current_date.strftime("%d/%m/%Y") + static_time_22
-# hour_23 = current_date.strftime("%d/%m/%Y") + static_time_23
-# hour_24 = current_date.strftime("%d/%m/%Y") + static_time_24
-
 current_time = datetime.now()
 hour_value = current_time.strftime("%H")
 
@@ -1814,10 +1783,14 @@ def compare_values(row):
                         textinfo='label+percent',
                         textposition='inside',
                         marker={'colors': ['lightcoral', 'lightskyblue', 'lightgreen', 'yellow', 'orange']},
-                        legendwidth=600,
                     )
                 ]
-                return data
+                layout = go.Layout(
+                    width=600,
+                    height=300,
+                )
+                fig = go.Figure(data=data, layout=layout)
+                return fig
             else:
                 print(f"No matching hour found in comparison data for {current_hour}")
                 return None
@@ -1847,10 +1820,14 @@ def compare_values(row):
                             textinfo='label+percent',
                             textposition='inside',
                             marker={'colors': ['lightcoral', 'lightskyblue', 'lightgreen', 'yellow', 'orange']},
-                            legendwidth=600,
                         )
                     ]
-                    return data
+                    layout = go.Layout(
+                        width=600,
+                        height=300,
+                    )
+                    fig = go.Figure(data=data, layout=layout)
+                    return fig
                 else:
                     print(f"No matching hour found in comparison data for {current_hour}")
                     return None
