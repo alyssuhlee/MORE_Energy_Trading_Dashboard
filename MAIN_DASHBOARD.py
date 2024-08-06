@@ -19,7 +19,7 @@ import altair as alt
 import base64
 
 # Set page config
-st.set_page_config(page_title="MEPC Energy Trading Dashboard", page_icon="📊", layout="wide")
+st.set_page_config(page_title="MEPC Energy Trading Dashboard", page_icon="data/logo_only.png", layout="wide")
 
 # Function to load an image and convert it to a base64 string
 def get_image_as_base64(image_path):
@@ -36,7 +36,7 @@ image_path = 'data/MORE_Power_Logo.png'
 # Set the image's width to the column width
 st.image(image_path, use_column_width=True)
 
-#connection
+# Connection
 conn=mysql.connector.connect(
     host = "localhost",
     port = "3306",
@@ -45,7 +45,7 @@ conn=mysql.connector.connect(
     db = "myDb"
 )
 
-c=conn.cursor()
+c = conn.cursor()
 
 def view_all_data():
     c.execute('select * from timeintervals order by id asc')
