@@ -227,12 +227,14 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                     except:
-                        return None
-                
+                        final_total = 0
+                        float_final_total = float(final_total)
+                        return float_final_total
+
                 elif current_hour == '02':
 
                     try:
@@ -443,8 +445,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
                             
@@ -654,8 +656,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '03':
                     try: 
@@ -865,8 +867,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
                         
@@ -1076,8 +1078,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '04':
                     try: 
@@ -1287,9 +1289,9 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
-
+                        float_final_total = float(final_total)
+                        return float_final_total
+                    
                     except:
 
                         first_file_path = os.path.join(folder_path, files_in_folder[25])
@@ -1498,8 +1500,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '05':
 
@@ -1710,8 +1712,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                     except:
 
@@ -1921,8 +1923,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '06':
 
@@ -2133,8 +2135,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
                         
@@ -2344,8 +2346,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '07':
 
@@ -2557,8 +2559,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
                         
@@ -2768,8 +2770,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '08':
 
@@ -2981,8 +2983,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
 
@@ -3192,8 +3194,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '09':
 
@@ -3404,8 +3406,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
 
@@ -3615,8 +3617,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '10':
 
@@ -3828,8 +3830,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
                         
@@ -4039,8 +4041,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                 elif current_hour == '11':
                     try: 
@@ -4248,10 +4250,10 @@ def find_total():
                         file_08STBAR_T1L1_36 = matching_row_36['DIPC_PRICE'].values[0]
 
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
-
-                        final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
                         
-                        return float(final_total)
+                        final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
+                        float_final_total = float(final_total)
+                        return float_final_total
                 
                     except:
                         
@@ -4461,8 +4463,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '12':
                     try: 
@@ -4672,8 +4674,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
                         
@@ -4883,8 +4885,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '13':
 
@@ -5096,8 +5098,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
                         
@@ -5307,8 +5309,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '14':
                     try:
@@ -5519,8 +5521,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
                         
@@ -5730,8 +5732,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '15':
 
@@ -5942,8 +5944,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
 
@@ -6154,8 +6156,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
             
                 elif current_hour == '16':
                     try:
@@ -6365,8 +6367,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
                         
@@ -6576,8 +6578,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '17':
                     try:
@@ -6787,8 +6789,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
                         
@@ -6998,8 +7000,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                 
                 elif current_hour == '18':
                     try:
@@ -7209,8 +7211,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
                         
@@ -7420,8 +7422,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '19':
                     try:
@@ -7631,8 +7633,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
 
@@ -7842,8 +7844,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '20':
 
@@ -8054,8 +8056,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
                         
@@ -8265,8 +8267,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '21': 
                     try:
@@ -8476,8 +8478,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                     except:
                         
@@ -8687,8 +8689,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                 elif current_hour == '22':
                     try:
@@ -8898,8 +8900,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
 
@@ -9109,8 +9111,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '23':
                     try:
@@ -9320,8 +9322,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
                         
@@ -9531,14 +9533,15 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '00':
                         final_total = 0
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
-# MORE Nodes (RESOURCE_NAME) - 08PEDC_T1L1, 08PEDC_T1L2, 08STBAR_T1L1 
+# RESOURCE NAMES -> 08PEDC_T1L1, 08PEDC_T1L2, 08STBAR_T1L1 
 
 # Function to insert value into MySQL database
 def insert_into_mysql(conn, final_total):
