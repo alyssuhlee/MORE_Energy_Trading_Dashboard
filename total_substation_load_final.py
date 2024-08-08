@@ -1,12 +1,12 @@
+# Necessary imports
 from mysql.connector import Error
-from sqlalchemy import create_engine
 from openpyxl import load_workbook
-import pandas as pd
-import mysql.connector
-import time
-import openpyxl
+from sqlalchemy import create_engine
 import datetime
+import mysql.connector
+import pandas as pd
 import threading
+import time
 
 # File locations
 file_loc = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\\'
@@ -106,13 +106,13 @@ def main(excel_file, conn):
                 insert_into_mysql(conn, total_substation_load_value)
             else:
                 print(f"Invalid total_substation_load_value: {total_substation_load_value}")
-            time.sleep(300)
+            time.sleep(60)
         except KeyboardInterrupt:
             print("\nTerminating the script.")
             break
         except Exception as e:
             print(f"Error in main loop: {e}")
-            time.sleep(300)
+            time.sleep(60)
 
 def query_run():
     while True:
@@ -120,7 +120,7 @@ def query_run():
         read_file = pd.read_csv(file_loc + 'station_load.csv')
         read_file.to_excel(file_loc + 'station_load.xlsx', index=False, header=True)
         print("station_load.xlsx updated from station_load.csv.")
-        time.sleep(300)
+        time.sleep(60)
 
 if __name__ == "__main__":
 

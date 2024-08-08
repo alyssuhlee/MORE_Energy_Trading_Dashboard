@@ -1,50 +1,10 @@
-# WESM EXPOSURE = ACTUAL ENERGY - BCQ
-
+# Necessary imports
 from datetime import datetime
 from openpyxl import load_workbook
 import mysql.connector
 import openpyxl
-import time
 import pandas as pd
-
-# For creating an Excel file 
-workbook = openpyxl.Workbook()
-sheet = workbook.active
-sheet['A1'] = 'HOUR'
-sheet['B1'] = 'ACTUAL_ENERGY'
-sheet['C1'] = 'CONTESTABLE_ENERGY'
-sheet['D1'] = 'TOTAL_BCQ_NOMINATION'
-sheet['E1'] = 'WESM_EXPOSURE'  
-workbook.save('wesm_exposure.xlsx')
-workbook.close()
-print("Excel file 'wesm_exposure.xlsx' created successfully.")
-
-# File path for destination Excel file
-destination_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\wesm_exposure.xlsx'
-
-# Load source workbooks
-source_wb = load_workbook('actual_energy.xlsx')
-source_sheet = source_wb['Sheet']
-source_wb3 = load_workbook('contestable_energy.xlsx')
-source_sheet3 = source_wb3['Sheet']
-source_wb2 = load_workbook('total_bcq_nomination.xlsx')
-source_sheet2 = source_wb2['Sheet']
-
-# Load destination workbook
-dest_wb = load_workbook(destination_file_path)
-dest_sheet = dest_wb['Sheet']
-
-# Define source and destination ranges
-
-# Hour and Actual Energy
-source_ranges = [('A2', 'A25'), ('D2', 'D25')]
-dest_ranges = [('A2', 'A25'), ('B2', 'B25')]
-# Contestable Energy
-source_ranges3 = [('B2', 'B25')]
-dest_ranges3 = [('C2', 'C25')]
-# Total BCQ Nomination
-source_ranges2 = [('E2', 'E25')]
-dest_ranges2 = [('D2', 'D25')]
+import time
 
 # Function to copy values from source range to destination range
 def copy_values(source_sheet, dest_sheet, source_range, dest_range):
@@ -103,31 +63,71 @@ def copy_values3(source_sheet3, dest_sheet, source_range3, dest_range3):
             else:
                 break
 
-# Copy data from source to destination based on specified ranges
-for i in range(len(source_ranges)):
-    copy_values(source_sheet, dest_sheet, source_ranges[i], dest_ranges[i])
+def wesm_exposure():
+    # For creating an Excel file 
+    workbook = openpyxl.Workbook()
+    sheet = workbook.active
+    sheet['A1'] = 'HOUR'
+    sheet['B1'] = 'ACTUAL_ENERGY'
+    sheet['C1'] = 'CONTESTABLE_ENERGY'
+    sheet['D1'] = 'TOTAL_BCQ_NOMINATION'
+    sheet['E1'] = 'WESM_EXPOSURE'  
+    workbook.save('wesm_exposure.xlsx')
+    workbook.close()
+    print("Excel file 'wesm_exposure.xlsx' created successfully.")
 
-for i in range(len(source_ranges2)):
-    copy_values2(source_sheet2, dest_sheet, source_ranges2[i], dest_ranges2[i])
+    # File path for destination Excel file
+    destination_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\wesm_exposure.xlsx'
 
-for i in range(len(source_ranges3)):
-    copy_values3(source_sheet3, dest_sheet, source_ranges3[i], dest_ranges3[i])
+    # Load source workbooks
+    source_wb = load_workbook('actual_energy.xlsx')
+    source_sheet = source_wb['Sheet']
+    source_wb3 = load_workbook('contestable_energy.xlsx')
+    source_sheet3 = source_wb3['Sheet']
+    source_wb2 = load_workbook('total_bcq_nomination.xlsx')
+    source_sheet2 = source_wb2['Sheet']
 
-for row in dest_sheet.iter_rows(min_row=2, max_row=25, min_col=2, max_col=4):
-    actual_energy = row[0].value
-    contestable_energy = row[1].value
-    total_bcq_nomination = row[2].value
-    wesm_exposure = actual_energy - contestable_energy - total_bcq_nomination if actual_energy and contestable_energy and total_bcq_nomination else None
-    dest_sheet.cell(row=row[0].row, column=5).value = wesm_exposure
+    # Load destination workbook
+    dest_wb = load_workbook(destination_file_path)
+    dest_sheet = dest_wb['Sheet']
 
-# Save the destination workbook
-dest_wb.save(destination_file_path)
-# Close workbooks
-source_wb.close()
-dest_wb.close()
-source_wb3.close()
-source_wb2.close()
-print("Data transfer completed.")
+    # Define source and destination ranges
+
+    # Hour and Actual Energy
+    source_ranges = [('A2', 'A25'), ('D2', 'D25')]
+    dest_ranges = [('A2', 'A25'), ('B2', 'B25')]
+    # Contestable Energy
+    source_ranges3 = [('B2', 'B25')]
+    dest_ranges3 = [('C2', 'C25')]
+    # Total BCQ Nomination
+    source_ranges2 = [('E2', 'E25')]
+    dest_ranges2 = [('D2', 'D25')]
+
+    # Copy data from source to destination based on specified ranges
+    for i in range(len(source_ranges)):
+        copy_values(source_sheet, dest_sheet, source_ranges[i], dest_ranges[i])
+
+    for i in range(len(source_ranges2)):
+        copy_values2(source_sheet2, dest_sheet, source_ranges2[i], dest_ranges2[i])
+
+    for i in range(len(source_ranges3)):
+        copy_values3(source_sheet3, dest_sheet, source_ranges3[i], dest_ranges3[i])
+
+    for row in dest_sheet.iter_rows(min_row=2, max_row=25, min_col=2, max_col=4):
+        actual_energy = row[0].value
+        contestable_energy = row[1].value
+        total_bcq_nomination = row[2].value
+        wesm_exposure = actual_energy - contestable_energy - total_bcq_nomination if actual_energy and contestable_energy and total_bcq_nomination else None
+        dest_sheet.cell(row=row[0].row, column=5).value = wesm_exposure
+
+    # Save the destination workbook
+    dest_wb.save(destination_file_path)
+    # Close workbooks
+    source_wb.close()
+    dest_wb.close()
+    source_wb3.close()
+    source_wb2.close()
+    print("Data transfer completed.")
 
 # Function to retrieve the current hour in 24-hour format
 def get_current_hour():
@@ -194,6 +194,7 @@ def insert_into_mysql(conn, wesm_exposure_value):
 def main(excel_file, conn):
     while True:
         try:
+            wesm_exposure()
             current_hour = get_current_hour()
             wesm_exposure_value = get_wesm_exposure_for_current_hour(excel_file, current_hour)
             if wesm_exposure_value is not None:
@@ -210,9 +211,9 @@ def main(excel_file, conn):
             time.sleep(60)  # Delay before retrying
 
 if __name__ == "__main__":
-    excel_file = destination_file_path
+    while True:
+        excel_file = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\wesm_exposure.xlsx'
 
-    try:
         conn = mysql.connector.connect(
             host='localhost',
             database='myDb',
@@ -233,12 +234,3 @@ if __name__ == "__main__":
 
         # Run main function to continuously check and update database
         main(excel_file, conn)
-    
-    except mysql.connector.Error as e:
-        print(f"Error connecting to MySQL: {e}")
-    except Exception as e:
-        print(f"Unexpected error: {e}")
-    finally:
-        if 'conn' in locals() and conn.is_connected():
-            conn.close()
-            print("MySQL connection closed.")

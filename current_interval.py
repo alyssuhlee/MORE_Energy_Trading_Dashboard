@@ -1,5 +1,6 @@
-import mysql.connector
+# Necessary imports
 from datetime import datetime
+import mysql.connector
 import time
 
 # MySQL connection details
@@ -12,13 +13,23 @@ db_config = {
 
 # Function to determine the time interval
 def get_time_interval(current_time):
+    # Get the current hour
     hour = current_time.hour
-    if hour == 0:
-        return '0100 H'
-    elif hour == 23:
+    # Get the current minute
+    minute = current_time.minute
+    
+    # If the time is exactly 12:00 AM
+    if hour == 0 and minute == 0:
         return '2400 H'
+    # If the time is between 12:01 AM and 12:59 AM
+    elif hour == 0:
+        return '0100 H'
+    # If the time is exactly on the hour (e.g., 1:00 AM, 2:00 AM)
+    elif minute == 0:
+        return f'{hour:02}00 H'
+    # For all other times, return the next hour followed by "00 H"
     else:
-        return f'{hour+1:02}00 H'
+        return f'{(hour + 1) % 24:02}00 H'
 
 # Function to insert the time interval into the database
 def insert_time_interval(time_interval):
@@ -60,5 +71,5 @@ while True:
     # Insert the time interval into the database
     insert_time_interval(time_interval)
     
-    # Wait for 300 seconds before checking again
-    time.sleep(300)
+    # Wait for 60 seconds (1 minute) before checking again
+    time.sleep(60)

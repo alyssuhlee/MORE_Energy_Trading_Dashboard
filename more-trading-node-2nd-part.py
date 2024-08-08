@@ -1,9 +1,9 @@
+# Necessary imports
 from datetime import datetime
+import mysql.connector
 import os
 import pandas as pd
-import mysql.connector
 import time
-import threading
 
 def find_total():
     directory = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MORE Trading Node'
@@ -61,12 +61,11 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
 
-                    
                         third_df = pd.read_csv(third_file_path)
 
                         search_value_7 = '08PEDC_T1L1'
@@ -83,7 +82,6 @@ def find_total():
 
                         average_3 = (file_08PEDC_T1L1_7 + file_08PEDC_T1L2_8 + file_08STBAR_T1L1_9)/3
 
-                    
                         fourth_df = pd.read_csv(fourth_file_path)
 
                         search_value_10 = '08PEDC_T1L1'
@@ -100,7 +98,6 @@ def find_total():
 
                         average_4 = (file_08PEDC_T1L1_10 + file_08PEDC_T1L2_11 + file_08STBAR_T1L1_12)/3
 
-                        
                         fifth_df = pd.read_csv(fifth_file_path)
 
                         search_value_13 = '08PEDC_T1L1'
@@ -117,7 +114,6 @@ def find_total():
 
                         average_5 = (file_08PEDC_T1L1_13 + file_08PEDC_T1L2_14 + file_08STBAR_T1L1_15)/3
 
-                        
                         sixth_df = pd.read_csv(sixth_file_path)
 
                         search_value_16 = '08PEDC_T1L1'
@@ -134,7 +130,6 @@ def find_total():
 
                         average_6 = (file_08PEDC_T1L1_16 + file_08PEDC_T1L2_17 + file_08STBAR_T1L1_18)/3
 
-                        
                         seventh_df = pd.read_csv(seventh_file_path)
 
                         search_value_19 = '08PEDC_T1L1'
@@ -151,7 +146,6 @@ def find_total():
 
                         average_7 = (file_08PEDC_T1L1_19 + file_08PEDC_T1L2_20 + file_08STBAR_T1L1_21)/3
 
-                        
                         eighth_df = pd.read_csv(eighth_file_path)
 
                         search_value_22 = '08PEDC_T1L1'
@@ -168,7 +162,6 @@ def find_total():
 
                         average_8 = (file_08PEDC_T1L1_22 + file_08PEDC_T1L2_23 + file_08STBAR_T1L1_24)/3
                             
-                        
                         ninth_df = pd.read_csv(ninth_file_path)
 
                         search_value_25 = '08PEDC_T1L1'
@@ -185,7 +178,6 @@ def find_total():
 
                         average_9 = (file_08PEDC_T1L1_25 + file_08PEDC_T1L2_26 + file_08STBAR_T1L1_27)/3
 
-                        
                         tenth_df = pd.read_csv(tenth_file_path)
 
                         search_value_28 = '08PEDC_T1L1'
@@ -202,7 +194,6 @@ def find_total():
 
                         average_10 = (file_08PEDC_T1L1_28 + file_08PEDC_T1L2_29 + file_08STBAR_T1L1_30)/3
 
-                        
                         eleventh_df = pd.read_csv(eleventh_file_path)
 
                         search_value_31 = '08PEDC_T1L1'
@@ -219,7 +210,6 @@ def find_total():
 
                         average_11 = (file_08PEDC_T1L1_31 + file_08PEDC_T1L2_32 + file_08STBAR_T1L1_33)/3
 
-                    
                         twelvth_df = pd.read_csv(twelvth_file_path)
 
                         search_value_34 = '08PEDC_T1L1'
@@ -268,14 +258,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
-
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -288,7 +277,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -480,13 +469,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -499,12 +488,11 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
 
-                    
                         third_df = pd.read_csv(third_file_path)
 
                         search_value_7 = '08PEDC_T1L1'
@@ -521,7 +509,6 @@ def find_total():
 
                         average_3 = (file_08PEDC_T1L1_7 + file_08PEDC_T1L2_8 + file_08STBAR_T1L1_9)/3
 
-                    
                         fourth_df = pd.read_csv(fourth_file_path)
 
                         search_value_10 = '08PEDC_T1L1'
@@ -538,7 +525,6 @@ def find_total():
 
                         average_4 = (file_08PEDC_T1L1_10 + file_08PEDC_T1L2_11 + file_08STBAR_T1L1_12)/3
 
-                        
                         fifth_df = pd.read_csv(fifth_file_path)
 
                         search_value_13 = '08PEDC_T1L1'
@@ -555,7 +541,6 @@ def find_total():
 
                         average_5 = (file_08PEDC_T1L1_13 + file_08PEDC_T1L2_14 + file_08STBAR_T1L1_15)/3
 
-                        
                         sixth_df = pd.read_csv(sixth_file_path)
 
                         search_value_16 = '08PEDC_T1L1'
@@ -572,7 +557,6 @@ def find_total():
 
                         average_6 = (file_08PEDC_T1L1_16 + file_08PEDC_T1L2_17 + file_08STBAR_T1L1_18)/3
 
-                        
                         seventh_df = pd.read_csv(seventh_file_path)
 
                         search_value_19 = '08PEDC_T1L1'
@@ -589,7 +573,6 @@ def find_total():
 
                         average_7 = (file_08PEDC_T1L1_19 + file_08PEDC_T1L2_20 + file_08STBAR_T1L1_21)/3
 
-                        
                         eighth_df = pd.read_csv(eighth_file_path)
 
                         search_value_22 = '08PEDC_T1L1'
@@ -606,7 +589,6 @@ def find_total():
 
                         average_8 = (file_08PEDC_T1L1_22 + file_08PEDC_T1L2_23 + file_08STBAR_T1L1_24)/3
                             
-                        
                         ninth_df = pd.read_csv(ninth_file_path)
 
                         search_value_25 = '08PEDC_T1L1'
@@ -623,7 +605,6 @@ def find_total():
 
                         average_9 = (file_08PEDC_T1L1_25 + file_08PEDC_T1L2_26 + file_08STBAR_T1L1_27)/3
 
-                        
                         tenth_df = pd.read_csv(tenth_file_path)
 
                         search_value_28 = '08PEDC_T1L1'
@@ -640,7 +621,6 @@ def find_total():
 
                         average_10 = (file_08PEDC_T1L1_28 + file_08PEDC_T1L2_29 + file_08STBAR_T1L1_30)/3
 
-                        
                         eleventh_df = pd.read_csv(eleventh_file_path)
 
                         search_value_31 = '08PEDC_T1L1'
@@ -657,7 +637,6 @@ def find_total():
 
                         average_11 = (file_08PEDC_T1L1_31 + file_08PEDC_T1L2_32 + file_08STBAR_T1L1_33)/3
 
-                    
                         twelvth_df = pd.read_csv(twelvth_file_path)
 
                         search_value_34 = '08PEDC_T1L1'
@@ -701,14 +680,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
-
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -721,7 +699,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -742,7 +720,6 @@ def find_total():
 
                         average_3 = (file_08PEDC_T1L1_7 + file_08PEDC_T1L2_8 + file_08STBAR_T1L1_9)/3
 
-                        fourth_file_path = os.path.join(folder_path, files_in_folder[28])
                         fourth_df = pd.read_csv(fourth_file_path)
 
                         search_value_10 = '08PEDC_T1L1'
@@ -922,7 +899,6 @@ def find_total():
 
                         average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
 
-
                         second_df = pd.read_csv(second_file_path)
 
                         search_value_4 = '08PEDC_T1L1'
@@ -934,7 +910,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -1126,13 +1102,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -1145,7 +1121,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -1337,14 +1313,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
-
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -1357,7 +1332,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -1378,7 +1353,6 @@ def find_total():
 
                         average_3 = (file_08PEDC_T1L1_7 + file_08PEDC_T1L2_8 + file_08STBAR_T1L1_9)/3
 
-                        fourth_file_path = os.path.join(folder_path, files_in_folder[28])
                         fourth_df = pd.read_csv(fourth_file_path)
 
                         search_value_10 = '08PEDC_T1L1'
@@ -1551,13 +1525,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -1570,7 +1544,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -1762,13 +1736,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -1781,7 +1755,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -1974,13 +1948,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -1993,7 +1967,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -2185,13 +2159,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -2204,7 +2178,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -2398,13 +2372,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -2417,7 +2391,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -2609,13 +2583,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -2628,7 +2602,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -2822,11 +2796,11 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
                         average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
 
@@ -2841,7 +2815,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -3033,11 +3007,11 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
                         average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
 
@@ -3052,7 +3026,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -3245,13 +3219,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -3264,7 +3238,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -3456,13 +3430,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -3475,7 +3449,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -3668,13 +3642,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -3687,7 +3661,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -3880,13 +3854,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -3899,7 +3873,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -4091,13 +4065,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -4110,7 +4084,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -4302,13 +4276,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -4321,7 +4295,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -4357,7 +4331,6 @@ def find_total():
                         file_08STBAR_T1L1_12 = matching_row_12['DIPC_PRICE'].values[0]
 
                         average_4 = (file_08PEDC_T1L1_10 + file_08PEDC_T1L2_11 + file_08STBAR_T1L1_12)/3
-
                         fifth_df = pd.read_csv(fifth_file_path)
 
                         search_value_13 = '08PEDC_T1L1'
@@ -4514,13 +4487,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -4533,7 +4506,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -4725,13 +4698,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -4744,7 +4717,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -4938,13 +4911,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -4957,7 +4930,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -5128,18 +5101,18 @@ def find_total():
                     
                     except:
                         
-                        first_file_path = os.path.join(folder_path, files_in_folder[121])
-                        second_file_path = os.path.join(folder_path, files_in_folder[122])
-                        third_file_path = os.path.join(folder_path, files_in_folder[123])
-                        fourth_file_path = os.path.join(folder_path, files_in_folder[124])
-                        fifth_file_path = os.path.join(folder_path, files_in_folder[125])
-                        sixth_file_path = os.path.join(folder_path, files_in_folder[126])
-                        seventh_file_path = os.path.join(folder_path, files_in_folder[127])
-                        eighth_file_path = os.path.join(folder_path, files_in_folder[128])
-                        ninth_file_path = os.path.join(folder_path, files_in_folder[129])
-                        tenth_file_path = os.path.join(folder_path, files_in_folder[130])
-                        eleventh_file_path = os.path.join(folder_path, files_in_folder[131])
-                        twelvth_file_path = os.path.join(folder_path, files_in_folder[132])
+                        first_file_path = os.path.join(folder_path, files_in_folder[133])
+                        second_file_path = os.path.join(folder_path, files_in_folder[134])
+                        third_file_path = os.path.join(folder_path, files_in_folder[135])
+                        fourth_file_path = os.path.join(folder_path, files_in_folder[136])
+                        fifth_file_path = os.path.join(folder_path, files_in_folder[137])
+                        sixth_file_path = os.path.join(folder_path, files_in_folder[138])
+                        seventh_file_path = os.path.join(folder_path, files_in_folder[139])
+                        eighth_file_path = os.path.join(folder_path, files_in_folder[140])
+                        ninth_file_path = os.path.join(folder_path, files_in_folder[141])
+                        tenth_file_path = os.path.join(folder_path, files_in_folder[142])
+                        eleventh_file_path = os.path.join(folder_path, files_in_folder[143])
+                        twelvth_file_path = os.path.join(folder_path, files_in_folder[144])
 
                         df = pd.read_csv(first_file_path)
 
@@ -5149,13 +5122,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -5168,7 +5141,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -5360,13 +5333,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -5379,7 +5352,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -5572,13 +5545,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -5591,7 +5564,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -5784,13 +5757,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -5803,7 +5776,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -5995,13 +5968,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -6014,7 +5987,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -6207,13 +6180,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -6226,7 +6199,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -6418,13 +6391,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -6437,7 +6410,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -6629,13 +6602,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -6648,7 +6621,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -6840,13 +6813,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -6859,7 +6832,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -7051,13 +7024,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -7070,7 +7043,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -7262,13 +7235,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -7281,7 +7254,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -7473,13 +7446,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -7492,7 +7465,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -7684,13 +7657,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -7703,7 +7676,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -7896,13 +7869,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -7915,7 +7888,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -8107,13 +8080,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -8126,7 +8099,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -8318,13 +8291,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -8337,7 +8310,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -8529,13 +8502,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -8548,7 +8521,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -8740,13 +8713,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -8759,7 +8732,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -8951,13 +8924,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -8970,7 +8943,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -9162,13 +9135,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -9181,7 +9154,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -9373,13 +9346,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -9392,7 +9365,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -9562,7 +9535,8 @@ def find_total():
                         return float(final_total)
 
                 elif current_hour == '00':
-                        return None
+                        final_total = 0
+                        return float(final_total)
 
 # MORE Nodes (RESOURCE_NAME) - 08PEDC_T1L1, 08PEDC_T1L2, 08STBAR_T1L1 
 

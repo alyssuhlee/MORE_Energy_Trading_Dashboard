@@ -383,6 +383,7 @@ def current_interval_summary():
             background-color: #00B74C;
             height: 150px;
             width: 120%;
+            gap: 100%;
         }
         .custom-box h4, .custom-box p {
             display: inline-block;
@@ -450,7 +451,6 @@ def current_interval_summary():
 
     with card10:
         st.markdown('<div class="custom-box"><h4>Current Rate (PhP/kWh)</h4><p>{}</p></div>'.format(current_rate), unsafe_allow_html=True)
-
 
     # card1, card2, card3, card4, card5, card6, card7, card8, card9, card10 = st.columns(10, gap='small')
     

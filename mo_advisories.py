@@ -1,4 +1,4 @@
-# imports
+# Necessary imports
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import csv
@@ -103,4 +103,4 @@ def main():
 
 while True:
     main()
-    time.sleep(1800)
+    time.sleep(3600) # Every 3600 seconds (1 hour)

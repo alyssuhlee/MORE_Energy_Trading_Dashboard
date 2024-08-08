@@ -1,9 +1,9 @@
-import time
-import pandas as pd
+# Necessary imports
 from datetime import datetime
 from openpyxl import load_workbook
 import mysql.connector
-import openpyxl
+import pandas as pd
+import time
 
 # File path for destination Excel file
 destination_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\actual_energy.xlsx'
@@ -181,9 +181,9 @@ def main(excel_file, conn):
             time.sleep(60)
 
 if __name__ == "__main__":
-    excel_file = destination_file_path
+    while True:
+        excel_file = destination_file_path
 
-    try:
         conn = mysql.connector.connect(
             host='localhost',
             database='myDb',
@@ -204,12 +204,3 @@ if __name__ == "__main__":
 
         # Run main function to continuously check and update database
         main(excel_file, conn)
-    
-    except mysql.connector.Error as e:
-        print(f"Error connecting to MySQL: {e}")
-    except Exception as e:
-        print(f"Unexpected error: {e}")
-    finally:
-        if 'conn' in locals() and conn.is_connected():
-            conn.close()
-            print("MySQL connection closed.")

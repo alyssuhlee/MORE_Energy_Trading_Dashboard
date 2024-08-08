@@ -1,6 +1,7 @@
+# Necessary imports
 from datetime import datetime
-import pandas as pd
 import mysql.connector
+import pandas as pd
 import time
 
 # Function to retrieve the current date
@@ -63,7 +64,7 @@ def main(excel_file, conn):
             else:
                 print(f"Invalid temperature valu: {temperature} and invalid weather condition value: {weather_condition}")
                 
-            time.sleep(3900)
+            time.sleep(720)
         
         except KeyboardInterrupt:
             print("\nTerminating the script.")
@@ -73,9 +74,9 @@ def main(excel_file, conn):
             time.sleep(60)  # Delay before retrying
 
 if __name__ == "__main__":
-    excel_file = 'temp_data.xlsx'
+    while True:
+        excel_file = 'temp_data.xlsx'
 
-    try:
         conn = mysql.connector.connect(
             host='localhost',
             database='myDb',
@@ -97,12 +98,3 @@ if __name__ == "__main__":
 
         # Run main function to continuously check and update database
         main(excel_file, conn)
-    
-    except mysql.connector.Error as e:
-        print(f"Error connecting to MySQL: {e}")
-    except Exception as e:
-        print(f"Unexpected error: {e}")
-    finally:
-        if 'conn' in locals() and conn.is_connected():
-            conn.close()
-            print("MySQL connection closed.")

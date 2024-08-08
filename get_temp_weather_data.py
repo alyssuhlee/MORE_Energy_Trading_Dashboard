@@ -1,4 +1,4 @@
-# Necessary Imports
+# Necessary imports
 from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -12,7 +12,7 @@ def fetch_weather_data():
     chrome_options = Options()
     chrome_options.add_argument("--headless")  # Run in headless mode (no browser window)
 
-    # Initialize the WebDriver
+    # Initialize the webdriver
     driver = webdriver.Chrome()
 
     # URL of the weather page
@@ -21,12 +21,14 @@ def fetch_weather_data():
 
     # Find the temperature element in the page
     temp_element = driver.find_element(By.XPATH, "/html/body/div[1]/main/div[2]/main/div[1]/div/section/div/div/div[2]/div[1]/div[1]/span")
+    # Find the weather condition element in the page
     weather_element = driver.find_element(By.XPATH, "/html/body/div[1]/main/div[2]/main/div[1]/div/section/div/div/div[2]/div[1]/div[1]/div[1]")
     # Extract the temperature value
     temperature = temp_element.text.replace("°", "") if temp_element else "Not found"
+    # Extract the weather condition 
     weather = weather_element.text if weather_element else 'Not found'
 
-    # Close the WebDriver
+    # Close the webdriver
     driver.quit()
 
     now = datetime.now()
@@ -60,4 +62,4 @@ def fetch_weather_data():
 
 while True:
     fetch_weather_data()
-    time.sleep(3600)
+    time.sleep(600) # Every 600 seconds (10 minutes)

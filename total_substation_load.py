@@ -1,6 +1,7 @@
+# Necessary imports
 from mysql.connector import Error
-from sqlalchemy import create_engine
 from openpyxl import load_workbook
+from sqlalchemy import create_engine
 import pandas as pd
 import mysql.connector
 import time
