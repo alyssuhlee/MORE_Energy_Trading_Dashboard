@@ -1,22 +1,19 @@
-#Necessary imports
-# from query import *
-from threading import Timer
+# Necessary imports
 from datetime import datetime
 from mysql.connector import Error
 from openpyxl import load_workbook
-from datetime import datetime 
 from streamlit_autorefresh import st_autorefresh
-import matplotlib.pyplot as plt
-import pandas as pd
-import mysql.connector
-import plotly.express as px
-import streamlit as st
-import plotly.graph_objs as go
-import plotly.express as px
-import numpy as np
-import openpyxl
+from threading import Timer
 import altair as alt
 import base64
+import matplotlib.pyplot as plt
+import mysql.connector
+import numpy as np
+import openpyxl
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objs as go
+import streamlit as st
 
 # Set page config
 st.set_page_config(page_title="MEPC Energy Trading Dashboard", page_icon="data/logo_only.png", layout="wide")
@@ -129,6 +126,7 @@ for index, row in latest_10_entries.iterrows():
 # -- END OF SO ADVISORIES HEADER --
 
 # -- START OF MO ADVISORIES HEADER --
+
 # Load your Excel file
 excel_file = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MO_ADVISORIES.xlsx"
 df = pd.read_excel(excel_file)
@@ -136,7 +134,7 @@ df = pd.read_excel(excel_file)
 # Sort dataframe by TIMESTAMP in descending order
 df = df.sort_values(by='TIMESTAMP', ascending=False)
 
-# Function to fetch latest 10 entries
+# Function to fetch latest entry
 def fetch_latest_entry():
     latest_entry = df.head(1)
     return latest_entry
@@ -281,89 +279,6 @@ def current_interval_summary():
     temperature = df10['temp'].iloc[-1]
     weather_condition = df10['weather'].iloc[-1]
 
-    # # Datetime
-    # st.markdown("""
-    # <div style="background-color: #FFEB3B; padding: 10px; border-radius: 5px;">
-    #     <h2 style="color: black;">Current Date 📅</h2>
-    #     <p style="font-size: 18px;">{}</p>
-    # </div>
-    # """.format(datetime.now().strftime("%Y-%m-%d")), unsafe_allow_html=True)
-
-    # # Current Interval
-    # st.markdown("""
-    # <div style="background-color: #9C27B0; padding: 10px; border-radius: 5px;">
-    #     <h2 style="color: white;">Current Interval ⏱</h2>
-    #     <p style="font-size: 18px;">{}</p>
-    # </div>
-    # """.format(last_interval), unsafe_allow_html=True)
-
-    # # Temperature and Weather Condition
-    # st.markdown("""
-    # <div style="background-color: #B3E5FC; padding: 10px; border-radius: 5px;">
-    #     <h2 style="color: black;">Temperature and Weather Condition 🌤️</h2>
-    #     <p style="font-size: 18px;">Temperature: {}°C</p>
-    #     <p style="font-size: 18px;">Weather Condition: {}</p>
-    # </div>
-    # """.format(temperature, weather_condition), unsafe_allow_html=True)
-
-    # # Total Substation Load
-    # st.markdown("""
-    # <div style="background-color: #FFEB3B; padding: 10px; border-radius: 5px;">
-    #     <h2 style="color: black;">Total Substation Load (kW) 🏭</h2>
-    #     <p style="font-size: 18px;">{}</p>
-    # </div>
-    # """.format(total_substation_load), unsafe_allow_html=True)
-
-    # # Actual Energy and Forecasted Energy
-    # st.markdown("""
-    # <div style="background-color: #9C27B0; padding: 10px; border-radius: 5px;">
-    #     <h2 style="color: white;">Actual Energy (kWh) vs Forecasted Energy (kWh) ⚡</h2>
-    #     <p style="font-size: 18px;">Actual Energy: {}</p>
-    #     <p style="font-size: 18px;">Forecasted Energy: {}</p>
-    # </div>
-    # """.format(actual_energy, forecasted_energy), unsafe_allow_html=True)
-
-    # # WESM Exposure and Contestable Energy
-    # st.markdown("""
-    # <div style="background-color: #B3E5FC; padding: 10px; border-radius: 5px;">
-    #     <h2 style="color: black;">WESM Exposure (kWh) and Contestable Energy (kWh) ⚡</h2>
-    #     <p style="font-size: 18px;">WESM Exposure: {}</p>
-    #     <p style="font-size: 18px;">Contestable Energy: {}</p>
-    # </div>
-    # """.format(wesm_exposure, contestable_energy), unsafe_allow_html=True)
-
-    # # Total BCQ Nomination
-    # st.markdown("""
-    # <div style="background-color: #FFEB3B; padding: 10px; border-radius: 5px;">
-    #     <h2 style="color: black;">Total BCQ Nomination (kW)</h2>
-    #     <p style="font-size: 18px;">{}</p>
-    # </div>
-    # """.format(total_bcq), unsafe_allow_html=True)
-
-    # # MORE Trading Node
-    # st.markdown("""
-    # <div style="background-color: #9C27B0; padding: 10px; border-radius: 5px;">
-    #     <h2 style="color: white;">MORE Trading Node (PhP/kWh)</h2>
-    #     <p style="font-size: 18px;">{}</p>
-    # </div>
-    # """.format(final_total), unsafe_allow_html=True)
-
-    # # PEDC Trading Node
-    # st.markdown("""
-    # <div style="background-color: #B3E5FC; padding: 10px; border-radius: 5px;">
-    #     <h2 style="color: black;">PEDC Trading Node (PhP/kWh)</h2>
-    #     <p style="font-size: 18px;">On Probation</p>
-    # </div>
-    # """, unsafe_allow_html=True)
-
-    # # Current Rate
-    # st.markdown("""
-    # <div style="background-color: #FFEB3B; padding: 10px; border-radius: 5px;">
-    #     <h2 style="color: black;">Current Rate (PhP/kWh) 📉</h2>
-    #     <p style="font-size: 18px;">{}</p>
-    # </div>
-    # """.format(current_rate), unsafe_allow_html=True)
-
     # Define the current date
     c = datetime.now()
     formatted_date = c.strftime("%Y-%m-%d")
@@ -383,7 +298,6 @@ def current_interval_summary():
             background-color: #00B74C;
             height: 150px;
             width: 120%;
-            gap: 100%;
         }
         .custom-box h4, .custom-box p {
             display: inline-block;
@@ -452,53 +366,6 @@ def current_interval_summary():
     with card10:
         st.markdown('<div class="custom-box"><h4>Current Rate (PhP/kWh)</h4><p>{}</p></div>'.format(current_rate), unsafe_allow_html=True)
 
-    # card1, card2, card3, card4, card5, card6, card7, card8, card9, card10 = st.columns(10, gap='small')
-    
-    # with card1:
-    #     st.info('Current Date', icon="📅")
-    #     c = datetime.now()
-    #     formatted_date = c.strftime("%Y-%m-%d")
-    #     st.metric(label="", value = formatted_date)
-    
-    # with card2:
-    #     st.info('Current Interval', icon="⏱")
-    #     st.metric(label='', value = last_interval)
-
-    # with card3:
-    #     st.info('Temperature and Weather Condition', icon="🌤️")
-    #     st.metric(label = 'Temperature', value=f"{temperature}°C")
-    #     st.metric(label = 'Weather Condition', value = weather_condition)
-
-    # with card4:
-    #     st.info('Total Substation Load (kW)',icon="🏭")
-    #     st.metric(label='', value = total_substation_load)
-
-    # with card5:
-    #     st.info('Actual Energy (kWh) vs Forecasted Energy (kWh)',icon = "⚡")
-    #     st.metric(label = 'Actual Energy', value = actual_energy)
-    #     st.metric(label = 'Forecasted Energy', value = forecasted_energy)
-
-    # with card6:
-    #     st.info('WESM Exposure (kWh) and Contestable Energy (kWh)', icon = "⚡")
-    #     st.metric(label='WESM Exposure (kWh)', value = wesm_exposure)
-    #     st.metric(label='Contestable Energy (kWh)', value = contestable_energy)
-
-    # with card7:
-    #     st.info('Total BCQ Nomination (kW)')
-    #     st.metric(label='', value = total_bcq)
-
-    # with card8:
-    #     st.info('MORE Trading Node (PhP/kWh)')
-    #     st.metric(label='', value = final_total)
-
-    # with card9:
-    #     st.info('PEDC Trading Node (PhP/kWh)')
-    #     st.markdown('On Probation')
-
-    # with card10:
-    #     st.info('Current Rate (PhP/kWh)', icon = "📉")
-    #     st.metric(label='', value = current_rate)
-
 # -- END OF CURRENT INTERVAL SUMMARY --
 
 if __name__ == "__main__":
@@ -546,15 +413,15 @@ data = {
 df = pd.DataFrame(data)
 
 # Melt the DataFrame for Altair
-df_melted = df.melt('Hour', var_name='Supplier', value_name='Value')
+df_melted = df.melt('Hour', var_name='Supplier', value_name='BCQ')
 
 # Create an Altair area chart
 chart = alt.Chart(df_melted).mark_area().encode(
     x='Hour:O',
-    y='Value:Q',
+    y='BCQ:Q',
     color='Supplier:N'
 ).properties(
-    width=600,  
+    width=470,  
     height=300
 )
 
@@ -2016,7 +1883,7 @@ col1, col2, col3 = st.columns(3)
 with col1:
     st.subheader("BCQ Nominations per Supplier", divider=True)
     st.altair_chart(chart)
-# Trading Interval Price Calculation
+# Trading Interval Price Calculation (TIPC)
 with col2:
     st.subheader("Trading Interval Price Calculation", divider=True)
     st.plotly_chart(fig_tipc)

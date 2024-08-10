@@ -42,13 +42,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -3015,7 +3015,7 @@ def find_total():
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
                         file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -9544,14 +9544,14 @@ def find_total():
 # RESOURCE NAMES -> 08PEDC_T1L1, 08PEDC_T1L2, 08STBAR_T1L1 
 
 # Function to insert value into MySQL database
-def insert_into_mysql(conn, final_total):
+def insert_into_mysql(conn, float_final_total):
     try:
         cursor = conn.cursor()
-        sql = "INSERT INTO more_trading_node (final_total) VALUES (%s)"
-        cursor.execute(sql, (final_total,))
+        sql = "INSERT INTO more_trading_node (float_final_total) VALUES (%s)"
+        cursor.execute(sql, (float_final_total,))
         conn.commit()  # Commit the transaction
         cursor.close()
-        print(f"Value {final_total} inserted successfully into MySQL.")
+        print(f"Value {float_final_total} inserted successfully into MySQL.")
     except mysql.connector.Error as e:
         print(f"Error inserting into MySQL: {e}")
     except Exception as e:
@@ -9559,15 +9559,12 @@ def insert_into_mysql(conn, final_total):
 
 def run_continuously(conn):
     while True:
-        final_total = find_total()
-        if final_total is not None:
-            insert_into_mysql(conn, final_total)
-        else:
-            print(f"Invalid value: {final_total}")
+        float_final_total = find_total()
+        insert_into_mysql(conn, float_final_total)
         time.sleep(60)
     
 if __name__ == "__main__":
-    try:
+    while True:
         conn = mysql.connector.connect(
             host='localhost',
             database='myDb',
@@ -9578,19 +9575,10 @@ if __name__ == "__main__":
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS more_trading_node (
                 id INT AUTO_INCREMENT PRIMARY KEY,
-                final_total FLOAT(10, 2) NOT NULL,
+                float_final_total FLOAT(10, 2) NOT NULL,
                 insert_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
         cursor.close()
-        # Run main function to continuously check and update database
+        # Run this function to continuously check and update database
         run_continuously(conn)
-    
-    except mysql.connector.Error as e:
-        print(f"Error connecting to MySQL: {e}")
-    except Exception as e:
-        print(f"Unexpected error: {e}")
-    finally:
-        if 'conn' in locals() and conn.is_connected():
-            conn.close()
-            print("MySQL connection closed.")

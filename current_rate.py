@@ -1,107 +1,11 @@
+# Necessary imports
 from datetime import datetime, timedelta
 from openpyxl import load_workbook
-import os
-import openpyxl
-import pandas as pd
 import mysql.connector
+import openpyxl
+import os
+import pandas as pd
 import time
-
-# Rates - Supplier Rates for the Month_July 2024
-# DEFINING THE BASE DIRECTORY
-base_directory_1 = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\MORE Energy Sourcing\013. Rate Analysis\005. 2024 Rate Analysis"
-
-# -- GETTING THE CURRENT MONTH AND YEAR -- 
-current_date = datetime.now()
-current_month_numeric = current_date.strftime("%m")  # Month in numeric format (e.g., '01' for January)
-current_month_name = current_date.strftime("%B")   # Full month name (e.g., 'January')
-current_day = current_date.strftime("%d") # Day in numeric format (e.g., '26')
-current_year = current_date.strftime("%Y")   # Year in 4-digit format (e.g., '2024')
-
-#List of all month names
-months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-#Find index of current month
-current_month_index = months.index(current_month_name)
-
-# Initialize current_month_numeric_increment
-current_month_numeric_increment = current_month_numeric # Default to current month if condition not met
-
-if (current_day > '25') and (current_date.strftime("%m") == current_month_numeric):
-    #Increment current month by converting to integer, adding 1, and formatting back to zero-padded string
-    current_month_numeric_increment = '{:02d}'.format((int(current_month_numeric) % 12) + 1)
-    #Calculate index of next month
-    next_month_index = (current_month_index + 1) % 12
-    current_month_name = months[next_month_index]
-
-# -- CONSTRUCTING THE FOLDER NAME --
-folder_prefix = current_month_numeric_increment.zfill(3)  # Zero-padded three-digit month number (e.g., '006' for June)
-folder_name = f"{folder_prefix}. {current_month_name} {current_year}"
-
-# -- CONSTRUCTING THE DIRECTORY PATH --
-folder_path = os.path.join(base_directory_1, folder_name)
-
-# -- CHECK IF THE FOLDER EXISTS AND OPEN IT -- 
-if os.path.exists(folder_path):
-    os.startfile(folder_path)
-    print(f"Opened folder: {folder_path}")
-else:
-    print(f"Folder does not exist: {folder_path}")
-
-# -- ADDITIONAL NEEDED VARIABLES FOR THE FOLDER NAME -- 
-drs = "Daily Rate Simulation_"
-extension = ".xlsx"
-
-# -- FOLDER NAME (Example: Daily Rate Simulation_06252024) -- 
-folder_name_2 = f"{drs}{current_month_numeric}{current_day}{current_year}{extension}"
-folder_path_2 = os.path.join(folder_path, folder_name_2)
-
-# -- FOR CREATING A NEW EXCEL FILE WITH THE NEEDED COLUMNS --
-workbook = openpyxl.Workbook()
-sheet = workbook.active
-sheet['A1'] = 'HOUR' 
-sheet['B1'] = 'BCQ_SCPC' 
-sheet['C1'] = 'RATE_SCPC_B1_FIXED_FEE' 
-sheet['D1'] = 'RATE_SCPC_B1_VARIABLE_FEE'
-sheet['E1'] = 'RATE_SCPC_B2_FIXED_FEE' 
-sheet['F1'] = 'RATE_SCPC_B2_VARIABLE_FEE'
-sheet['G1'] = 'RATE_SCPC_AVE_FIXED_FEE' 
-sheet['H1'] = 'RATE_SCPC_AVE_VARIABLE_FEE'
-sheet['I1'] = 'BCQ_KSPC' 
-sheet['J1'] = 'RATE_KSPC_B1_FIXED_FEE' 
-sheet['K1'] = 'RATE_KSPC_B1_VARIABLE_FEE'
-sheet['L1'] = 'RATE_KSPC_B2_FIXED_FEE' 
-sheet['M1'] = 'RATE_KSPC_B2_VARIABLE_FEE'
-sheet['N1'] = 'RATE_KSPC_AVE_FIXED_FEE' 
-sheet['O1'] = 'RATE_KSPC_AVE_VARIABLE_FEE'
-sheet['P1'] = 'BCQ_EDC' 
-sheet['Q1'] = 'RATE_EDC_FIXED_FEE' 
-sheet['R1'] = 'RATE_EDC_VARIABLE_FEE'
-sheet['S1'] = 'TOTAL_SS_LOAD' 
-sheet['T1'] = 'CONTESTABLE_ENERGY'
-sheet['U1'] = 'TOTAL_BCQ' 
-sheet['V1'] = 'WESM_RATE'
-sheet['W1'] = 'CURRENT_RATE'
-
-workbook.save('current_rate.xlsx')
-workbook.close()
-print("Excel file 'current_rate.xlsx' created successfully.")
-
-# File path for destination Excel file
-destination_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\current_rate.xlsx'
-
-# Load source workbook
-source_wb = load_workbook(folder_path_2, data_only=True)  # Use data_only=True to get values instead of formulas
-# Sheet name of the source workbook
-source_sheet = source_wb['6. DAP Report']
-
-# Load destination workbook
-dest_wb = load_workbook(destination_file_path)
-
-# Sheet name of the destination workbook
-dest_sheet = dest_wb['Sheet']
-
-# Define source and destination ranges
-source_ranges = [('C11', 'C34'), ('G11', 'G34'), ('H11', 'H34'), ('I11', 'I34')]
-dest_ranges = [('A2', 'A25'), ('B2', 'B25'), ('I2', 'I25'), ('P2', 'P25')]
 
 # Function to copy values from source range to destination range
 def copy_values(source_sheet, dest_sheet, source_range, dest_range):
@@ -123,614 +27,696 @@ def copy_values(source_sheet, dest_sheet, source_range, dest_range):
             else:
                 break
 
-# Copy data from source to destination based on specified ranges
-for i in range(len(source_ranges)):
-    copy_values(source_sheet, dest_sheet, source_ranges[i], dest_ranges[i])
-
-# Save the destination workbook
-dest_wb.save(destination_file_path)
-
-# Close workbooks
-source_wb.close()
-dest_wb.close()
-print("Data transfer completed.")
-
-# 2
-value_B2 = dest_sheet['B2'].value
-value_I2 = dest_sheet['I2'].value
-value_P2 = dest_sheet['P2'].value
+def initial_function():
+    # Rates - Supplier Rates for the Month_July 2024
+    # Defining the base directory
+    base_directory_1 = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\MORE Energy Sourcing\013. Rate Analysis\005. 2024 Rate Analysis"
+
+    # Getting the current month and year
+    current_date = datetime.now()
+    current_month_numeric = current_date.strftime("%m")  # Month in numeric format (e.g., '01' for January)
+    current_month_name = current_date.strftime("%B")   # Full month name (e.g., 'January')
+    current_day = current_date.strftime("%d") # Day in numeric format (e.g., '26')
+    current_year = current_date.strftime("%Y")   # Year in 4-digit format (e.g., '2024')
+
+    #List of all month names
+    months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    #Find index of current month
+    current_month_index = months.index(current_month_name)
+
+    # Initialize current_month_numeric_increment
+    current_month_numeric_increment = current_month_numeric # Default to current month if condition not met
+
+    if (current_day > '25') and (current_date.strftime("%m") == current_month_numeric):
+        #Increment current month by converting to integer, adding 1, and formatting back to zero-padded string
+        current_month_numeric_increment = '{:02d}'.format((int(current_month_numeric) % 12) + 1)
+        #Calculate index of next month
+        next_month_index = (current_month_index + 1) % 12
+        current_month_name = months[next_month_index]
+
+    # Constructing the folder name
+    folder_prefix = current_month_numeric_increment.zfill(3)  # Zero-padded three-digit month number (e.g., '006' for June)
+    folder_name = f"{folder_prefix}. {current_month_name} {current_year}"
+
+    # Constructing the directory path
+    folder_path = os.path.join(base_directory_1, folder_name)
+
+    # Additional needed variables for the folder name
+    drs = "Daily Rate Simulation_"
+    extension = ".xlsx"
+
+    # Folder name (Example: Daily Rate Simulation_06252024) 
+    folder_name_2 = f"{drs}{current_month_numeric}{current_day}{current_year}{extension}"
+    folder_path_2 = os.path.join(folder_path, folder_name_2)
+
+    # For creating a new Excel file with the needed columns
+    workbook = openpyxl.Workbook()
+    sheet = workbook.active
+    sheet['A1'] = 'HOUR' 
+    sheet['B1'] = 'BCQ_SCPC' 
+    sheet['C1'] = 'RATE_SCPC_B1_FIXED_FEE' 
+    sheet['D1'] = 'RATE_SCPC_B1_VARIABLE_FEE'
+    sheet['E1'] = 'RATE_SCPC_B2_FIXED_FEE' 
+    sheet['F1'] = 'RATE_SCPC_B2_VARIABLE_FEE'
+    sheet['G1'] = 'RATE_SCPC_AVE_FIXED_FEE' 
+    sheet['H1'] = 'RATE_SCPC_AVE_VARIABLE_FEE'
+    sheet['I1'] = 'BCQ_KSPC' 
+    sheet['J1'] = 'RATE_KSPC_B1_FIXED_FEE' 
+    sheet['K1'] = 'RATE_KSPC_B1_VARIABLE_FEE'
+    sheet['L1'] = 'RATE_KSPC_B2_FIXED_FEE' 
+    sheet['M1'] = 'RATE_KSPC_B2_VARIABLE_FEE'
+    sheet['N1'] = 'RATE_KSPC_AVE_FIXED_FEE' 
+    sheet['O1'] = 'RATE_KSPC_AVE_VARIABLE_FEE'
+    sheet['P1'] = 'BCQ_EDC' 
+    sheet['Q1'] = 'RATE_EDC_FIXED_FEE' 
+    sheet['R1'] = 'RATE_EDC_VARIABLE_FEE'
+    sheet['S1'] = 'TOTAL_SS_LOAD' 
+    sheet['T1'] = 'CONTESTABLE_ENERGY'
+    sheet['U1'] = 'TOTAL_BCQ' 
+    sheet['V1'] = 'WESM_RATE'
+    sheet['W1'] = 'CURRENT_RATE'
+
+    workbook.save('current_rate.xlsx')
+    workbook.close()
+    print("Excel file 'current_rate.xlsx' created successfully.")
+
+    # File path for destination Excel file
+    destination_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\current_rate.xlsx'
+
+    # Load source workbook
+    source_wb = load_workbook(folder_path_2, data_only=True)  # Use data_only=True to get values instead of formulas
+    # Sheet name of the source workbook
+    source_sheet = source_wb['6. DAP Report']
+
+    # Load destination workbook
+    dest_wb = load_workbook(destination_file_path)
+
+    # Sheet name of the destination workbook
+    dest_sheet = dest_wb['Sheet']
+
+    # Define source and destination ranges
+    source_ranges = [('C11', 'C34'), ('G11', 'G34'), ('H11', 'H34'), ('I11', 'I34')]
+    dest_ranges = [('A2', 'A25'), ('B2', 'B25'), ('I2', 'I25'), ('P2', 'P25')]
+
+    # Copy data from source to destination based on specified ranges
+    for i in range(len(source_ranges)):
+        copy_values(source_sheet, dest_sheet, source_ranges[i], dest_ranges[i])
+
+    # Save the destination workbook
+    dest_wb.save(destination_file_path)
+
+    # Close workbooks
+    source_wb.close()
+    dest_wb.close()
+    print("Data transfer completed.")
+
+    # 1st Hour
+    value_B2 = dest_sheet['B2'].value
+    value_I2 = dest_sheet['I2'].value
+    value_P2 = dest_sheet['P2'].value
 
-result2 = value_B2 + value_I2 + value_P2
-dest_sheet['U2'] = result2
-
-# 3
-value_B3 = dest_sheet['B3'].value
-value_I3 = dest_sheet['I3'].value
-value_P3 = dest_sheet['P3'].value
+    result2 = value_B2 + value_I2 + value_P2
+    dest_sheet['U2'] = result2
+
+    # 2nd Hour
+    value_B3 = dest_sheet['B3'].value
+    value_I3 = dest_sheet['I3'].value
+    value_P3 = dest_sheet['P3'].value
 
-result3 = value_B3 + value_I3 + value_P3
-dest_sheet['U3'] = result3
-
-# 4
-value_B4 = dest_sheet['B4'].value
-value_I4 = dest_sheet['I4'].value
-value_P4 = dest_sheet['P4'].value
+    result3 = value_B3 + value_I3 + value_P3
+    dest_sheet['U3'] = result3
+
+    # 3rd Hour
+    value_B4 = dest_sheet['B4'].value
+    value_I4 = dest_sheet['I4'].value
+    value_P4 = dest_sheet['P4'].value
 
-result4 = value_B4 + value_I4 + value_P4
-dest_sheet['U4'] = result4
-
-# 5
-value_B5 = dest_sheet['B5'].value
-value_I5 = dest_sheet['I5'].value
-value_P5 = dest_sheet['P5'].value
+    result4 = value_B4 + value_I4 + value_P4
+    dest_sheet['U4'] = result4
+
+    # 4th Hour
+    value_B5 = dest_sheet['B5'].value
+    value_I5 = dest_sheet['I5'].value
+    value_P5 = dest_sheet['P5'].value
 
-result5 = value_B5 + value_I5 + value_P5
-dest_sheet['U5'] = result5
-
-# 6
-value_B6 = dest_sheet['B6'].value
-value_I6 = dest_sheet['I6'].value
-value_P6 = dest_sheet['P6'].value
+    result5 = value_B5 + value_I5 + value_P5
+    dest_sheet['U5'] = result5
+
+    # 5th Hour
+    value_B6 = dest_sheet['B6'].value
+    value_I6 = dest_sheet['I6'].value
+    value_P6 = dest_sheet['P6'].value
 
-result6 = value_B6 + value_I6 + value_P6
-dest_sheet['U6'] = result6
-
-# 7
-value_B7 = dest_sheet['B7'].value
-value_I7 = dest_sheet['I7'].value
-value_P7 = dest_sheet['P7'].value
+    result6 = value_B6 + value_I6 + value_P6
+    dest_sheet['U6'] = result6
+
+    # 6th Hour
+    value_B7 = dest_sheet['B7'].value
+    value_I7 = dest_sheet['I7'].value
+    value_P7 = dest_sheet['P7'].value
 
-result7 = value_B7 + value_I7 + value_P7
-dest_sheet['U7'] = result7
-
-# 8
-value_B8 = dest_sheet['B8'].value
-value_I8 = dest_sheet['I8'].value
-value_P8 = dest_sheet['P8'].value
+    result7 = value_B7 + value_I7 + value_P7
+    dest_sheet['U7'] = result7
+
+    # 7th Hour
+    value_B8 = dest_sheet['B8'].value
+    value_I8 = dest_sheet['I8'].value
+    value_P8 = dest_sheet['P8'].value
 
-result8 = value_B8 + value_I8 + value_P8
-dest_sheet['U8'] = result8
-
-# 9
-value_B9 = dest_sheet['B9'].value
-value_I9 = dest_sheet['I9'].value
-value_P9 = dest_sheet['P9'].value
+    result8 = value_B8 + value_I8 + value_P8
+    dest_sheet['U8'] = result8
+
+    # 8th Hour
+    value_B9 = dest_sheet['B9'].value
+    value_I9 = dest_sheet['I9'].value
+    value_P9 = dest_sheet['P9'].value
 
-result9 = value_B9 + value_I9 + value_P9
-dest_sheet['U9'] = result9
-
-# 10
-value_B10 = dest_sheet['B10'].value
-value_I10 = dest_sheet['I10'].value
-value_P10 = dest_sheet['P10'].value
+    result9 = value_B9 + value_I9 + value_P9
+    dest_sheet['U9'] = result9
+
+    # 9th Hour
+    value_B10 = dest_sheet['B10'].value
+    value_I10 = dest_sheet['I10'].value
+    value_P10 = dest_sheet['P10'].value
 
-result10 = value_B10 + value_I10 + value_P10
-dest_sheet['U10'] = result10
-
-# 11
-value_B11 = dest_sheet['B11'].value
-value_I11 = dest_sheet['I11'].value
-value_P11 = dest_sheet['P11'].value
+    result10 = value_B10 + value_I10 + value_P10
+    dest_sheet['U10'] = result10
+
+    # 10th Hour
+    value_B11 = dest_sheet['B11'].value
+    value_I11 = dest_sheet['I11'].value
+    value_P11 = dest_sheet['P11'].value
 
-result11 = value_B11 + value_I11 + value_P11
-dest_sheet['U11'] = result11
-
-# 12
-value_B12 = dest_sheet['B12'].value
-value_I12 = dest_sheet['I12'].value
-value_P12 = dest_sheet['P12'].value
+    result11 = value_B11 + value_I11 + value_P11
+    dest_sheet['U11'] = result11
+
+    # 11th Hour
+    value_B12 = dest_sheet['B12'].value
+    value_I12 = dest_sheet['I12'].value
+    value_P12 = dest_sheet['P12'].value
 
-result12 = value_B12 + value_I12 + value_P12
-dest_sheet['U12'] = result12
-
-# 13
-value_B13 = dest_sheet['B13'].value
-value_I13 = dest_sheet['I13'].value
-value_P13 = dest_sheet['P13'].value
+    result12 = value_B12 + value_I12 + value_P12
+    dest_sheet['U12'] = result12
+
+    # 12th Hour
+    value_B13 = dest_sheet['B13'].value
+    value_I13 = dest_sheet['I13'].value
+    value_P13 = dest_sheet['P13'].value
 
-result13 = value_B13 + value_I13 + value_P13
-dest_sheet['U13'] = result13
+    result13 = value_B13 + value_I13 + value_P13
+    dest_sheet['U13'] = result13
 
-# 14
-value_B14 = dest_sheet['B14'].value
-value_I14 = dest_sheet['I14'].value
-value_P14 = dest_sheet['P14'].value
-
-result14 = value_B14 + value_I14 + value_P14
-dest_sheet['U14'] = result14
-
-# 15
-value_B15 = dest_sheet['B15'].value
-value_I15 = dest_sheet['I15'].value
-value_P15 = dest_sheet['P15'].value
-
-result15 = value_B15 + value_I15 + value_P15
-dest_sheet['U15'] = result15
-
-# 16
-value_B16 = dest_sheet['B16'].value
-value_I16 = dest_sheet['I16'].value
-value_P16 = dest_sheet['P16'].value
-
-result16 = value_B16 + value_I16 + value_P16
-dest_sheet['U16'] = result16
-
-# 17
-value_B17 = dest_sheet['B17'].value
-value_I17 = dest_sheet['I17'].value
-value_P17 = dest_sheet['P17'].value
-
-result17 = value_B17 + value_I17 + value_P17 
-dest_sheet['U17'] = result17
-
-# 18
-value_B18 = dest_sheet['B18'].value
-value_I18 = dest_sheet['I18'].value
-value_P18 = dest_sheet['P18'].value
-
-result18 = value_B18 + value_I18 + value_P18
-dest_sheet['U18'] = result18
-
-# 19
-value_B19 = dest_sheet['B19'].value
-value_I19 = dest_sheet['I19'].value
-value_P19 = dest_sheet['P19'].value
-
-result19 = value_B19 + value_I19 + value_P19
-dest_sheet['U19'] = result19
-
-# 20
-value_B20 = dest_sheet['B20'].value
-value_I20 = dest_sheet['I20'].value
-value_P20 = dest_sheet['P20'].value
-
-result20 = value_B20 + value_I20 + value_P20
-dest_sheet['U20'] = result20
-
-# 21
-value_B21 = dest_sheet['B21'].value
-value_I21 = dest_sheet['I21'].value
-value_P21 = dest_sheet['P21'].value
-
-result21 = value_B21 + value_I21 + value_P21
-dest_sheet['U21'] = result21
-
-# 22
-value_B22 = dest_sheet['B22'].value
-value_I22 = dest_sheet['I22'].value
-value_P22 = dest_sheet['P22'].value
-
-result22 = value_B22 + value_I22 + value_P22
-dest_sheet['U22'] = result22
-
-# 23
-value_B23 = dest_sheet['B23'].value
-value_I23 = dest_sheet['I23'].value
-value_P23 = dest_sheet['P23'].value
-
-result23 = value_B23 + value_I23 + value_P23
-dest_sheet['U23'] = result23
-
-# 24
-value_B24 = dest_sheet['B24'].value
-value_I24 = dest_sheet['I24'].value
-value_P24 = dest_sheet['P24'].value
-
-result24 = value_B24 + value_I24 + value_P24
-dest_sheet['U24'] = result24
-
-# 25
-value_B25 = dest_sheet['B25'].value
-value_I25 = dest_sheet['I25'].value
-value_P25 = dest_sheet['P25'].value
-
-result25 = value_B25 + value_I25 + value_P25
-dest_sheet['U25'] = result25
-
-# Save the workbook back to file
-dest_wb.save(destination_file_path)
-
-# COLUMNS C, E, G (RATE) VAT EXCLUSIVE CHARGES
-# Example: Supplier Rates for the Month_July 2024
-srftm = "Supplier Rates for the Month_"
-month_var = "August"
-extension = ".xlsx"
-supplier_rates_folder = f"{srftm}{month_var} {current_year}{extension}"
-supplier_rates_path = os.path.join(folder_path, supplier_rates_folder)
-
-# File path for destination Excel file
-destination_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\current_rate.xlsx'
-
-# Load source workbook
-source_wb_sup = load_workbook(supplier_rates_path, data_only=True)  # Use data_only=True to get values instead of formulas
-# Sheet name of the source workbook
-source_sheet_sup = source_wb_sup['RATES']
-
-# Load destination workbook
-dest_wb = load_workbook(destination_file_path)
-
-# Sheet name of the destination workbook
-dest_sheet = dest_wb['Sheet']
-
-# RATE_SCPC_B1_FIXED_FEE
-scpc_b1_fixed_fee = source_sheet_sup['C17'].value
-scpc_b1_variable_fee = source_sheet_sup['C18'].value
-scpc_b2_fixed_fee = source_sheet_sup['D17'].value
-scpc_b2_variable_fee = source_sheet_sup['D18'].value
-kspc_b1_fixed_fee = source_sheet_sup['E17'].value
-kspc_b1_variable_fee = source_sheet_sup['E18'].value
-kspc_b2_fixed_fee = source_sheet_sup['F17'].value
-kspc_b2_variable_fee = source_sheet_sup['F18'].value
-edc_fixed_fee = source_sheet_sup['G17'].value
-edc_variable_fee = source_sheet_sup['G18'].value
-
-# RATE_SCPC_B1_FIXED_FEE
-dest_sheet['C2'].value = scpc_b1_fixed_fee
-dest_sheet['C3'].value = scpc_b1_fixed_fee
-dest_sheet['C4'].value = scpc_b1_fixed_fee
-dest_sheet['C5'].value = scpc_b1_fixed_fee
-dest_sheet['C6'].value = scpc_b1_fixed_fee
-dest_sheet['C7'].value = scpc_b1_fixed_fee
-dest_sheet['C8'].value = scpc_b1_fixed_fee
-dest_sheet['C9'].value = scpc_b1_fixed_fee
-dest_sheet['C10'].value = scpc_b1_fixed_fee
-dest_sheet['C11'].value = scpc_b1_fixed_fee
-dest_sheet['C12'].value = scpc_b1_fixed_fee
-dest_sheet['C13'].value = scpc_b1_fixed_fee
-dest_sheet['C14'].value = scpc_b1_fixed_fee
-dest_sheet['C15'].value = scpc_b1_fixed_fee
-dest_sheet['C16'].value = scpc_b1_fixed_fee
-dest_sheet['C17'].value = scpc_b1_fixed_fee
-dest_sheet['C18'].value = scpc_b1_fixed_fee
-dest_sheet['C19'].value = scpc_b1_fixed_fee
-dest_sheet['C20'].value = scpc_b1_fixed_fee
-dest_sheet['C21'].value = scpc_b1_fixed_fee
-dest_sheet['C22'].value = scpc_b1_fixed_fee
-dest_sheet['C23'].value = scpc_b1_fixed_fee
-dest_sheet['C24'].value = scpc_b1_fixed_fee
-dest_sheet['C25'].value = scpc_b1_fixed_fee
-
-# RATE_SCPC_B1_VARIABLE_FEE
-dest_sheet['D2'].value = scpc_b1_variable_fee
-dest_sheet['D3'].value = scpc_b1_variable_fee
-dest_sheet['D4'].value = scpc_b1_variable_fee
-dest_sheet['D5'].value = scpc_b1_variable_fee
-dest_sheet['D6'].value = scpc_b1_variable_fee
-dest_sheet['D7'].value = scpc_b1_variable_fee
-dest_sheet['D8'].value = scpc_b1_variable_fee
-dest_sheet['D9'].value = scpc_b1_variable_fee
-dest_sheet['D10'].value = scpc_b1_variable_fee
-dest_sheet['D11'].value = scpc_b1_variable_fee
-dest_sheet['D12'].value = scpc_b1_variable_fee
-dest_sheet['D13'].value = scpc_b1_variable_fee
-dest_sheet['D14'].value = scpc_b1_variable_fee
-dest_sheet['D15'].value = scpc_b1_variable_fee
-dest_sheet['D16'].value = scpc_b1_variable_fee
-dest_sheet['D17'].value = scpc_b1_variable_fee
-dest_sheet['D18'].value = scpc_b1_variable_fee
-dest_sheet['D19'].value = scpc_b1_variable_fee
-dest_sheet['D20'].value = scpc_b1_variable_fee
-dest_sheet['D21'].value = scpc_b1_variable_fee
-dest_sheet['D22'].value = scpc_b1_variable_fee
-dest_sheet['D23'].value = scpc_b1_variable_fee
-dest_sheet['D24'].value = scpc_b1_variable_fee
-dest_sheet['D25'].value = scpc_b1_variable_fee
-
-# RATE_SCPC_B2_FIXED_FEE
-dest_sheet['E2'].value = scpc_b2_fixed_fee
-dest_sheet['E3'].value = scpc_b2_fixed_fee
-dest_sheet['E4'].value = scpc_b2_fixed_fee
-dest_sheet['E5'].value = scpc_b2_fixed_fee
-dest_sheet['E6'].value = scpc_b2_fixed_fee
-dest_sheet['E7'].value = scpc_b2_fixed_fee
-dest_sheet['E8'].value = scpc_b2_fixed_fee
-dest_sheet['E9'].value = scpc_b2_fixed_fee
-dest_sheet['E10'].value = scpc_b2_fixed_fee
-dest_sheet['E11'].value = scpc_b2_fixed_fee
-dest_sheet['E12'].value = scpc_b2_fixed_fee
-dest_sheet['E13'].value = scpc_b2_fixed_fee
-dest_sheet['E14'].value = scpc_b2_fixed_fee
-dest_sheet['E15'].value = scpc_b2_fixed_fee
-dest_sheet['E16'].value = scpc_b2_fixed_fee
-dest_sheet['E17'].value = scpc_b2_fixed_fee
-dest_sheet['E18'].value = scpc_b2_fixed_fee
-dest_sheet['E19'].value = scpc_b2_fixed_fee
-dest_sheet['E20'].value = scpc_b2_fixed_fee
-dest_sheet['E21'].value = scpc_b2_fixed_fee
-dest_sheet['E22'].value = scpc_b2_fixed_fee
-dest_sheet['E23'].value = scpc_b2_fixed_fee
-dest_sheet['E24'].value = scpc_b2_fixed_fee
-dest_sheet['E25'].value = scpc_b2_fixed_fee
-
-# RATE_SCPC_B2_VARIABLE_FEE
-dest_sheet['F2'].value = scpc_b2_variable_fee
-dest_sheet['F3'].value = scpc_b2_variable_fee
-dest_sheet['F4'].value = scpc_b2_variable_fee
-dest_sheet['F5'].value = scpc_b2_variable_fee
-dest_sheet['F6'].value = scpc_b2_variable_fee
-dest_sheet['F7'].value = scpc_b2_variable_fee
-dest_sheet['F8'].value = scpc_b2_variable_fee
-dest_sheet['F9'].value = scpc_b2_variable_fee
-dest_sheet['F10'].value = scpc_b2_variable_fee
-dest_sheet['F11'].value = scpc_b2_variable_fee
-dest_sheet['F12'].value = scpc_b2_variable_fee
-dest_sheet['F13'].value = scpc_b2_variable_fee
-dest_sheet['F14'].value = scpc_b2_variable_fee
-dest_sheet['F15'].value = scpc_b2_variable_fee
-dest_sheet['F16'].value = scpc_b2_variable_fee
-dest_sheet['F17'].value = scpc_b2_variable_fee
-dest_sheet['F18'].value = scpc_b2_variable_fee
-dest_sheet['F19'].value = scpc_b2_variable_fee
-dest_sheet['F20'].value = scpc_b2_variable_fee
-dest_sheet['F21'].value = scpc_b2_variable_fee
-dest_sheet['F22'].value = scpc_b2_variable_fee
-dest_sheet['F23'].value = scpc_b2_variable_fee
-dest_sheet['F24'].value = scpc_b2_variable_fee
-dest_sheet['F25'].value = scpc_b2_variable_fee
-
-# RATE_SCPC_AVE_FIXED_FEE
-dest_sheet['G2'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
-dest_sheet['G3'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
-dest_sheet['G4'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
-dest_sheet['G5'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
-dest_sheet['G6'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
-dest_sheet['G7'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
-dest_sheet['G8'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
-dest_sheet['G9'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
-dest_sheet['G10'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
-dest_sheet['G11'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
-dest_sheet['G12'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
-dest_sheet['G13'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
-dest_sheet['G14'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
-dest_sheet['G15'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
-dest_sheet['G16'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
-dest_sheet['G17'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
-dest_sheet['G18'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
-dest_sheet['G19'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
-dest_sheet['G20'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
-dest_sheet['G21'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
-dest_sheet['G22'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
-dest_sheet['G23'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
-dest_sheet['G24'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
-dest_sheet['G25'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
-
-# RATE_SCPC_AVE_VARIABLE_FEE
-dest_sheet['H2'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
-dest_sheet['H3'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
-dest_sheet['H4'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
-dest_sheet['H5'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
-dest_sheet['H6'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
-dest_sheet['H7'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
-dest_sheet['H8'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
-dest_sheet['H9'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
-dest_sheet['H10'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
-dest_sheet['H11'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
-dest_sheet['H12'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
-dest_sheet['H13'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
-dest_sheet['H14'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
-dest_sheet['H15'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
-dest_sheet['H16'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
-dest_sheet['H17'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
-dest_sheet['H18'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
-dest_sheet['H19'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
-dest_sheet['H20'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
-dest_sheet['H21'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
-dest_sheet['H22'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
-dest_sheet['H23'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
-dest_sheet['H24'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
-dest_sheet['H25'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
-
-# RATE_KSPC_B1_FIXED_FEE
-dest_sheet['J2'].value = kspc_b1_fixed_fee
-dest_sheet['J3'].value = kspc_b1_fixed_fee
-dest_sheet['J4'].value = kspc_b1_fixed_fee
-dest_sheet['J5'].value = kspc_b1_fixed_fee
-dest_sheet['J6'].value = kspc_b1_fixed_fee
-dest_sheet['J7'].value = kspc_b1_fixed_fee
-dest_sheet['J8'].value = kspc_b1_fixed_fee
-dest_sheet['J9'].value = kspc_b1_fixed_fee
-dest_sheet['J10'].value = kspc_b1_fixed_fee
-dest_sheet['J11'].value = kspc_b1_fixed_fee
-dest_sheet['J12'].value = kspc_b1_fixed_fee
-dest_sheet['J13'].value = kspc_b1_fixed_fee
-dest_sheet['J14'].value = kspc_b1_fixed_fee
-dest_sheet['J15'].value = kspc_b1_fixed_fee
-dest_sheet['J16'].value = kspc_b1_fixed_fee
-dest_sheet['J17'].value = kspc_b1_fixed_fee
-dest_sheet['J18'].value = kspc_b1_fixed_fee
-dest_sheet['J19'].value = kspc_b1_fixed_fee
-dest_sheet['J20'].value = kspc_b1_fixed_fee
-dest_sheet['J21'].value = kspc_b1_fixed_fee
-dest_sheet['J22'].value = kspc_b1_fixed_fee
-dest_sheet['J23'].value = kspc_b1_fixed_fee
-dest_sheet['J24'].value = kspc_b1_fixed_fee
-dest_sheet['J25'].value = kspc_b1_fixed_fee
-
-# RATE_KSPC_B1_VARIABLE_FEE
-dest_sheet['K2'].value = kspc_b1_variable_fee
-dest_sheet['K3'].value = kspc_b1_variable_fee
-dest_sheet['K4'].value = kspc_b1_variable_fee
-dest_sheet['K5'].value = kspc_b1_variable_fee
-dest_sheet['K6'].value = kspc_b1_variable_fee
-dest_sheet['K7'].value = kspc_b1_variable_fee
-dest_sheet['K8'].value = kspc_b1_variable_fee
-dest_sheet['K9'].value = kspc_b1_variable_fee
-dest_sheet['K10'].value = kspc_b1_variable_fee
-dest_sheet['K11'].value = kspc_b1_variable_fee
-dest_sheet['K12'].value = kspc_b1_variable_fee
-dest_sheet['K13'].value = kspc_b1_variable_fee
-dest_sheet['K14'].value = kspc_b1_variable_fee
-dest_sheet['K15'].value = kspc_b1_variable_fee
-dest_sheet['K16'].value = kspc_b1_variable_fee
-dest_sheet['K17'].value = kspc_b1_variable_fee
-dest_sheet['K18'].value = kspc_b1_variable_fee
-dest_sheet['K19'].value = kspc_b1_variable_fee
-dest_sheet['K20'].value = kspc_b1_variable_fee
-dest_sheet['K21'].value = kspc_b1_variable_fee
-dest_sheet['K22'].value = kspc_b1_variable_fee
-dest_sheet['K23'].value = kspc_b1_variable_fee
-dest_sheet['K24'].value = kspc_b1_variable_fee
-dest_sheet['K25'].value = kspc_b1_variable_fee
-
-# RATE_KSPC_B2_FIXED_FEE
-dest_sheet['L2'].value = kspc_b2_fixed_fee
-dest_sheet['L3'].value = kspc_b2_fixed_fee
-dest_sheet['L4'].value = kspc_b2_fixed_fee
-dest_sheet['L5'].value = kspc_b2_fixed_fee
-dest_sheet['L6'].value = kspc_b2_fixed_fee
-dest_sheet['L7'].value = kspc_b2_fixed_fee
-dest_sheet['L8'].value = kspc_b2_fixed_fee
-dest_sheet['L9'].value = kspc_b2_fixed_fee
-dest_sheet['L10'].value = kspc_b2_fixed_fee
-dest_sheet['L11'].value = kspc_b2_fixed_fee
-dest_sheet['L12'].value = kspc_b2_fixed_fee
-dest_sheet['L13'].value = kspc_b2_fixed_fee
-dest_sheet['L14'].value = kspc_b2_fixed_fee
-dest_sheet['L15'].value = kspc_b2_fixed_fee
-dest_sheet['L16'].value = kspc_b2_fixed_fee
-dest_sheet['L17'].value = kspc_b2_fixed_fee
-dest_sheet['L18'].value = kspc_b2_fixed_fee
-dest_sheet['L19'].value = kspc_b2_fixed_fee
-dest_sheet['L20'].value = kspc_b2_fixed_fee
-dest_sheet['L21'].value = kspc_b2_fixed_fee
-dest_sheet['L22'].value = kspc_b2_fixed_fee
-dest_sheet['L23'].value = kspc_b2_fixed_fee
-dest_sheet['L24'].value = kspc_b2_fixed_fee
-dest_sheet['L25'].value = kspc_b2_fixed_fee
-
-# RATE_KSPC_B2_VARIABLE_FEE
-dest_sheet['M2'].value = kspc_b2_variable_fee
-dest_sheet['M3'].value = kspc_b2_variable_fee
-dest_sheet['M4'].value = kspc_b2_variable_fee
-dest_sheet['M5'].value = kspc_b2_variable_fee
-dest_sheet['M6'].value = kspc_b2_variable_fee
-dest_sheet['M7'].value = kspc_b2_variable_fee
-dest_sheet['M8'].value = kspc_b2_variable_fee
-dest_sheet['M9'].value = kspc_b2_variable_fee
-dest_sheet['M10'].value = kspc_b2_variable_fee
-dest_sheet['M11'].value = kspc_b2_variable_fee
-dest_sheet['M12'].value = kspc_b2_variable_fee
-dest_sheet['M13'].value = kspc_b2_variable_fee
-dest_sheet['M14'].value = kspc_b2_variable_fee
-dest_sheet['M15'].value = kspc_b2_variable_fee
-dest_sheet['M16'].value = kspc_b2_variable_fee
-dest_sheet['M17'].value = kspc_b2_variable_fee
-dest_sheet['M18'].value = kspc_b2_variable_fee
-dest_sheet['M19'].value = kspc_b2_variable_fee
-dest_sheet['M20'].value = kspc_b2_variable_fee
-dest_sheet['M21'].value = kspc_b2_variable_fee
-dest_sheet['M22'].value = kspc_b2_variable_fee
-dest_sheet['M23'].value = kspc_b2_variable_fee
-dest_sheet['M24'].value = kspc_b2_variable_fee
-dest_sheet['M25'].value = kspc_b2_variable_fee
-
-# RATE_KSPC_AVE_FIXED_FEE
-dest_sheet['N2'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
-dest_sheet['N3'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
-dest_sheet['N4'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
-dest_sheet['N5'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
-dest_sheet['N6'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
-dest_sheet['N7'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
-dest_sheet['N8'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
-dest_sheet['N9'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
-dest_sheet['N10'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
-dest_sheet['N11'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
-dest_sheet['N12'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
-dest_sheet['N13'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
-dest_sheet['N14'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
-dest_sheet['N15'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
-dest_sheet['N16'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
-dest_sheet['N17'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
-dest_sheet['N18'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
-dest_sheet['N19'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
-dest_sheet['N20'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
-dest_sheet['N21'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
-dest_sheet['N22'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
-dest_sheet['N23'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
-dest_sheet['N24'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
-dest_sheet['N25'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
-
-# RATE_KSPC_AVE_VARIABLE_FEE
-dest_sheet['O2'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
-dest_sheet['O3'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
-dest_sheet['O4'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
-dest_sheet['O5'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
-dest_sheet['O6'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
-dest_sheet['O7'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
-dest_sheet['O8'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
-dest_sheet['O9'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
-dest_sheet['O10'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
-dest_sheet['O11'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
-dest_sheet['O12'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
-dest_sheet['O13'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
-dest_sheet['O14'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
-dest_sheet['O15'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
-dest_sheet['O16'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
-dest_sheet['O17'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
-dest_sheet['O18'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
-dest_sheet['O19'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
-dest_sheet['O20'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
-dest_sheet['O21'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
-dest_sheet['O22'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
-dest_sheet['O23'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
-dest_sheet['O24'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
-dest_sheet['O25'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
-
-# RATE_EDC_FIXED_FEE
-dest_sheet['Q2'].value = edc_fixed_fee
-dest_sheet['Q3'].value = edc_fixed_fee
-dest_sheet['Q4'].value = edc_fixed_fee
-dest_sheet['Q5'].value = edc_fixed_fee
-dest_sheet['Q6'].value = edc_fixed_fee
-dest_sheet['Q7'].value = edc_fixed_fee
-dest_sheet['Q8'].value = edc_fixed_fee
-dest_sheet['Q9'].value = edc_fixed_fee
-dest_sheet['Q10'].value = edc_fixed_fee
-dest_sheet['Q11'].value = edc_fixed_fee
-dest_sheet['Q12'].value = edc_fixed_fee
-dest_sheet['Q13'].value = edc_fixed_fee
-dest_sheet['Q14'].value = edc_fixed_fee
-dest_sheet['Q15'].value = edc_fixed_fee
-dest_sheet['Q16'].value = edc_fixed_fee
-dest_sheet['Q17'].value = edc_fixed_fee
-dest_sheet['Q18'].value = edc_fixed_fee
-dest_sheet['Q19'].value = edc_fixed_fee
-dest_sheet['Q20'].value = edc_fixed_fee
-dest_sheet['Q21'].value = edc_fixed_fee
-dest_sheet['Q22'].value = edc_fixed_fee
-dest_sheet['Q23'].value = edc_fixed_fee
-dest_sheet['Q24'].value = edc_fixed_fee
-dest_sheet['Q25'].value = edc_fixed_fee
-
-# RATE_EDC_VARIABLE_FEE
-dest_sheet['R2'].value = edc_variable_fee
-dest_sheet['R3'].value = edc_variable_fee
-dest_sheet['R4'].value = edc_variable_fee
-dest_sheet['R5'].value = edc_variable_fee
-dest_sheet['R6'].value = edc_variable_fee
-dest_sheet['R7'].value = edc_variable_fee
-dest_sheet['R8'].value = edc_variable_fee
-dest_sheet['R9'].value = edc_variable_fee
-dest_sheet['R10'].value = edc_variable_fee
-dest_sheet['R11'].value = edc_variable_fee
-dest_sheet['R12'].value = edc_variable_fee
-dest_sheet['R13'].value = edc_variable_fee
-dest_sheet['R14'].value = edc_variable_fee
-dest_sheet['R15'].value = edc_variable_fee
-dest_sheet['R16'].value = edc_variable_fee
-dest_sheet['R17'].value = edc_variable_fee
-dest_sheet['R18'].value = edc_variable_fee
-dest_sheet['R19'].value = edc_variable_fee
-dest_sheet['R20'].value = edc_variable_fee
-dest_sheet['R21'].value = edc_variable_fee
-dest_sheet['R22'].value = edc_variable_fee
-dest_sheet['R23'].value = edc_variable_fee
-dest_sheet['R24'].value = edc_variable_fee
-dest_sheet['R25'].value = edc_variable_fee
-
-# TOTAL SS LOAD
+    # 13th Hour
+    value_B14 = dest_sheet['B14'].value
+    value_I14 = dest_sheet['I14'].value
+    value_P14 = dest_sheet['P14'].value
+
+    result14 = value_B14 + value_I14 + value_P14
+    dest_sheet['U14'] = result14
+
+    # 14th Hour
+    value_B15 = dest_sheet['B15'].value
+    value_I15 = dest_sheet['I15'].value
+    value_P15 = dest_sheet['P15'].value
+
+    result15 = value_B15 + value_I15 + value_P15
+    dest_sheet['U15'] = result15
+
+    # 15th Hour
+    value_B16 = dest_sheet['B16'].value
+    value_I16 = dest_sheet['I16'].value
+    value_P16 = dest_sheet['P16'].value
+
+    result16 = value_B16 + value_I16 + value_P16
+    dest_sheet['U16'] = result16
+
+    # 16th Hour
+    value_B17 = dest_sheet['B17'].value
+    value_I17 = dest_sheet['I17'].value
+    value_P17 = dest_sheet['P17'].value
+
+    result17 = value_B17 + value_I17 + value_P17 
+    dest_sheet['U17'] = result17
+
+    # 17th Hour
+    value_B18 = dest_sheet['B18'].value
+    value_I18 = dest_sheet['I18'].value
+    value_P18 = dest_sheet['P18'].value
+
+    result18 = value_B18 + value_I18 + value_P18
+    dest_sheet['U18'] = result18
+
+    # 18th Hour
+    value_B19 = dest_sheet['B19'].value
+    value_I19 = dest_sheet['I19'].value
+    value_P19 = dest_sheet['P19'].value
+
+    result19 = value_B19 + value_I19 + value_P19
+    dest_sheet['U19'] = result19
+
+    # 19th Hour
+    value_B20 = dest_sheet['B20'].value
+    value_I20 = dest_sheet['I20'].value
+    value_P20 = dest_sheet['P20'].value
+
+    result20 = value_B20 + value_I20 + value_P20
+    dest_sheet['U20'] = result20
+
+    # 20th Hour
+    value_B21 = dest_sheet['B21'].value
+    value_I21 = dest_sheet['I21'].value
+    value_P21 = dest_sheet['P21'].value
+
+    result21 = value_B21 + value_I21 + value_P21
+    dest_sheet['U21'] = result21
+
+    # 21th Hour
+    value_B22 = dest_sheet['B22'].value
+    value_I22 = dest_sheet['I22'].value
+    value_P22 = dest_sheet['P22'].value
+
+    result22 = value_B22 + value_I22 + value_P22
+    dest_sheet['U22'] = result22
+
+    # 22th Hour
+    value_B23 = dest_sheet['B23'].value
+    value_I23 = dest_sheet['I23'].value
+    value_P23 = dest_sheet['P23'].value
+
+    result23 = value_B23 + value_I23 + value_P23
+    dest_sheet['U23'] = result23
+
+    # 23rd Hour
+    value_B24 = dest_sheet['B24'].value
+    value_I24 = dest_sheet['I24'].value
+    value_P24 = dest_sheet['P24'].value
+
+    result24 = value_B24 + value_I24 + value_P24
+    dest_sheet['U24'] = result24
+
+    # 24th Hour
+    value_B25 = dest_sheet['B25'].value
+    value_I25 = dest_sheet['I25'].value
+    value_P25 = dest_sheet['P25'].value
+
+    result25 = value_B25 + value_I25 + value_P25
+    dest_sheet['U25'] = result25
+
+    # Save the workbook back to file
+    dest_wb.save(destination_file_path)
+
+    # Example: Supplier Rates for the Month_August 2024
+    srftm = "Supplier Rates for the Month_"
+    date_currently = datetime.now()
+    month_var = date_currently.strftime("%B") # Example: "August"
+    extension = ".xlsx"
+    supplier_rates_folder = f"{srftm}{month_var} {current_year}{extension}"
+    supplier_rates_path = os.path.join(folder_path, supplier_rates_folder)
+
+    # File path for destination Excel file
+    destination_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\current_rate.xlsx'
+
+    # Load source workbook
+    source_wb_sup = load_workbook(supplier_rates_path, data_only=True)  # Use data_only=True to get values instead of formulas
+    # Sheet name of the source workbook
+    source_sheet_sup = source_wb_sup['RATES']
+
+    # Load destination workbook
+    dest_wb = load_workbook(destination_file_path)
+
+    # Sheet name of the destination workbook
+    dest_sheet = dest_wb['Sheet']
+
+    scpc_b1_fixed_fee = source_sheet_sup['C17'].value
+    scpc_b1_variable_fee = source_sheet_sup['C18'].value
+    scpc_b2_fixed_fee = source_sheet_sup['D17'].value
+    scpc_b2_variable_fee = source_sheet_sup['D18'].value
+    kspc_b1_fixed_fee = source_sheet_sup['E17'].value
+    kspc_b1_variable_fee = source_sheet_sup['E18'].value
+    kspc_b2_fixed_fee = source_sheet_sup['F17'].value
+    kspc_b2_variable_fee = source_sheet_sup['F18'].value
+    edc_fixed_fee = source_sheet_sup['G17'].value
+    edc_variable_fee = source_sheet_sup['G18'].value
+    
+    dest_sheet['C2'].value = scpc_b1_fixed_fee
+    dest_sheet['C3'].value = scpc_b1_fixed_fee
+    dest_sheet['C4'].value = scpc_b1_fixed_fee
+    dest_sheet['C5'].value = scpc_b1_fixed_fee
+    dest_sheet['C6'].value = scpc_b1_fixed_fee
+    dest_sheet['C7'].value = scpc_b1_fixed_fee
+    dest_sheet['C8'].value = scpc_b1_fixed_fee
+    dest_sheet['C9'].value = scpc_b1_fixed_fee
+    dest_sheet['C10'].value = scpc_b1_fixed_fee
+    dest_sheet['C11'].value = scpc_b1_fixed_fee
+    dest_sheet['C12'].value = scpc_b1_fixed_fee
+    dest_sheet['C13'].value = scpc_b1_fixed_fee
+    dest_sheet['C14'].value = scpc_b1_fixed_fee
+    dest_sheet['C15'].value = scpc_b1_fixed_fee
+    dest_sheet['C16'].value = scpc_b1_fixed_fee
+    dest_sheet['C17'].value = scpc_b1_fixed_fee
+    dest_sheet['C18'].value = scpc_b1_fixed_fee
+    dest_sheet['C19'].value = scpc_b1_fixed_fee
+    dest_sheet['C20'].value = scpc_b1_fixed_fee
+    dest_sheet['C21'].value = scpc_b1_fixed_fee
+    dest_sheet['C22'].value = scpc_b1_fixed_fee
+    dest_sheet['C23'].value = scpc_b1_fixed_fee
+    dest_sheet['C24'].value = scpc_b1_fixed_fee
+    dest_sheet['C25'].value = scpc_b1_fixed_fee
+
+    dest_sheet['D2'].value = scpc_b1_variable_fee
+    dest_sheet['D3'].value = scpc_b1_variable_fee
+    dest_sheet['D4'].value = scpc_b1_variable_fee
+    dest_sheet['D5'].value = scpc_b1_variable_fee
+    dest_sheet['D6'].value = scpc_b1_variable_fee
+    dest_sheet['D7'].value = scpc_b1_variable_fee
+    dest_sheet['D8'].value = scpc_b1_variable_fee
+    dest_sheet['D9'].value = scpc_b1_variable_fee
+    dest_sheet['D10'].value = scpc_b1_variable_fee
+    dest_sheet['D11'].value = scpc_b1_variable_fee
+    dest_sheet['D12'].value = scpc_b1_variable_fee
+    dest_sheet['D13'].value = scpc_b1_variable_fee
+    dest_sheet['D14'].value = scpc_b1_variable_fee
+    dest_sheet['D15'].value = scpc_b1_variable_fee
+    dest_sheet['D16'].value = scpc_b1_variable_fee
+    dest_sheet['D17'].value = scpc_b1_variable_fee
+    dest_sheet['D18'].value = scpc_b1_variable_fee
+    dest_sheet['D19'].value = scpc_b1_variable_fee
+    dest_sheet['D20'].value = scpc_b1_variable_fee
+    dest_sheet['D21'].value = scpc_b1_variable_fee
+    dest_sheet['D22'].value = scpc_b1_variable_fee
+    dest_sheet['D23'].value = scpc_b1_variable_fee
+    dest_sheet['D24'].value = scpc_b1_variable_fee
+    dest_sheet['D25'].value = scpc_b1_variable_fee
+
+    dest_sheet['E2'].value = scpc_b2_fixed_fee
+    dest_sheet['E3'].value = scpc_b2_fixed_fee
+    dest_sheet['E4'].value = scpc_b2_fixed_fee
+    dest_sheet['E5'].value = scpc_b2_fixed_fee
+    dest_sheet['E6'].value = scpc_b2_fixed_fee
+    dest_sheet['E7'].value = scpc_b2_fixed_fee
+    dest_sheet['E8'].value = scpc_b2_fixed_fee
+    dest_sheet['E9'].value = scpc_b2_fixed_fee
+    dest_sheet['E10'].value = scpc_b2_fixed_fee
+    dest_sheet['E11'].value = scpc_b2_fixed_fee
+    dest_sheet['E12'].value = scpc_b2_fixed_fee
+    dest_sheet['E13'].value = scpc_b2_fixed_fee
+    dest_sheet['E14'].value = scpc_b2_fixed_fee
+    dest_sheet['E15'].value = scpc_b2_fixed_fee
+    dest_sheet['E16'].value = scpc_b2_fixed_fee
+    dest_sheet['E17'].value = scpc_b2_fixed_fee
+    dest_sheet['E18'].value = scpc_b2_fixed_fee
+    dest_sheet['E19'].value = scpc_b2_fixed_fee
+    dest_sheet['E20'].value = scpc_b2_fixed_fee
+    dest_sheet['E21'].value = scpc_b2_fixed_fee
+    dest_sheet['E22'].value = scpc_b2_fixed_fee
+    dest_sheet['E23'].value = scpc_b2_fixed_fee
+    dest_sheet['E24'].value = scpc_b2_fixed_fee
+    dest_sheet['E25'].value = scpc_b2_fixed_fee
+
+    dest_sheet['F2'].value = scpc_b2_variable_fee
+    dest_sheet['F3'].value = scpc_b2_variable_fee
+    dest_sheet['F4'].value = scpc_b2_variable_fee
+    dest_sheet['F5'].value = scpc_b2_variable_fee
+    dest_sheet['F6'].value = scpc_b2_variable_fee
+    dest_sheet['F7'].value = scpc_b2_variable_fee
+    dest_sheet['F8'].value = scpc_b2_variable_fee
+    dest_sheet['F9'].value = scpc_b2_variable_fee
+    dest_sheet['F10'].value = scpc_b2_variable_fee
+    dest_sheet['F11'].value = scpc_b2_variable_fee
+    dest_sheet['F12'].value = scpc_b2_variable_fee
+    dest_sheet['F13'].value = scpc_b2_variable_fee
+    dest_sheet['F14'].value = scpc_b2_variable_fee
+    dest_sheet['F15'].value = scpc_b2_variable_fee
+    dest_sheet['F16'].value = scpc_b2_variable_fee
+    dest_sheet['F17'].value = scpc_b2_variable_fee
+    dest_sheet['F18'].value = scpc_b2_variable_fee
+    dest_sheet['F19'].value = scpc_b2_variable_fee
+    dest_sheet['F20'].value = scpc_b2_variable_fee
+    dest_sheet['F21'].value = scpc_b2_variable_fee
+    dest_sheet['F22'].value = scpc_b2_variable_fee
+    dest_sheet['F23'].value = scpc_b2_variable_fee
+    dest_sheet['F24'].value = scpc_b2_variable_fee
+    dest_sheet['F25'].value = scpc_b2_variable_fee
+
+    dest_sheet['G2'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
+    dest_sheet['G3'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
+    dest_sheet['G4'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
+    dest_sheet['G5'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
+    dest_sheet['G6'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
+    dest_sheet['G7'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
+    dest_sheet['G8'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
+    dest_sheet['G9'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
+    dest_sheet['G10'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
+    dest_sheet['G11'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
+    dest_sheet['G12'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
+    dest_sheet['G13'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
+    dest_sheet['G14'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
+    dest_sheet['G15'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
+    dest_sheet['G16'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
+    dest_sheet['G17'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
+    dest_sheet['G18'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
+    dest_sheet['G19'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
+    dest_sheet['G20'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
+    dest_sheet['G21'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
+    dest_sheet['G22'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
+    dest_sheet['G23'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
+    dest_sheet['G24'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
+    dest_sheet['G25'].value = (scpc_b1_fixed_fee + scpc_b2_fixed_fee)/2
+
+    dest_sheet['H2'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
+    dest_sheet['H3'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
+    dest_sheet['H4'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
+    dest_sheet['H5'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
+    dest_sheet['H6'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
+    dest_sheet['H7'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
+    dest_sheet['H8'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
+    dest_sheet['H9'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
+    dest_sheet['H10'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
+    dest_sheet['H11'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
+    dest_sheet['H12'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
+    dest_sheet['H13'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
+    dest_sheet['H14'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
+    dest_sheet['H15'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
+    dest_sheet['H16'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
+    dest_sheet['H17'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
+    dest_sheet['H18'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
+    dest_sheet['H19'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
+    dest_sheet['H20'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
+    dest_sheet['H21'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
+    dest_sheet['H22'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
+    dest_sheet['H23'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
+    dest_sheet['H24'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
+    dest_sheet['H25'].value = (scpc_b1_variable_fee + scpc_b2_variable_fee)/2
+
+    dest_sheet['J2'].value = kspc_b1_fixed_fee
+    dest_sheet['J3'].value = kspc_b1_fixed_fee
+    dest_sheet['J4'].value = kspc_b1_fixed_fee
+    dest_sheet['J5'].value = kspc_b1_fixed_fee
+    dest_sheet['J6'].value = kspc_b1_fixed_fee
+    dest_sheet['J7'].value = kspc_b1_fixed_fee
+    dest_sheet['J8'].value = kspc_b1_fixed_fee
+    dest_sheet['J9'].value = kspc_b1_fixed_fee
+    dest_sheet['J10'].value = kspc_b1_fixed_fee
+    dest_sheet['J11'].value = kspc_b1_fixed_fee
+    dest_sheet['J12'].value = kspc_b1_fixed_fee
+    dest_sheet['J13'].value = kspc_b1_fixed_fee
+    dest_sheet['J14'].value = kspc_b1_fixed_fee
+    dest_sheet['J15'].value = kspc_b1_fixed_fee
+    dest_sheet['J16'].value = kspc_b1_fixed_fee
+    dest_sheet['J17'].value = kspc_b1_fixed_fee
+    dest_sheet['J18'].value = kspc_b1_fixed_fee
+    dest_sheet['J19'].value = kspc_b1_fixed_fee
+    dest_sheet['J20'].value = kspc_b1_fixed_fee
+    dest_sheet['J21'].value = kspc_b1_fixed_fee
+    dest_sheet['J22'].value = kspc_b1_fixed_fee
+    dest_sheet['J23'].value = kspc_b1_fixed_fee
+    dest_sheet['J24'].value = kspc_b1_fixed_fee
+    dest_sheet['J25'].value = kspc_b1_fixed_fee
+
+    dest_sheet['K2'].value = kspc_b1_variable_fee
+    dest_sheet['K3'].value = kspc_b1_variable_fee
+    dest_sheet['K4'].value = kspc_b1_variable_fee
+    dest_sheet['K5'].value = kspc_b1_variable_fee
+    dest_sheet['K6'].value = kspc_b1_variable_fee
+    dest_sheet['K7'].value = kspc_b1_variable_fee
+    dest_sheet['K8'].value = kspc_b1_variable_fee
+    dest_sheet['K9'].value = kspc_b1_variable_fee
+    dest_sheet['K10'].value = kspc_b1_variable_fee
+    dest_sheet['K11'].value = kspc_b1_variable_fee
+    dest_sheet['K12'].value = kspc_b1_variable_fee
+    dest_sheet['K13'].value = kspc_b1_variable_fee
+    dest_sheet['K14'].value = kspc_b1_variable_fee
+    dest_sheet['K15'].value = kspc_b1_variable_fee
+    dest_sheet['K16'].value = kspc_b1_variable_fee
+    dest_sheet['K17'].value = kspc_b1_variable_fee
+    dest_sheet['K18'].value = kspc_b1_variable_fee
+    dest_sheet['K19'].value = kspc_b1_variable_fee
+    dest_sheet['K20'].value = kspc_b1_variable_fee
+    dest_sheet['K21'].value = kspc_b1_variable_fee
+    dest_sheet['K22'].value = kspc_b1_variable_fee
+    dest_sheet['K23'].value = kspc_b1_variable_fee
+    dest_sheet['K24'].value = kspc_b1_variable_fee
+    dest_sheet['K25'].value = kspc_b1_variable_fee
+
+    dest_sheet['L2'].value = kspc_b2_fixed_fee
+    dest_sheet['L3'].value = kspc_b2_fixed_fee
+    dest_sheet['L4'].value = kspc_b2_fixed_fee
+    dest_sheet['L5'].value = kspc_b2_fixed_fee
+    dest_sheet['L6'].value = kspc_b2_fixed_fee
+    dest_sheet['L7'].value = kspc_b2_fixed_fee
+    dest_sheet['L8'].value = kspc_b2_fixed_fee
+    dest_sheet['L9'].value = kspc_b2_fixed_fee
+    dest_sheet['L10'].value = kspc_b2_fixed_fee
+    dest_sheet['L11'].value = kspc_b2_fixed_fee
+    dest_sheet['L12'].value = kspc_b2_fixed_fee
+    dest_sheet['L13'].value = kspc_b2_fixed_fee
+    dest_sheet['L14'].value = kspc_b2_fixed_fee
+    dest_sheet['L15'].value = kspc_b2_fixed_fee
+    dest_sheet['L16'].value = kspc_b2_fixed_fee
+    dest_sheet['L17'].value = kspc_b2_fixed_fee
+    dest_sheet['L18'].value = kspc_b2_fixed_fee
+    dest_sheet['L19'].value = kspc_b2_fixed_fee
+    dest_sheet['L20'].value = kspc_b2_fixed_fee
+    dest_sheet['L21'].value = kspc_b2_fixed_fee
+    dest_sheet['L22'].value = kspc_b2_fixed_fee
+    dest_sheet['L23'].value = kspc_b2_fixed_fee
+    dest_sheet['L24'].value = kspc_b2_fixed_fee
+    dest_sheet['L25'].value = kspc_b2_fixed_fee
+
+    dest_sheet['M2'].value = kspc_b2_variable_fee
+    dest_sheet['M3'].value = kspc_b2_variable_fee
+    dest_sheet['M4'].value = kspc_b2_variable_fee
+    dest_sheet['M5'].value = kspc_b2_variable_fee
+    dest_sheet['M6'].value = kspc_b2_variable_fee
+    dest_sheet['M7'].value = kspc_b2_variable_fee
+    dest_sheet['M8'].value = kspc_b2_variable_fee
+    dest_sheet['M9'].value = kspc_b2_variable_fee
+    dest_sheet['M10'].value = kspc_b2_variable_fee
+    dest_sheet['M11'].value = kspc_b2_variable_fee
+    dest_sheet['M12'].value = kspc_b2_variable_fee
+    dest_sheet['M13'].value = kspc_b2_variable_fee
+    dest_sheet['M14'].value = kspc_b2_variable_fee
+    dest_sheet['M15'].value = kspc_b2_variable_fee
+    dest_sheet['M16'].value = kspc_b2_variable_fee
+    dest_sheet['M17'].value = kspc_b2_variable_fee
+    dest_sheet['M18'].value = kspc_b2_variable_fee
+    dest_sheet['M19'].value = kspc_b2_variable_fee
+    dest_sheet['M20'].value = kspc_b2_variable_fee
+    dest_sheet['M21'].value = kspc_b2_variable_fee
+    dest_sheet['M22'].value = kspc_b2_variable_fee
+    dest_sheet['M23'].value = kspc_b2_variable_fee
+    dest_sheet['M24'].value = kspc_b2_variable_fee
+    dest_sheet['M25'].value = kspc_b2_variable_fee
+
+    dest_sheet['N2'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
+    dest_sheet['N3'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
+    dest_sheet['N4'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
+    dest_sheet['N5'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
+    dest_sheet['N6'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
+    dest_sheet['N7'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
+    dest_sheet['N8'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
+    dest_sheet['N9'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
+    dest_sheet['N10'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
+    dest_sheet['N11'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
+    dest_sheet['N12'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
+    dest_sheet['N13'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
+    dest_sheet['N14'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
+    dest_sheet['N15'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
+    dest_sheet['N16'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
+    dest_sheet['N17'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
+    dest_sheet['N18'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
+    dest_sheet['N19'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
+    dest_sheet['N20'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
+    dest_sheet['N21'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
+    dest_sheet['N22'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
+    dest_sheet['N23'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
+    dest_sheet['N24'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
+    dest_sheet['N25'].value = (kspc_b1_fixed_fee + kspc_b2_fixed_fee)/2
+
+    dest_sheet['O2'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
+    dest_sheet['O3'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
+    dest_sheet['O4'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
+    dest_sheet['O5'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
+    dest_sheet['O6'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
+    dest_sheet['O7'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
+    dest_sheet['O8'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
+    dest_sheet['O9'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
+    dest_sheet['O10'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
+    dest_sheet['O11'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
+    dest_sheet['O12'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
+    dest_sheet['O13'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
+    dest_sheet['O14'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
+    dest_sheet['O15'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
+    dest_sheet['O16'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
+    dest_sheet['O17'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
+    dest_sheet['O18'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
+    dest_sheet['O19'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
+    dest_sheet['O20'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
+    dest_sheet['O21'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
+    dest_sheet['O22'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
+    dest_sheet['O23'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
+    dest_sheet['O24'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
+    dest_sheet['O25'].value = (kspc_b1_variable_fee + kspc_b2_variable_fee)/2
+
+    dest_sheet['Q2'].value = edc_fixed_fee
+    dest_sheet['Q3'].value = edc_fixed_fee
+    dest_sheet['Q4'].value = edc_fixed_fee
+    dest_sheet['Q5'].value = edc_fixed_fee
+    dest_sheet['Q6'].value = edc_fixed_fee
+    dest_sheet['Q7'].value = edc_fixed_fee
+    dest_sheet['Q8'].value = edc_fixed_fee
+    dest_sheet['Q9'].value = edc_fixed_fee
+    dest_sheet['Q10'].value = edc_fixed_fee
+    dest_sheet['Q11'].value = edc_fixed_fee
+    dest_sheet['Q12'].value = edc_fixed_fee
+    dest_sheet['Q13'].value = edc_fixed_fee
+    dest_sheet['Q14'].value = edc_fixed_fee
+    dest_sheet['Q15'].value = edc_fixed_fee
+    dest_sheet['Q16'].value = edc_fixed_fee
+    dest_sheet['Q17'].value = edc_fixed_fee
+    dest_sheet['Q18'].value = edc_fixed_fee
+    dest_sheet['Q19'].value = edc_fixed_fee
+    dest_sheet['Q20'].value = edc_fixed_fee
+    dest_sheet['Q21'].value = edc_fixed_fee
+    dest_sheet['Q22'].value = edc_fixed_fee
+    dest_sheet['Q23'].value = edc_fixed_fee
+    dest_sheet['Q24'].value = edc_fixed_fee
+    dest_sheet['Q25'].value = edc_fixed_fee
+
+    dest_sheet['R2'].value = edc_variable_fee
+    dest_sheet['R3'].value = edc_variable_fee
+    dest_sheet['R4'].value = edc_variable_fee
+    dest_sheet['R5'].value = edc_variable_fee
+    dest_sheet['R6'].value = edc_variable_fee
+    dest_sheet['R7'].value = edc_variable_fee
+    dest_sheet['R8'].value = edc_variable_fee
+    dest_sheet['R9'].value = edc_variable_fee
+    dest_sheet['R10'].value = edc_variable_fee
+    dest_sheet['R11'].value = edc_variable_fee
+    dest_sheet['R12'].value = edc_variable_fee
+    dest_sheet['R13'].value = edc_variable_fee
+    dest_sheet['R14'].value = edc_variable_fee
+    dest_sheet['R15'].value = edc_variable_fee
+    dest_sheet['R16'].value = edc_variable_fee
+    dest_sheet['R17'].value = edc_variable_fee
+    dest_sheet['R18'].value = edc_variable_fee
+    dest_sheet['R19'].value = edc_variable_fee
+    dest_sheet['R20'].value = edc_variable_fee
+    dest_sheet['R21'].value = edc_variable_fee
+    dest_sheet['R22'].value = edc_variable_fee
+    dest_sheet['R23'].value = edc_variable_fee
+    dest_sheet['R24'].value = edc_variable_fee
+    dest_sheet['R25'].value = edc_variable_fee
+
+    dest_wb.save(destination_file_path)
+
+# TOTAL SS LOAD 
 def total_ss_load():
+
     total_ss_load_path = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load.xlsx"
+    destination_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\current_rate.xlsx'
+    dest_wb = load_workbook(destination_file_path)
+    dest_sheet = dest_wb['Sheet']
 
     # Load source workbook
     source_wb_2 = load_workbook(total_ss_load_path)  
@@ -748,27 +734,29 @@ def total_ss_load():
     # Save the destination workbook
     dest_wb.save(destination_file_path)
 
-# CONTESTABLE ENERGY (column T)
+# CONTESTABLE ENERGY
+def contestable_energy():
+    CE_filepath = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\contestable_energy.xlsx'
+    destination_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\current_rate.xlsx'
+    dest_wb = load_workbook(destination_file_path)
+    dest_sheet = dest_wb['Sheet']
 
-CE_filepath = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\contestable_energy.xlsx'
+    # Load source workbook
+    source_wb_CE = load_workbook(CE_filepath)
+    # Sheet name of the source workbook
+    source_sheet_CE = source_wb_CE['Sheet']
 
-# Load source workbook
-source_wb_CE = load_workbook(CE_filepath)
-# Sheet name of the source workbook
-source_sheet_CE = source_wb_CE['Sheet']
+    # Define source and destination ranges
+    source_ranges_CE = [('B2', 'B25')]
+    dest_ranges_CE = [('T2', 'T25')]
 
-# Define source and destination ranges
-source_ranges_CE = [('B2', 'B25')]
-dest_ranges_CE = [('T2', 'T25')]
+    # Copy data from source to destination based on specified ranges
+    for i in range(len(source_ranges_CE)):
+        copy_values(source_sheet_CE, dest_sheet, source_ranges_CE[i], dest_ranges_CE[i])
 
-# Copy data from source to destination based on specified ranges
-for i in range(len(source_ranges_CE)):
-    copy_values(source_sheet_CE, dest_sheet, source_ranges_CE[i], dest_ranges_CE[i])
+    # Save the destination workbook
+    dest_wb.save(destination_file_path)
 
-# Save the destination workbook
-dest_wb.save(destination_file_path)
-
-# WESM RATE
 def find_total():
     directory = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MORE Trading Node'
     now = datetime.now()
@@ -806,13 +794,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -825,12 +813,11 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
 
-                    
                         third_df = pd.read_csv(third_file_path)
 
                         search_value_7 = '08PEDC_T1L1'
@@ -847,7 +834,6 @@ def find_total():
 
                         average_3 = (file_08PEDC_T1L1_7 + file_08PEDC_T1L2_8 + file_08STBAR_T1L1_9)/3
 
-                    
                         fourth_df = pd.read_csv(fourth_file_path)
 
                         search_value_10 = '08PEDC_T1L1'
@@ -896,7 +882,6 @@ def find_total():
 
                         average_6 = (file_08PEDC_T1L1_16 + file_08PEDC_T1L2_17 + file_08STBAR_T1L1_18)/3
 
-                        
                         seventh_df = pd.read_csv(seventh_file_path)
 
                         search_value_19 = '08PEDC_T1L1'
@@ -913,7 +898,6 @@ def find_total():
 
                         average_7 = (file_08PEDC_T1L1_19 + file_08PEDC_T1L2_20 + file_08STBAR_T1L1_21)/3
 
-                        
                         eighth_df = pd.read_csv(eighth_file_path)
 
                         search_value_22 = '08PEDC_T1L1'
@@ -930,7 +914,6 @@ def find_total():
 
                         average_8 = (file_08PEDC_T1L1_22 + file_08PEDC_T1L2_23 + file_08STBAR_T1L1_24)/3
                             
-                        
                         ninth_df = pd.read_csv(ninth_file_path)
 
                         search_value_25 = '08PEDC_T1L1'
@@ -963,7 +946,6 @@ def find_total():
 
                         average_10 = (file_08PEDC_T1L1_28 + file_08PEDC_T1L2_29 + file_08STBAR_T1L1_30)/3
 
-                        
                         eleventh_df = pd.read_csv(eleventh_file_path)
 
                         search_value_31 = '08PEDC_T1L1'
@@ -997,12 +979,14 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                     except:
-                        return None
-                
+                        final_total = 0
+                        float_final_total = float(final_total)
+                        return float_final_total
+
                 elif current_hour == '02':
 
                     try:
@@ -1028,14 +1012,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
-
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -1048,7 +1031,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -1214,8 +1197,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
                             
@@ -1240,13 +1223,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -1259,12 +1242,11 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
 
-                    
                         third_df = pd.read_csv(third_file_path)
 
                         search_value_7 = '08PEDC_T1L1'
@@ -1281,7 +1263,6 @@ def find_total():
 
                         average_3 = (file_08PEDC_T1L1_7 + file_08PEDC_T1L2_8 + file_08STBAR_T1L1_9)/3
 
-                    
                         fourth_df = pd.read_csv(fourth_file_path)
 
                         search_value_10 = '08PEDC_T1L1'
@@ -1298,7 +1279,6 @@ def find_total():
 
                         average_4 = (file_08PEDC_T1L1_10 + file_08PEDC_T1L2_11 + file_08STBAR_T1L1_12)/3
 
-                        
                         fifth_df = pd.read_csv(fifth_file_path)
 
                         search_value_13 = '08PEDC_T1L1'
@@ -1315,7 +1295,6 @@ def find_total():
 
                         average_5 = (file_08PEDC_T1L1_13 + file_08PEDC_T1L2_14 + file_08STBAR_T1L1_15)/3
 
-                        
                         sixth_df = pd.read_csv(sixth_file_path)
 
                         search_value_16 = '08PEDC_T1L1'
@@ -1332,7 +1311,6 @@ def find_total():
 
                         average_6 = (file_08PEDC_T1L1_16 + file_08PEDC_T1L2_17 + file_08STBAR_T1L1_18)/3
 
-                        
                         seventh_df = pd.read_csv(seventh_file_path)
 
                         search_value_19 = '08PEDC_T1L1'
@@ -1349,7 +1327,6 @@ def find_total():
 
                         average_7 = (file_08PEDC_T1L1_19 + file_08PEDC_T1L2_20 + file_08STBAR_T1L1_21)/3
 
-                        
                         eighth_df = pd.read_csv(eighth_file_path)
 
                         search_value_22 = '08PEDC_T1L1'
@@ -1366,7 +1343,6 @@ def find_total():
 
                         average_8 = (file_08PEDC_T1L1_22 + file_08PEDC_T1L2_23 + file_08STBAR_T1L1_24)/3
                             
-                        
                         ninth_df = pd.read_csv(ninth_file_path)
 
                         search_value_25 = '08PEDC_T1L1'
@@ -1383,7 +1359,6 @@ def find_total():
 
                         average_9 = (file_08PEDC_T1L1_25 + file_08PEDC_T1L2_26 + file_08STBAR_T1L1_27)/3
 
-                        
                         tenth_df = pd.read_csv(tenth_file_path)
 
                         search_value_28 = '08PEDC_T1L1'
@@ -1400,7 +1375,6 @@ def find_total():
 
                         average_10 = (file_08PEDC_T1L1_28 + file_08PEDC_T1L2_29 + file_08STBAR_T1L1_30)/3
 
-                        
                         eleventh_df = pd.read_csv(eleventh_file_path)
 
                         search_value_31 = '08PEDC_T1L1'
@@ -1417,7 +1391,6 @@ def find_total():
 
                         average_11 = (file_08PEDC_T1L1_31 + file_08PEDC_T1L2_32 + file_08STBAR_T1L1_33)/3
 
-                    
                         twelvth_df = pd.read_csv(twelvth_file_path)
 
                         search_value_34 = '08PEDC_T1L1'
@@ -1435,8 +1408,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '03':
                     try: 
@@ -1461,14 +1434,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
-
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -1481,7 +1453,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -1502,7 +1474,6 @@ def find_total():
 
                         average_3 = (file_08PEDC_T1L1_7 + file_08PEDC_T1L2_8 + file_08STBAR_T1L1_9)/3
 
-                        fourth_file_path = os.path.join(folder_path, files_in_folder[28])
                         fourth_df = pd.read_csv(fourth_file_path)
 
                         search_value_10 = '08PEDC_T1L1'
@@ -1648,8 +1619,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
                         
@@ -1682,7 +1653,6 @@ def find_total():
 
                         average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
 
-
                         second_df = pd.read_csv(second_file_path)
 
                         search_value_4 = '08PEDC_T1L1'
@@ -1694,7 +1664,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -1860,9 +1830,9 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
-                    
+                        float_final_total = float(final_total)
+                        return float_final_total
+
                 elif current_hour == '04':
                     try: 
                         first_file_path = os.path.join(folder_path, files_in_folder[37])
@@ -1886,13 +1856,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -1905,7 +1875,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -2071,9 +2041,9 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
-
+                        float_final_total = float(final_total)
+                        return float_final_total
+                    
                     except:
 
                         first_file_path = os.path.join(folder_path, files_in_folder[25])
@@ -2097,14 +2067,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
-
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -2117,7 +2086,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -2138,7 +2107,6 @@ def find_total():
 
                         average_3 = (file_08PEDC_T1L1_7 + file_08PEDC_T1L2_8 + file_08STBAR_T1L1_9)/3
 
-                        fourth_file_path = os.path.join(folder_path, files_in_folder[28])
                         fourth_df = pd.read_csv(fourth_file_path)
 
                         search_value_10 = '08PEDC_T1L1'
@@ -2284,8 +2252,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '05':
 
@@ -2311,13 +2279,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -2330,7 +2298,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -2496,8 +2464,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                     except:
 
@@ -2522,13 +2490,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -2541,7 +2509,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -2707,8 +2675,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '06':
 
@@ -2734,13 +2702,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -2753,7 +2721,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -2919,8 +2887,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
                         
@@ -2945,13 +2913,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -2964,7 +2932,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -3130,8 +3098,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '07':
 
@@ -3158,13 +3126,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -3177,7 +3145,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -3343,8 +3311,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
                         
@@ -3369,13 +3337,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -3388,7 +3356,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -3554,8 +3522,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '08':
 
@@ -3582,11 +3550,11 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
                         average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
 
@@ -3601,7 +3569,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -3767,8 +3735,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
 
@@ -3793,13 +3761,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -3812,7 +3780,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -3978,8 +3946,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '09':
 
@@ -4005,13 +3973,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -4024,7 +3992,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -4190,8 +4158,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
 
@@ -4216,13 +4184,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -4235,7 +4203,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -4401,8 +4369,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '10':
 
@@ -4428,13 +4396,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -4447,7 +4415,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -4614,8 +4582,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
                         
@@ -4640,13 +4608,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -4659,7 +4627,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -4825,8 +4793,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                 elif current_hour == '11':
                     try: 
@@ -4851,13 +4819,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -4870,7 +4838,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -5034,10 +5002,10 @@ def find_total():
                         file_08STBAR_T1L1_36 = matching_row_36['DIPC_PRICE'].values[0]
 
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
-
-                        final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
                         
-                        return float(final_total)
+                        final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
+                        float_final_total = float(final_total)
+                        return float_final_total
                 
                     except:
                         
@@ -5062,13 +5030,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -5081,7 +5049,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -5117,7 +5085,6 @@ def find_total():
                         file_08STBAR_T1L1_12 = matching_row_12['DIPC_PRICE'].values[0]
 
                         average_4 = (file_08PEDC_T1L1_10 + file_08PEDC_T1L2_11 + file_08STBAR_T1L1_12)/3
-
                         fifth_df = pd.read_csv(fifth_file_path)
 
                         search_value_13 = '08PEDC_T1L1'
@@ -5248,8 +5215,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '12':
                     try: 
@@ -5274,13 +5241,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -5293,7 +5260,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -5459,8 +5426,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
                         
@@ -5485,13 +5452,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -5504,7 +5471,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -5670,8 +5637,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '13':
 
@@ -5698,13 +5665,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -5717,7 +5684,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -5883,23 +5850,23 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
                         
-                        first_file_path = os.path.join(folder_path, files_in_folder[121])
-                        second_file_path = os.path.join(folder_path, files_in_folder[122])
-                        third_file_path = os.path.join(folder_path, files_in_folder[123])
-                        fourth_file_path = os.path.join(folder_path, files_in_folder[124])
-                        fifth_file_path = os.path.join(folder_path, files_in_folder[125])
-                        sixth_file_path = os.path.join(folder_path, files_in_folder[126])
-                        seventh_file_path = os.path.join(folder_path, files_in_folder[127])
-                        eighth_file_path = os.path.join(folder_path, files_in_folder[128])
-                        ninth_file_path = os.path.join(folder_path, files_in_folder[129])
-                        tenth_file_path = os.path.join(folder_path, files_in_folder[130])
-                        eleventh_file_path = os.path.join(folder_path, files_in_folder[131])
-                        twelvth_file_path = os.path.join(folder_path, files_in_folder[132])
+                        first_file_path = os.path.join(folder_path, files_in_folder[133])
+                        second_file_path = os.path.join(folder_path, files_in_folder[134])
+                        third_file_path = os.path.join(folder_path, files_in_folder[135])
+                        fourth_file_path = os.path.join(folder_path, files_in_folder[136])
+                        fifth_file_path = os.path.join(folder_path, files_in_folder[137])
+                        sixth_file_path = os.path.join(folder_path, files_in_folder[138])
+                        seventh_file_path = os.path.join(folder_path, files_in_folder[139])
+                        eighth_file_path = os.path.join(folder_path, files_in_folder[140])
+                        ninth_file_path = os.path.join(folder_path, files_in_folder[141])
+                        tenth_file_path = os.path.join(folder_path, files_in_folder[142])
+                        eleventh_file_path = os.path.join(folder_path, files_in_folder[143])
+                        twelvth_file_path = os.path.join(folder_path, files_in_folder[144])
 
                         df = pd.read_csv(first_file_path)
 
@@ -5909,13 +5876,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -5928,7 +5895,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -6094,8 +6061,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '14':
                     try:
@@ -6120,13 +6087,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -6139,7 +6106,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -6306,8 +6273,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
                         
@@ -6332,13 +6299,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -6351,7 +6318,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -6517,8 +6484,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '15':
 
@@ -6544,13 +6511,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -6563,7 +6530,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -6729,8 +6696,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
 
@@ -6755,13 +6722,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -6774,7 +6741,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -6941,8 +6908,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
             
                 elif current_hour == '16':
                     try:
@@ -6967,13 +6934,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -6986,7 +6953,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -7152,8 +7119,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
                         
@@ -7178,13 +7145,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -7197,7 +7164,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -7363,8 +7330,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '17':
                     try:
@@ -7389,13 +7356,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -7408,7 +7375,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -7574,8 +7541,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
                         
@@ -7600,13 +7567,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -7619,7 +7586,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -7785,8 +7752,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                 
                 elif current_hour == '18':
                     try:
@@ -7811,13 +7778,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -7830,7 +7797,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -7996,8 +7963,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
                         
@@ -8022,13 +7989,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -8041,7 +8008,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -8207,8 +8174,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '19':
                     try:
@@ -8233,13 +8200,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -8252,7 +8219,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -8418,8 +8385,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
 
@@ -8444,13 +8411,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -8463,7 +8430,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -8629,8 +8596,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '20':
 
@@ -8656,13 +8623,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -8675,7 +8642,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -8841,8 +8808,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
                         
@@ -8867,13 +8834,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -8886,7 +8853,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -9052,8 +9019,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '21': 
                     try:
@@ -9078,13 +9045,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -9097,7 +9064,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -9263,8 +9230,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                     except:
                         
@@ -9289,13 +9256,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -9308,7 +9275,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -9474,8 +9441,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                 elif current_hour == '22':
                     try:
@@ -9500,13 +9467,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -9519,7 +9486,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -9685,8 +9652,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
 
@@ -9711,13 +9678,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -9730,7 +9697,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -9896,8 +9863,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '23':
                     try:
@@ -9922,13 +9889,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -9941,7 +9908,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -10107,8 +10074,8 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
                     except:
                         
@@ -10133,13 +10100,13 @@ def find_total():
 
                         search_value_2 = '08PEDC_T1L2'
                         matching_row_2 = df[df['RESOURCE_NAME'] == search_value_2]
-                        file_08PEDC_T1L2_1 = matching_row_2['DIPC_PRICE'].values[0]
+                        file_08PEDC_T1L2_2 = matching_row_2['DIPC_PRICE'].values[0]
 
                         search_value_3 = '08STBAR_T1L1'
                         matching_row_3 = df[df['RESOURCE_NAME'] == search_value_3]
-                        file_08STBAR_T1L1_1 = matching_row_3['DIPC_PRICE'].values[0]
+                        file_08STBAR_T1L1_3 = matching_row_3['DIPC_PRICE'].values[0]
 
-                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_1 + file_08STBAR_T1L1_1)/3
+                        average_1 = (file_08PEDC_T1L1_1 + file_08PEDC_T1L2_2 + file_08STBAR_T1L1_3)/3
 
                         second_df = pd.read_csv(second_file_path)
 
@@ -10152,7 +10119,7 @@ def find_total():
                         file_08PEDC_T1L2_5 = matching_row_5['DIPC_PRICE'].values[0]
 
                         search_value_6 = '08STBAR_T1L1'
-                        matching_row_6 = df[df['RESOURCE_NAME'] == search_value_6]
+                        matching_row_6 = second_df[second_df['RESOURCE_NAME'] == search_value_6]
                         file_08STBAR_T1L1_6 = matching_row_6['DIPC_PRICE'].values[0]
 
                         average_2 = (file_08PEDC_T1L1_4 + file_08PEDC_T1L2_5 + file_08STBAR_T1L1_6)/3
@@ -10318,17 +10285,22 @@ def find_total():
                         average_12 = (file_08PEDC_T1L1_34 + file_08PEDC_T1L2_35 + file_08STBAR_T1L1_36)/3
 
                         final_total = (average_1 + average_2 + average_3 + average_4 + average_5 + average_6 + average_7 + average_8 + average_9 + average_10 + average_11 + average_12)/12
-                        
-                        return float(final_total)
+                        float_final_total = float(final_total)
+                        return float_final_total
 
                 elif current_hour == '00':
-                    return None
+                        final_total = 0
+                        float_final_total = float(final_total)
+                        return float_final_total
                     
-c = datetime.now()
-hour_now = c.strftime('%H')
-
 # STORE WESM RATE IN THE EXCEL FILE
 def find_total_2():
+    destination_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\current_rate.xlsx'
+    dest_wb = load_workbook(destination_file_path)
+    dest_sheet = dest_wb['Sheet']
+    
+    c = datetime.now()
+    hour_now = c.strftime('%H')
     if hour_now == '01':
         wesm_rate_var = find_total()
         # cell N2
@@ -10455,6 +10427,12 @@ def find_total_2():
 
 # CALCULATE CURRENT RATE AND STORE IN THE EXCEL FILE
 def find_total_3():
+    destination_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\current_rate.xlsx'
+    dest_wb = load_workbook(destination_file_path)
+    dest_sheet = dest_wb['Sheet']
+    c = datetime.now()
+    hour_now = hour_now = c.strftime('%H')
+
     if hour_now == '01':
         # HOUR 1
         scpc_value_1 = 25000
@@ -10699,7 +10677,6 @@ def find_total_3():
         dest_wb.save(destination_file_path)
 
     elif hour_now == '10':
-        # HOUR 10
         scpc_value_10 = 25000
         scpc_fixed_cost_10 = dest_sheet['G11'].value
         bcq_scpc_10 = dest_sheet['B11'].value
@@ -11164,11 +11141,13 @@ def insert_into_mysql(conn, float_current_rate_value):
 # Main function to run the script
 def main(excel_file, conn):
     while True:
-        # Get current hour
-        current_hour = get_current_hour()
+        initial_function()
         total_ss_load()
+        contestable_energy()
+        find_total()
         find_total_2()
         find_total_3()
+        current_hour = get_current_hour()
         float_current_rate_value = get_current_rate_for_current_hour(excel_file, current_hour)
         if float_current_rate_value is not None:
             # Insert into MySQL database
@@ -11176,29 +11155,30 @@ def main(excel_file, conn):
         else: 
             print(f"Invalid current rate value: {float_current_rate_value}")
         
-        # Wait for 120 seconds before next update
-        time.sleep(120)
+        # Wait for 60 seconds before next update
+        time.sleep(60)
 
 if __name__ == "__main__":
-    excel_file = 'current_rate.xlsx'
+    while True:
+        excel_file = 'current_rate.xlsx'
 
-    conn = mysql.connector.connect(
-        host='localhost',
-        database='myDb',
-        user='root',
-        password=''
-    )
-
-    # Create MySQL table if it doesn't exist
-    cursor = conn.cursor()
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS current_rate (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            rate FLOAT(10, 2) NOT NULL,
-            insert_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        conn = mysql.connector.connect(
+            host='localhost',
+            database='myDb',
+            user='root',
+            password=''
         )
-    """)
-    cursor.close()
 
-    # Run main function to continuously check and update database
-    main(excel_file, conn)
+        # Create MySQL table if it doesn't exist
+        cursor = conn.cursor()
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS current_rate (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                rate FLOAT(10, 2) NOT NULL,
+                insert_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        cursor.close()
+
+        # Run main function to continuously check and update database
+        main(excel_file, conn)
