@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import mysql.connector
 import numpy as np
 import openpyxl
+import os
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objs as go
@@ -550,7 +551,6 @@ fig.update_layout(barmode='stack', height=300, width=600)
 # -- START OF DISPLAYING THE SUBSTATION LOAD (KW) BAR CHART -- 
 
 def load_data_from_excel():
-    # station_load_graph.xlsx
     workbook = openpyxl.Workbook()
     sheet = workbook.active
     sheet['A1'] = 'Hour'
@@ -676,9 +676,11 @@ def load_data_from_excel():
 # Load data
 df_excel = load_data_from_excel()
 
-# Get the current hour
+# For getting the current hour
 now = datetime.now()
 now_hour = now.hour
+if now_hour == 0:
+    now_hour = 24
 
 # Find the row where the hour matches the current hour
 matching_row = df_excel[df_excel['Hour'] == now_hour]
@@ -719,19 +721,16 @@ fig_ss_load.update_layout(
 # -- END OF DISPLAYING THE SUBSTATION LOAD (KW) BAR CHART -- 
 
 col1, col2 = st.columns(2)
+# Substation Load (kW)
 with col1:
     st.subheader("Substation Load (kW)", divider=True)
     st.plotly_chart(fig_ss_load)
+# Actual vs Forecasted Energy (kWh)
 with col2:
     st.subheader("Actual vs Forecasted Energy (kWh)", divider=True)
     st.plotly_chart(fig)
 
 # -- START OF TRADING INTERVAL PRICE CALCULATION LINE CHART --
-
-from datetime import datetime
-import os
-import pandas as pd
-import streamlit as st
 
 # Calculates the average of every 12 values in a list and stores them
 def average_every_12(data):
@@ -1771,7 +1770,9 @@ hour_column = 'HOUR'
 
 # Get current hour
 now = datetime.now()
-current_hour = int(now.strftime("%H"))
+current_hour = now.hour
+if current_hour == 0:
+    current_hour = 24
 
 # Find the hour column index
 hour_index = None
@@ -1833,7 +1834,7 @@ def compare_values(row):
                 print(f"No matching hour found in comparison data for {current_hour}")
                 return None
         else:
-            # Handle the case where ACTUAL_ENERGY is not greater than TOTAL_BCQ_NOMINATION (optional)
+            # Handle the case where ACTUAL_ENERGY is not greater than TOTAL_BCQ_NOMINATION 
             if row[1].value <= row[2].value:
                 comparison_row = None
                 for comparison_row in total_bcq_nomination_sheet.iter_rows():
@@ -1843,12 +1844,12 @@ def compare_values(row):
                 if comparison_row is not None:
                     scpc_value = comparison_row[1].value
                     kspc_value = comparison_row[2].value
-                    kspc1_value = int(kspc_value / 2)
-                    kspc2_value = int(kspc_value / 2)
+                    kspc1_value = int(kspc_value/2)
+                    kspc2_value = int(kspc_value/2)
                     edc_value = comparison_row[3].value
 
                     labels = ['SCPC', 'KSPC1', 'KSPC2', 'EDC', 'WESM']
-                    sizes = [scpc_value, kspc1_value, kspc2_value, edc_value, 0]  # wesm_value is 0 here
+                    sizes = [scpc_value, kspc1_value, kspc2_value, edc_value, 0]  # Value of WESM is 0 here
 
                     data = [
                         go.Pie(

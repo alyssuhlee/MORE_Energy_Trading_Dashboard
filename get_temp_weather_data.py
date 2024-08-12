@@ -15,7 +15,7 @@ def fetch_weather_data():
     # Initialize the webdriver
     driver = webdriver.Chrome()
 
-    # URL of the weather page
+    # URL of The Weather Channel
     url = 'https://weather.com/en-TT/weather/today/l/d5c2f0e4c2053e855f8c6f30f8c21aedcedfe8c9f8842071a894732e8b0eff99'
     driver.get(url)
 
