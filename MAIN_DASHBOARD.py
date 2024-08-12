@@ -19,7 +19,7 @@ import time
 
 REFRESH_INTERVAL = 60 # Refresh Interval Value (60 SECONDS)
 
-# -- FUNCTIONS --
+# -- START OF FUNCTIONS --
 def view_all_data():
     c.execute('select * from timeintervals order by id asc')
     data=c.fetchall()
@@ -305,6 +305,7 @@ def compare_values(row):
                 else:
                     print(f"No matching hour found in comparison data for {current_hour}")
                     return None
+# -- END OF FUNCTIONS --
 
 while True:
     # Set page config
