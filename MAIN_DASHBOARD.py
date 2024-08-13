@@ -446,7 +446,7 @@ while True:
         /* Shorter in width */
         .custom-box {
             border: 1px solid #ddd;
-            border-radius: 0px;
+            border-radius: 5px;
             padding: 0px;
             margin: 0px;
             background-color: #00B74C;
@@ -687,9 +687,13 @@ while True:
         name='BCQ Nomination',
         line=dict(color='white')
     ))
-
+    # Update layout with x and y axis labels
+    fig.update_layout(
+        xaxis_title='Interval',
+        yaxis_title='kWh'
+    )
     # Update the layout to set the bar mode to stacked and add a title
-    fig.update_layout(barmode='stack', height=300, width=600)
+    fig.update_layout(barmode='stack', height=420, width=700)
 
     # -- END OF DISPLAYING THE ACTUAL VS FORECASTED ENERGY CHART --
 
@@ -737,17 +741,41 @@ while True:
         uniformtext_minsize=8,
         uniformtext_mode='hide',
         width=600,  # Set the width of the bar chart
-        height=300  # Set the height of the bar chart
+        height=420  # Set the height of the bar chart
     )
 
     # -- END OF DISPLAYING THE SUBSTATION LOAD (KW) BAR CHART -- 
 
-    col1, col2 = st.columns(2)
-    # Substation Load (kW)
+    # Custom CSS to make components very close to each other
+    st.markdown("""
+        <style>
+        /* Reduce space between columns */
+        .stApp {
+            padding: 0.5rem;  /* Overall app padding */
+        }
+        .stColumn > div {
+            padding: 0rem;  /* Remove padding between column content */
+        }
+        .stMarkdown {
+            margin: 0;  /* Remove margin around markdown elements */
+            padding: 0rem 0rem 0rem 0rem; /* Remove padding around markdown (top, right, bottom, left) */
+        }
+        .stMarkdown h3 {
+            margin: 0 0 -50px 0; /* Negative bottom margin, zero for others */
+            padding: 0;           
+        }
+        .stPlotlyChart {
+            margin: -10px 0 0 0;  /* Remove margin around Plotly charts */
+            padding: 0;  
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
+    # Layout with smaller padding
+    col1, col2 = st.columns([1, 1])  # Adjust width ratios if needed
     with col1:
         st.subheader("Substation Load (kW)", divider=True)
         st.plotly_chart(fig_ss_load)
-    # Actual vs Forecasted Energy (kWh)
     with col2:
         st.subheader("Actual vs Forecasted Energy (kWh)", divider=True)
         st.plotly_chart(fig)
@@ -2381,20 +2409,15 @@ while True:
 
     # -- END OF DISPLAYING THE GENERATION MIX DONUT CHART --
 
-    col1, col2, col3 = st.columns(3)
-    # BCQ Nominations per Supplier
+    col1, col2, col3 = st.columns([1, 1, 1])
     with col1:
         st.subheader("BCQ Nominations per Supplier", divider=True)
         st.altair_chart(chart_bcq)
-    # Trading Interval Price Calculation (TIPC)
     with col2:
         st.subheader("Trading Interval Price Calculation", divider=True)
         st.plotly_chart(fig_tipc)
-    # Generation Mix
     with col3:
         st.subheader("Generation Mix", divider=True)
-        # if chart_data:
-        #     st.plotly_chart(figure_or_data=chart_data)
         st.plotly_chart(fig_genmix)
 
     # For rerunning the script every 60 seconds

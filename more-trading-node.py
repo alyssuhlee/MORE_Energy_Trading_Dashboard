@@ -67,12 +67,13 @@ def download_files():
 
     ftp.quit()
 
-# Main loop to check for new files every CHECK_INTERVAL seconds
-while True:
-    try:
-        download_files()
-    except all_errors as e:
-        print(f"An error occurred: {e}")
-    time.sleep(CHECK_INTERVAL)
+if __name__ == "__main__":
+    # Main loop to check for new files every CHECK_INTERVAL seconds
+    while True:
+        try:
+            download_files()
+        except all_errors as e:
+            print(f"An error occurred: {e}")
+        time.sleep(CHECK_INTERVAL)
 
 # RESOURCE NAMES -> 08PEDC_T1L1, 08PEDC_T1L2, 08STBAR_T1L1 

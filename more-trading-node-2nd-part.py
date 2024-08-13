@@ -9545,23 +9545,31 @@ def find_total():
 
 # Function to insert value into MySQL database
 def insert_into_mysql(conn, float_final_total):
-    try:
-        cursor = conn.cursor()
-        sql = "INSERT INTO more_trading_node (float_final_total) VALUES (%s)"
-        cursor.execute(sql, (float_final_total,))
-        conn.commit()  # Commit the transaction
-        cursor.close()
-        print(f"Value {float_final_total} inserted successfully into MySQL.")
-    except mysql.connector.Error as e:
-        print(f"Error inserting into MySQL: {e}")
-    except Exception as e:
-        print(f"Error: {e}")
+    cursor = conn.cursor()
+    sql = "INSERT INTO more_trading_node (float_final_total) VALUES (%s)"
+    cursor.execute(sql, (float_final_total,))
+    conn.commit()  # Commit the transaction
+    cursor.close()
+    print(f"Value {float_final_total} inserted successfully into MySQL.")
 
+def get_last_value_from_mysql(conn):
+    cursor = conn.cursor()
+    sql = "SELECT float_final_total FROM more_trading_node ORDER BY id DESC LIMIT 1"
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    last_result = result[0]
+    cursor.close()
+    print(f"Value {last_result} inserted successfully into MySQL.")
+    return last_result
+    
 def run_continuously(conn):
-    while True:
-        float_final_total = find_total()
+    float_final_total = find_total()
+    if float_final_total is not None:
         insert_into_mysql(conn, float_final_total)
-        time.sleep(60)
+    else:
+        get_last_value_from_mysql(conn)
+    # Wait for 60 seconds before next update
+    time.sleep(60)
     
 if __name__ == "__main__":
     while True:
@@ -9575,7 +9583,7 @@ if __name__ == "__main__":
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS more_trading_node (
                 id INT AUTO_INCREMENT PRIMARY KEY,
-                float_final_total FLOAT(10, 2) NOT NULL,
+                float_final_total FLOAT(10, 4) NOT NULL,
                 insert_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)

@@ -10461,7 +10461,7 @@ def find_total_2():
         dest_wb.save(destination_file_path)
 
 # Calculating the Current Rate
-# Current Rate = [((25000 x Fixed Fee)+(BCQSCPCxVariable Fee)) + ((20000xFixed Fee)+(BCQKSPCxVariable Fee)) + ((20000xFixed Fee)+(BCQEDCxVariable Fee)) + (TotalSSLoad-Contestable Energy-SummationBCQ) x DIPC HOURLY]/Total SS Load - Contestable Energy 
+# Current Rate Formula = [((25000 x Fixed Fee)+(BCQSCPCxVariable Fee)) + ((20000xFixed Fee)+(BCQKSPCxVariable Fee)) + ((20000xFixed Fee)+(BCQEDCxVariable Fee)) + (TotalSSLoad-Contestable Energy-SummationBCQ) x DIPC HOURLY]/Total SS Load - Contestable Energy 
 
 # CALCULATE CURRENT RATE AND STORE IN THE EXCEL FILE
 def find_total_3():
@@ -10469,7 +10469,7 @@ def find_total_3():
     dest_wb = load_workbook(destination_file_path)
     dest_sheet = dest_wb['Sheet']
     c = datetime.now()
-    hour_now = hour_now = c.strftime('%H')
+    hour_now = c.strftime('%H')
 
     if hour_now == '01':
         # HOUR 1
@@ -11176,30 +11176,38 @@ def insert_into_mysql(conn, float_current_rate_value):
     # Print a confirmation message
     print(f"Value {float_current_rate_value} inserted successfully into MySQL.")
 
+def get_last_value_from_mysql(conn):
+    cursor = conn.cursor()
+    sql = "SELECT rate FROM current_rate ORDER BY id DESC LIMIT 1"
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    last_result = result[0]
+    cursor.close()
+    print(f"Value {last_result} inserted successfully into MySQL.")
+    return last_result
+
 # Main function to run the script
 def main(excel_file, conn):
-    while True:
-        initial_function()
-        total_ss_load()
-        contestable_energy()
-        find_total()
-        find_total_2()
-        find_total_3()
-        current_hour = get_current_hour()
-        float_current_rate_value = get_current_rate_for_current_hour(excel_file, current_hour)
-        if float_current_rate_value is not None:
-            # Insert into MySQL database
-            insert_into_mysql(conn, float_current_rate_value)
-        else: 
-            print(f"Invalid current rate value: {float_current_rate_value}")
-        
-        # Wait for 60 seconds before next update
-        time.sleep(60)
+    initial_function()
+    total_ss_load()
+    contestable_energy()
+    find_total()
+    find_total_2()
+    find_total_3()
+    current_hour = get_current_hour()
+    float_current_rate_value = get_current_rate_for_current_hour(excel_file, current_hour)
+    if float_current_rate_value is not None:
+        # Insert into MySQL database
+        insert_into_mysql(conn, float_current_rate_value)
+    else: 
+        get_last_value_from_mysql(conn)
+    # Wait for 60 seconds before next update
+    time.sleep(60)
 
 if __name__ == "__main__":
     while True:
         excel_file = 'current_rate.xlsx'
-
+        
         conn = mysql.connector.connect(
             host='localhost',
             database='myDb',
@@ -11212,7 +11220,7 @@ if __name__ == "__main__":
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS current_rate (
                 id INT AUTO_INCREMENT PRIMARY KEY,
-                rate FLOAT(10, 2) NOT NULL,
+                rate FLOAT(10, 4) NOT NULL,
                 insert_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
