@@ -213,7 +213,7 @@ def main(excel_file, conn):
 if __name__ == "__main__":
     while True:
         excel_file = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\wesm_exposure.xlsx'
-
+        
         conn = mysql.connector.connect(
             host='localhost',
             database='myDb',

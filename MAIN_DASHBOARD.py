@@ -2,13 +2,10 @@
 from datetime import datetime
 from mysql.connector import Error
 from openpyxl import load_workbook
-from streamlit_autorefresh import st_autorefresh
 from threading import Timer
 import altair as alt
-import base64
 import matplotlib.pyplot as plt
 import mysql.connector
-import numpy as np
 import openpyxl
 import os
 import pandas as pd
@@ -219,92 +216,26 @@ def average_every_12(data):
     # Returns a list containing the averages for each 12-element window
     return averages
 
-# Function to compare values based on hour
-def compare_values(row):
-    hour = row[hour_index - 1].value
-    if hour == current_hour:
-        if row[1].value > row[2].value:
-            # Find the row matching the current hour in the second file
-            comparison_row = None
-            for comparison_row in total_bcq_nomination_sheet.iter_rows():
-                if comparison_row[0].value == current_hour:
-                    break
-
-            comparison_row2 = None
-            for comparison_row2 in wesm_exposure_sheet.iter_rows():
-                if comparison_row2[0].value == current_hour:
-                    break
-
-            # Check if a matching row was found
-            if comparison_row is not None and comparison_row2 is not None:
-                # Extract desired values from the matching row
-                scpc_value = comparison_row[1].value
-                kspc_value = comparison_row[2].value
-                kspc1_value = int(kspc_value / 2)
-                kspc2_value = int(kspc_value / 2)
-                edc_value = comparison_row[3].value
-                wesm_value = comparison_row2[3].value
-
-                labels = ['SCPC', 'KSPC1', 'KSPC2', 'EDC', 'WESM']
-                sizes = [scpc_value, kspc1_value, kspc2_value, edc_value, wesm_value]
-
-                # Create the donut chart data
-                data = [
-                    go.Pie(
-                        labels=labels,
-                        values=sizes,
-                        hole=0.5,
-                        textinfo='label+percent',
-                        textposition='inside',
-                        marker={'colors': ['lightcoral', 'lightskyblue', 'lightgreen', 'yellow', 'orange']},
-                    )
-                ]
-                layout = go.Layout(
-                    width=600,
-                    height=300,
-                )
-                fig = go.Figure(data=data, layout=layout)
-                return fig
+# Function to copy values from source range to destination range
+def copy_values(source_sheet, dest_sheet, source_range, dest_range):
+    source_start, source_end = source_range
+    dest_start, dest_end = dest_range
+    
+    # Copy values from source to destination
+    source_values = []
+    for row in source_sheet[source_start:source_end]:
+        for cell in row:
+            source_values.append(cell.value)
+    
+    dest_index = 0
+    for row in dest_sheet[dest_start:dest_end]:
+        for cell in row:
+            if dest_index < len(source_values):
+                cell.value = source_values[dest_index]
+                dest_index += 1
             else:
-                print(f"No matching hour found in comparison data for {current_hour}")
-                return None
-        else:
-            # Handle the case where ACTUAL_ENERGY is not greater than TOTAL_BCQ_NOMINATION 
-            if row[1].value <= row[2].value:
-                comparison_row = None
-                for comparison_row in total_bcq_nomination_sheet.iter_rows():
-                    if comparison_row[0].value == current_hour:
-                        break
+                break
 
-                if comparison_row is not None:
-                    scpc_value = comparison_row[1].value
-                    kspc_value = comparison_row[2].value
-                    kspc1_value = int(kspc_value/2)
-                    kspc2_value = int(kspc_value/2)
-                    edc_value = comparison_row[3].value
-
-                    labels = ['SCPC', 'KSPC1', 'KSPC2', 'EDC', 'WESM']
-                    sizes = [scpc_value, kspc1_value, kspc2_value, edc_value, 0]  # Value of WESM is 0 here
-
-                    data = [
-                        go.Pie(
-                            labels=labels,
-                            values=sizes,
-                            hole=0.5,
-                            textinfo='label+percent',
-                            textposition='inside',
-                            marker={'colors': ['lightcoral', 'lightskyblue', 'lightgreen', 'yellow', 'orange']},
-                        )
-                    ]
-                    layout = go.Layout(
-                        width=600,
-                        height=300,
-                    )
-                    fig = go.Figure(data=data, layout=layout)
-                    return fig
-                else:
-                    print(f"No matching hour found in comparison data for {current_hour}")
-                    return None
 # -- END OF FUNCTIONS --
 
 while True:
@@ -595,9 +526,9 @@ while True:
     # -- START OF DISPLAYING THE BCQ NOMINATIONS PER SUPPLIER AREA CHART --
 
     # Load the workbook and select the active sheet
-    filepath = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\total_bcq_nomination.xlsx"
-    wb = openpyxl.load_workbook(filepath)
-    sheet = wb.active
+    filepath_bcq = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\total_bcq_nomination.xlsx"
+    wb_bcq = openpyxl.load_workbook(filepath_bcq)
+    sheet_bcq = wb_bcq.active
 
     # Create lists to store the data
     hours = []
@@ -607,23 +538,23 @@ while True:
     edc_values = []
 
     # Loop through column 'A' to get values for each hour, skip the header
-    for row in sheet.iter_rows(min_row=2, max_row=25, min_col=1, max_col=4):
+    for row in sheet_bcq.iter_rows(min_row=2, max_row=25, min_col=1, max_col=4):
         hour = int(row[0].value)
         scpc = int(row[1].value)
         kspc = int(row[2].value)
-        kspc1 = int(kspc/2)
-        kspc2 = int(kspc/2)
+        kspc1 = int(kspc / 2)
+        kspc2 = int(kspc / 2)
         edc = int(row[3].value)
 
-    # Store the values in the lists
-    hours.append(hour)
-    scpc_values.append(scpc)
-    kspc1_values.append(kspc1)
-    kspc2_values.append(kspc2)
-    edc_values.append(edc)
+        # Store the values in the lists
+        hours.append(hour)
+        scpc_values.append(scpc)
+        kspc1_values.append(kspc1)
+        kspc2_values.append(kspc2)
+        edc_values.append(edc)
 
     # Create a DataFrame with proper structure
-    data = {
+    data_bcq = {
         'Hour': hours,
         'SCPC': scpc_values,
         'KSPC1': kspc1_values,
@@ -631,13 +562,13 @@ while True:
         'EDC': edc_values
     }
 
-    df = pd.DataFrame(data)
+    df_bcq = pd.DataFrame(data_bcq)
 
     # Melt the DataFrame for Altair
-    df_melted = df.melt('Hour', var_name='Supplier', value_name='BCQ')
+    df_bcq_melted = df_bcq.melt('Hour', var_name='Supplier', value_name='BCQ')
 
     # Create an Altair area chart
-    chart = alt.Chart(df_melted).mark_area().encode(
+    chart_bcq = alt.Chart(df_bcq_melted).mark_area().encode(
         x='Hour:O',
         y='BCQ:Q',
         color='Supplier:N'
@@ -1833,6 +1764,214 @@ while True:
     # -- END OF TRADING INTERVAL PRICE CALCULATION LINE CHART --
 
     # -- START OF DISPLAYING THE GENERATION MIX DONUT CHART --
+    
+    actual_energy_excel = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\actual_energy.xlsx"
+    total_bcq_nomination_excel = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\total_bcq_nomination.xlsx"
+    wesm_exposure_excel = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\wesm_exposure.xlsx"
+
+    # Generation Mix Excel file
+    workbook = openpyxl.Workbook()
+    sheet = workbook.active
+    sheet['A1'] = 'ACTUAL_ENERGY'
+    sheet['B1'] = 'TOTAL_BCQ'
+    sheet['C1'] = 'SCPC'
+    sheet['D1'] = 'KSPC'
+    sheet['E1'] = 'KSPC1'
+    sheet['F1'] = 'KSPC2'
+    sheet['G1'] = 'EDC'
+    sheet['H1'] = 'WESM'
+    sheet['I1'] = 'HOUR'
+    sheet['I2'] = 1
+    sheet['I3'] = 2
+    sheet['I4'] = 3
+    sheet['I5'] = 4
+    sheet['I6'] = 5
+    sheet['I7'] = 6
+    sheet['I8'] = 7
+    sheet['I9'] = 8
+    sheet['I10'] = 9
+    sheet['I11'] = 10
+    sheet['I12'] = 11
+    sheet['I13'] = 12
+    sheet['I14'] = 13
+    sheet['I15'] = 14
+    sheet['I16'] = 15
+    sheet['I17'] = 16
+    sheet['I18'] = 17
+    sheet['I19'] = 18
+    sheet['I20'] = 19
+    sheet['I21'] = 20
+    sheet['I22'] = 21
+    sheet['I23'] = 22
+    sheet['I24'] = 23
+    sheet['I25'] = 24
+    workbook.save('generation_mix.xlsx')
+    workbook.close()
+    print("Excel file 'generation_mix.xlsx' created successfully.")
+
+    source_wb_genmix_1 = load_workbook(actual_energy_excel) 
+    source_sheet_genmix_1 = source_wb_genmix_1['Sheet']
+    
+    genmix_filepath = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\generation_mix.xlsx"
+    dest_wb_genmix = load_workbook(genmix_filepath)
+
+    dest_sheet_genmix = dest_wb_genmix['Sheet']
+
+    source_ranges_genmix_1 = [('D2', 'D25')]
+    dest_ranges_genmix_1 = [('A2', 'A25')]
+
+    for i in range(len(source_ranges_genmix_1)):
+        copy_values(source_sheet_genmix_1, dest_sheet_genmix, source_ranges_genmix_1[i], dest_ranges_genmix_1[i])
+
+    # Save the destination workbook
+    dest_wb_genmix.save(genmix_filepath)
+
+    source_wb_genmix_2 = load_workbook(total_bcq_nomination_excel)
+    source_sheet_genmix_2 = source_wb_genmix_2['Sheet']
+
+    source_ranges_genmix_2 = [('E2', 'E25'), ('B2', 'B25'), ('C2', 'C25'), ('D2', 'D25')]
+    dest_ranges_genmix_2 = [('B2', 'B25'), ('C2', 'C25'), ('D2', 'D25'), ('G2', 'G25')]
+
+    for i in range(len(source_ranges_genmix_2)):
+        copy_values(source_sheet_genmix_2, dest_sheet_genmix, source_ranges_genmix_2[i], dest_ranges_genmix_2[i])
+
+    # Save the destination workbook
+    dest_wb_genmix.save(genmix_filepath)
+
+    kspc_value_1 = source_sheet_genmix_2['C2'].value
+    half_value_1 = int(kspc_value_1 / 2)
+    dest_sheet_genmix['E2'] = half_value_1
+    dest_sheet_genmix['F2'] = half_value_1
+
+    kspc_value_2 = source_sheet_genmix_2['C3'].value
+    half_value_2 = int(kspc_value_2 / 2)
+    dest_sheet_genmix['E3'] = half_value_2
+    dest_sheet_genmix['F3'] = half_value_2
+
+    kspc_value_3 = source_sheet_genmix_2['C4'].value
+    half_value_3 = int(kspc_value_3 / 2)
+    dest_sheet_genmix['E4'] = half_value_3
+    dest_sheet_genmix['F4'] = half_value_3
+
+    kspc_value_4 = source_sheet_genmix_2['C5'].value
+    half_value_4 = int(kspc_value_4 / 2)
+    dest_sheet_genmix['E5'] = half_value_4
+    dest_sheet_genmix['F5'] = half_value_4
+
+    kspc_value_5 = source_sheet_genmix_2['C6'].value
+    half_value_5 = int(kspc_value_5 / 2)
+    dest_sheet_genmix['E6'] = half_value_5
+    dest_sheet_genmix['F6'] = half_value_5
+
+    kspc_value_6 = source_sheet_genmix_2['C7'].value
+    half_value_6 = int(kspc_value_6 / 2)
+    dest_sheet_genmix['E7'] = half_value_6
+    dest_sheet_genmix['F7'] = half_value_6
+
+    kspc_value_7 = source_sheet_genmix_2['C8'].value
+    half_value_7 = int(kspc_value_7 / 2)
+    dest_sheet_genmix['E8'] = half_value_7
+    dest_sheet_genmix['F8'] = half_value_7
+
+    kspc_value_8 = source_sheet_genmix_2['C9'].value
+    half_value_8 = int(kspc_value_8 / 2)
+    dest_sheet_genmix['E9'] = half_value_8
+    dest_sheet_genmix['F9'] = half_value_8
+
+    kspc_value_9 = source_sheet_genmix_2['C10'].value
+    half_value_9 = int(kspc_value_9 / 2)
+    dest_sheet_genmix['E10'] = half_value_9
+    dest_sheet_genmix['F10'] = half_value_9
+
+    kspc_value_10 = source_sheet_genmix_2['C11'].value
+    half_value_10 = int(kspc_value_10 / 2)
+    dest_sheet_genmix['E11'] = half_value_10
+    dest_sheet_genmix['F11'] = half_value_10
+
+    kspc_value_11 = source_sheet_genmix_2['C12'].value
+    half_value_11 = int(kspc_value_11 / 2)
+    dest_sheet_genmix['E12'] = half_value_11
+    dest_sheet_genmix['F12'] = half_value_11
+
+    kspc_value_12 = source_sheet_genmix_2['C13'].value
+    half_value_12 = int(kspc_value_12 / 2)
+    dest_sheet_genmix['E13'] = half_value_12
+    dest_sheet_genmix['F13'] = half_value_12
+
+    kspc_value_13 = source_sheet_genmix_2['C14'].value
+    half_value_13 = int(kspc_value_13 / 2)
+    dest_sheet_genmix['E14'] = half_value_13
+    dest_sheet_genmix['F14'] = half_value_13
+
+    kspc_value_14 = source_sheet_genmix_2['C15'].value
+    half_value_14 = int(kspc_value_14 / 2)
+    dest_sheet_genmix['E15'] = half_value_14
+    dest_sheet_genmix['F15'] = half_value_14
+
+    kspc_value_15 = source_sheet_genmix_2['C16'].value
+    half_value_15 = int(kspc_value_15 / 2)
+    dest_sheet_genmix['E16'] = half_value_15
+    dest_sheet_genmix['F16'] = half_value_15
+
+    kspc_value_16 = source_sheet_genmix_2['C17'].value
+    half_value_16 = int(kspc_value_16 / 2)
+    dest_sheet_genmix['E17'] = half_value_16
+    dest_sheet_genmix['F17'] = half_value_16
+
+    kspc_value_17 = source_sheet_genmix_2['C18'].value
+    half_value_17 = int(kspc_value_17 / 2)
+    dest_sheet_genmix['E18'] = half_value_17
+    dest_sheet_genmix['F18'] = half_value_17
+
+    kspc_value_18 = source_sheet_genmix_2['C19'].value
+    half_value_18 = int(kspc_value_18 / 2)
+    dest_sheet_genmix['E19'] = half_value_18
+    dest_sheet_genmix['F19'] = half_value_18
+
+    kspc_value_19 = source_sheet_genmix_2['C20'].value
+    half_value_19 = int(kspc_value_19 / 2)
+    dest_sheet_genmix['E20'] = half_value_19
+    dest_sheet_genmix['F20'] = half_value_19
+
+    kspc_value_20 = source_sheet_genmix_2['C21'].value
+    half_value_20 = int(kspc_value_20 / 2)
+    dest_sheet_genmix['E21'] = half_value_20
+    dest_sheet_genmix['F21'] = half_value_20
+
+    kspc_value_21 = source_sheet_genmix_2['C22'].value
+    half_value_21 = int(kspc_value_21 / 2)
+    dest_sheet_genmix['E22'] = half_value_21
+    dest_sheet_genmix['F22'] = half_value_21
+
+    kspc_value_22 = source_sheet_genmix_2['C23'].value
+    half_value_22 = int(kspc_value_22 / 2)
+    dest_sheet_genmix['E23'] = half_value_22
+    dest_sheet_genmix['F23'] = half_value_22
+
+    kspc_value_23 = source_sheet_genmix_2['C24'].value
+    half_value_23 = int(kspc_value_23 / 2)
+    dest_sheet_genmix['E24'] = half_value_23
+    dest_sheet_genmix['F24'] = half_value_23
+
+    kspc_value_24 = source_sheet_genmix_2['C25'].value
+    half_value_24 = int(kspc_value_24 / 2)
+    dest_sheet_genmix['E25'] = half_value_24
+    dest_sheet_genmix['F25'] = half_value_24
+
+    # Save the destination workbook
+    dest_wb_genmix.save(genmix_filepath)
+
+    source_wb_genmix_3 = load_workbook(wesm_exposure_excel)
+    source_sheet_genmix_3 = source_wb_genmix_3['Sheet']
+    
+    source_ranges_genmix_3 = [('E2', 'E25')]
+    dest_ranges_genmix_3 = [('H2', 'H25')]
+
+    for i in range(len(source_ranges_genmix_3)):
+        copy_values(source_sheet_genmix_3, dest_sheet_genmix, source_ranges_genmix_3[i], dest_ranges_genmix_3[i])
+
+    # Save the destination workbook
+    dest_wb_genmix.save(genmix_filepath)
 
     # CASE A. ACTUAL ENERGY <= BCQ
     # SCPC, KSPC1, KSPC2, EDC
@@ -1840,44 +1979,413 @@ while True:
     # CASE B. ACTUAL ENERGY > BCQ
     # SCPC, KSPC1, KSPC2, EDC, WESM
 
-    # Load the workbooks
-    total_bcq_nomination_wb = openpyxl.load_workbook('total_bcq_nomination.xlsx')
-    total_bcq_nomination_sheet = total_bcq_nomination_wb['Sheet']
-    wesm_exposure_wb = openpyxl.load_workbook('wesm_exposure.xlsx')
-    wesm_exposure_sheet = wesm_exposure_wb['Sheet']
-
-    # Column containing the hour values
-    hour_column = 'HOUR'
-
-    # Get current hour
     now = datetime.now()
     current_hour = now.hour
     if current_hour == 0:
         current_hour = 24
 
-    # Find the hour column index
-    hour_index = None
-    for col_idx in range(1, sheet.max_column + 1):
-        if sheet.cell(row=1, column=col_idx).value == hour_column:
-            hour_index = col_idx
-            break
+    # Initialize empty list containing Generation Mix values
+    generation_mix_list = []
 
-    if hour_index is None:
-        raise ValueError(f"Column '{hour_column}' not found in the sheet.")
+    # HOUR 1
+    if current_hour == dest_sheet_genmix['I2'].value:
+        if dest_sheet_genmix['A2'].value <= dest_sheet_genmix['B2'].value:
+            generation_mix_list.append(dest_sheet_genmix['C2'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E2'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F2'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G2'].value) #EDC
 
-    # Process rows in the sheet (assuming you want to process all rows)
-    for row in sheet.iter_rows(min_row=2):  # Start from row 2 (assuming header row)
-        chart_data = compare_values(row)
-        if chart_data is not None:
-            break
+        elif dest_sheet_genmix['A2'].value > dest_sheet_genmix['B2'].value:
+            generation_mix_list.append(dest_sheet_genmix['C2'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E2'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F2'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G2'].value) #EDC
+            generation_mix_list.append(dest_sheet_genmix['H2'].value) #WESM
+
+    # HOUR 2
+    elif current_hour == dest_sheet_genmix['I3'].value:
+        if dest_sheet_genmix['A3'].value <= dest_sheet_genmix['B3'].value:
+            generation_mix_list.append(dest_sheet_genmix['C3'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E3'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F3'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G3'].value) #EDC
+
+        elif dest_sheet_genmix['A3'].value > dest_sheet_genmix['B3'].value:
+            generation_mix_list.append(dest_sheet_genmix['C3'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E3'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F3'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G3'].value) #EDC
+            generation_mix_list.append(dest_sheet_genmix['H3'].value) #WESM
+
+    # HOUR 3
+    elif current_hour == dest_sheet_genmix['I4'].value:
+        if dest_sheet_genmix['A4'].value <= dest_sheet_genmix['B4'].value:
+            generation_mix_list.append(dest_sheet_genmix['C4'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E4'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F4'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G4'].value) #EDC
+
+        elif dest_sheet_genmix['A4'].value > dest_sheet_genmix['B4'].value:
+            generation_mix_list.append(dest_sheet_genmix['C4'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E4'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F4'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G4'].value) #EDC
+            generation_mix_list.append(dest_sheet_genmix['H4'].value) #WESM
+
+
+    # HOUR 4
+    elif current_hour == dest_sheet_genmix['I5'].value:
+        if dest_sheet_genmix['A5'].value <= dest_sheet_genmix['B5'].value:
+            generation_mix_list.append(dest_sheet_genmix['C5'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E5'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F5'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G5'].value) #EDC
+
+        elif dest_sheet_genmix['A5'].value > dest_sheet_genmix['B5'].value:
+            generation_mix_list.append(dest_sheet_genmix['C5'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E5'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F5'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G5'].value) #EDC
+            generation_mix_list.append(dest_sheet_genmix['H5'].value) #WESM
     
+    # HOUR 5
+    elif current_hour == dest_sheet_genmix['I6'].value:
+        if dest_sheet_genmix['A6'].value <= dest_sheet_genmix['B6'].value:
+            generation_mix_list.append(dest_sheet_genmix['C6'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E6'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F6'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G6'].value) #EDC
+
+        elif dest_sheet_genmix['A6'].value > dest_sheet_genmix['B6'].value:
+            generation_mix_list.append(dest_sheet_genmix['C6'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E6'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F6'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G6'].value) #EDC
+            generation_mix_list.append(dest_sheet_genmix['H6'].value) #WESM
+
+    # HOUR 6  
+    elif current_hour == dest_sheet_genmix['I7'].value:
+        if dest_sheet_genmix['A7'].value <= dest_sheet_genmix['B7'].value:
+            generation_mix_list.append(dest_sheet_genmix['C7'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E7'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F7'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G7'].value) #EDC
+
+        elif dest_sheet_genmix['A7'].value > dest_sheet_genmix['B7'].value:
+            generation_mix_list.append(dest_sheet_genmix['C7'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E7'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F7'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G7'].value) #EDC
+            generation_mix_list.append(dest_sheet_genmix['H7'].value) #WESM
+    
+    # HOUR 7
+    elif current_hour == dest_sheet_genmix['I8'].value:
+        if dest_sheet_genmix['A8'].value <= dest_sheet_genmix['B8'].value:
+            generation_mix_list.append(dest_sheet_genmix['C8'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E8'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F8'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G8'].value) #EDC
+
+        elif dest_sheet_genmix['A8'].value > dest_sheet_genmix['B8'].value:
+            generation_mix_list.append(dest_sheet_genmix['C8'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E8'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F8'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G8'].value) #EDC
+            generation_mix_list.append(dest_sheet_genmix['H8'].value) #WESM
+    
+    # HOUR 8
+    elif current_hour == dest_sheet_genmix['I9'].value:
+        if dest_sheet_genmix['A9'].value <= dest_sheet_genmix['B9'].value:
+            generation_mix_list.append(dest_sheet_genmix['C9'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E9'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F9'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G9'].value) #EDC
+
+        elif dest_sheet_genmix['A9'].value > dest_sheet_genmix['B9'].value:
+            generation_mix_list.append(dest_sheet_genmix['C9'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E9'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F9'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G9'].value) #EDC
+            generation_mix_list.append(dest_sheet_genmix['H9'].value) #WESM
+
+    # HOUR 9
+    elif current_hour == dest_sheet_genmix['I10'].value:
+        if dest_sheet_genmix['A10'].value <= dest_sheet_genmix['B10'].value:
+            generation_mix_list.append(dest_sheet_genmix['C10'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E10'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F10'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G10'].value) #EDC
+
+        elif dest_sheet_genmix['A10'].value > dest_sheet_genmix['B10'].value:
+            generation_mix_list.append(dest_sheet_genmix['C10'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E10'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F10'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G10'].value) #EDC
+            generation_mix_list.append(dest_sheet_genmix['H10'].value) #WESM
+    
+    # HOUR 10
+    elif current_hour == dest_sheet_genmix['I11'].value:
+        if dest_sheet_genmix['A11'].value <= dest_sheet_genmix['B11'].value:
+            generation_mix_list.append(dest_sheet_genmix['C11'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E11'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F11'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G11'].value) #EDC
+
+        elif dest_sheet_genmix['A11'].value > dest_sheet_genmix['B11'].value:
+            generation_mix_list.append(dest_sheet_genmix['C11'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E11'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F11'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G11'].value) #EDC
+            generation_mix_list.append(dest_sheet_genmix['H11'].value) #WESM
+
+    # HOUR 11
+    elif current_hour == dest_sheet_genmix['I12'].value:
+        if dest_sheet_genmix['A12'].value <= dest_sheet_genmix['B12'].value:
+            generation_mix_list.append(dest_sheet_genmix['C12'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E12'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F12'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G12'].value) #EDC
+
+        elif dest_sheet_genmix['A12'].value > dest_sheet_genmix['B12'].value:
+            generation_mix_list.append(dest_sheet_genmix['C12'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E12'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F12'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G12'].value) #EDC
+            generation_mix_list.append(dest_sheet_genmix['H12'].value) #WESM
+
+    # HOUR 12
+    elif current_hour == dest_sheet_genmix['I13'].value:
+        if dest_sheet_genmix['A13'].value <= dest_sheet_genmix['B13'].value:
+            generation_mix_list.append(dest_sheet_genmix['C13'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E13'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F13'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G13'].value) #EDC
+
+        elif dest_sheet_genmix['A13'].value > dest_sheet_genmix['B13'].value:
+            generation_mix_list.append(dest_sheet_genmix['C13'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E13'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F13'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G13'].value) #EDC
+            generation_mix_list.append(dest_sheet_genmix['H13'].value) #WESM
+    
+    # HOUR 13
+    elif current_hour == dest_sheet_genmix['I14'].value:
+        if dest_sheet_genmix['A14'].value <= dest_sheet_genmix['B14'].value:
+            generation_mix_list.append(dest_sheet_genmix['C14'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E14'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F14'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G14'].value) #EDC
+
+        elif dest_sheet_genmix['A14'].value > dest_sheet_genmix['B14'].value:
+            generation_mix_list.append(dest_sheet_genmix['C14'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E14'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F14'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G14'].value) #EDC
+            generation_mix_list.append(dest_sheet_genmix['H14'].value) #WESM
+    
+    # HOUR 14
+    elif current_hour == dest_sheet_genmix['I15'].value:
+        if dest_sheet_genmix['A15'].value <= dest_sheet_genmix['B15'].value:
+            generation_mix_list.append(dest_sheet_genmix['C15'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E15'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F15'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G15'].value) #EDC
+
+        elif dest_sheet_genmix['A15'].value > dest_sheet_genmix['B15'].value:
+            generation_mix_list.append(dest_sheet_genmix['C15'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E15'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F15'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G15'].value) #EDC
+            generation_mix_list.append(dest_sheet_genmix['H15'].value) #WESM
+    
+    # HOUR 15
+    elif current_hour == dest_sheet_genmix['I16'].value:
+        if dest_sheet_genmix['A16'].value <= dest_sheet_genmix['B16'].value:
+            generation_mix_list.append(dest_sheet_genmix['C16'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E16'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F16'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G16'].value) #EDC
+
+        elif dest_sheet_genmix['A16'].value > dest_sheet_genmix['B16'].value:
+            generation_mix_list.append(dest_sheet_genmix['C16'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E16'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F16'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G16'].value) #EDC
+            generation_mix_list.append(dest_sheet_genmix['H16'].value) #WESM
+    
+    # HOUR 16
+    elif current_hour == dest_sheet_genmix['I17'].value:
+        if dest_sheet_genmix['A17'].value <= dest_sheet_genmix['B17'].value:
+            generation_mix_list.append(dest_sheet_genmix['C17'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E17'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F17'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G17'].value) #EDC
+
+        elif dest_sheet_genmix['A17'].value > dest_sheet_genmix['B17'].value:
+            generation_mix_list.append(dest_sheet_genmix['C17'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E17'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F17'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G17'].value) #EDC
+            generation_mix_list.append(dest_sheet_genmix['H17'].value) #WESM
+    
+    # HOUR 17
+    elif current_hour == dest_sheet_genmix['I18'].value:
+        if dest_sheet_genmix['A18'].value <= dest_sheet_genmix['B18'].value:
+            generation_mix_list.append(dest_sheet_genmix['C18'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E18'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F18'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G18'].value) #EDC
+
+        elif dest_sheet_genmix['A18'].value > dest_sheet_genmix['B18'].value:
+            generation_mix_list.append(dest_sheet_genmix['C18'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E18'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F18'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G18'].value) #EDC
+            generation_mix_list.append(dest_sheet_genmix['H18'].value) #WESM
+    
+    # HOUR 18
+    elif current_hour == dest_sheet_genmix['I19'].value:
+        if dest_sheet_genmix['A19'].value <= dest_sheet_genmix['B19'].value:
+            generation_mix_list.append(dest_sheet_genmix['C19'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E19'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F19'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G19'].value) #EDC
+
+        elif dest_sheet_genmix['A19'].value > dest_sheet_genmix['B19'].value:
+            generation_mix_list.append(dest_sheet_genmix['C19'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E19'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F19'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G19'].value) #EDC
+            generation_mix_list.append(dest_sheet_genmix['H19'].value) #WESM
+    
+    # HOUR 19
+    elif current_hour == dest_sheet_genmix['I20'].value:
+        if dest_sheet_genmix['A20'].value <= dest_sheet_genmix['B20'].value:
+            generation_mix_list.append(dest_sheet_genmix['C20'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E20'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F20'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G20'].value) #EDC
+
+        elif dest_sheet_genmix['A20'].value > dest_sheet_genmix['B20'].value:
+            generation_mix_list.append(dest_sheet_genmix['C20'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E20'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F20'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G20'].value) #EDC
+            generation_mix_list.append(dest_sheet_genmix['H20'].value) #WESM
+
+    # HOUR 20
+    elif current_hour == dest_sheet_genmix['I21'].value:
+        if dest_sheet_genmix['A21'].value <= dest_sheet_genmix['B21'].value:
+            generation_mix_list.append(dest_sheet_genmix['C21'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E21'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F21'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G21'].value) #EDC
+
+        elif dest_sheet_genmix['A21'].value > dest_sheet_genmix['B21'].value:
+            generation_mix_list.append(dest_sheet_genmix['C21'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E21'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F21'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G21'].value) #EDC
+            generation_mix_list.append(dest_sheet_genmix['H21'].value) #WESM
+    
+    # HOUR 21
+    elif current_hour == dest_sheet_genmix['I22'].value:
+        if dest_sheet_genmix['A22'].value <= dest_sheet_genmix['B22'].value:
+            generation_mix_list.append(dest_sheet_genmix['C22'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E22'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F22'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G22'].value) #EDC
+
+        elif dest_sheet_genmix['A22'].value > dest_sheet_genmix['B22'].value:
+            generation_mix_list.append(dest_sheet_genmix['C22'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E22'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F22'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G22'].value) #EDC
+            generation_mix_list.append(dest_sheet_genmix['H22'].value) #WESM
+    
+    # HOUR 22
+    elif current_hour == dest_sheet_genmix['I23'].value:
+        if dest_sheet_genmix['A23'].value <= dest_sheet_genmix['B23'].value:
+            generation_mix_list.append(dest_sheet_genmix['C23'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E23'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F23'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G23'].value) #EDC
+
+        elif dest_sheet_genmix['A23'].value > dest_sheet_genmix['B23'].value:
+            generation_mix_list.append(dest_sheet_genmix['C23'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E23'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F23'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G23'].value) #EDC
+            generation_mix_list.append(dest_sheet_genmix['H23'].value) #WESM
+    
+    # HOUR 23
+    elif current_hour == dest_sheet_genmix['I24'].value:
+        if dest_sheet_genmix['A24'].value <= dest_sheet_genmix['B24'].value:
+            generation_mix_list.append(dest_sheet_genmix['C24'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E24'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F24'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G24'].value) #EDC
+
+        elif dest_sheet_genmix['A24'].value > dest_sheet_genmix['B24'].value:
+            generation_mix_list.append(dest_sheet_genmix['C24'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E24'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F24'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G24'].value) #EDC
+            generation_mix_list.append(dest_sheet_genmix['H24'].value) #WESM
+
+    # HOUR 24
+    elif current_hour == dest_sheet_genmix['I25'].value:
+        if dest_sheet_genmix['A25'].value <= dest_sheet_genmix['B25'].value:
+            generation_mix_list.append(dest_sheet_genmix['C25'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E25'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F25'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G25'].value) #EDC
+
+        elif dest_sheet_genmix['A25'].value > dest_sheet_genmix['B25'].value:
+            generation_mix_list.append(dest_sheet_genmix['C25'].value) #SCPC
+            generation_mix_list.append(dest_sheet_genmix['E25'].value) #KSPC1
+            generation_mix_list.append(dest_sheet_genmix['F25'].value) #KSPC2
+            generation_mix_list.append(dest_sheet_genmix['G25'].value) #EDC
+            generation_mix_list.append(dest_sheet_genmix['H25'].value) #WESM
+    
+    if len(generation_mix_list) == 4:
+        genmix_data = {
+        'Names': ['SEMCAL', 'KSPC1', 'KSPC2', 'EDC'],
+        'Values': generation_mix_list
+        }
+    elif len(generation_mix_list) == 5:
+        genmix_data = {
+        'Names': ['SEMCAL', 'KSPC1', 'KSPC2', 'EDC', 'WESM'],
+        'Values': generation_mix_list
+        }
+
+    genmix_df = pd.DataFrame(genmix_data)
+
+    # Creating the donut chart
+    fig_genmix = px.pie(genmix_df, values='Values', names='Names', hole=0.5)
+
+    # Customizing the labels to appear on the slices
+    fig_genmix.update_traces(
+        textposition='inside',    # Places the text inside the slices
+        textinfo='label+percent', # Shows both the label and percentage inside the slices
+        insidetextorientation='horizontal',  # Keeps text horizontal inside the slices
+        marker=dict(
+            colors=['#FF5733', '#33FF57', '#3357FF', '#F5F5F5', '#FF33A1']
+        )
+    )
+
+    fig_genmix.update_layout(
+        width=600,
+        height=300
+    )
+
     # -- END OF DISPLAYING THE GENERATION MIX DONUT CHART --
 
     col1, col2, col3 = st.columns(3)
     # BCQ Nominations per Supplier
     with col1:
         st.subheader("BCQ Nominations per Supplier", divider=True)
-        st.altair_chart(chart)
+        st.altair_chart(chart_bcq)
     # Trading Interval Price Calculation (TIPC)
     with col2:
         st.subheader("Trading Interval Price Calculation", divider=True)
@@ -1885,8 +2393,9 @@ while True:
     # Generation Mix
     with col3:
         st.subheader("Generation Mix", divider=True)
-        if chart_data:
-            st.plotly_chart(figure_or_data=chart_data)
+        # if chart_data:
+        #     st.plotly_chart(figure_or_data=chart_data)
+        st.plotly_chart(fig_genmix)
 
     # For rerunning the script every 60 seconds
     time.sleep(REFRESH_INTERVAL)

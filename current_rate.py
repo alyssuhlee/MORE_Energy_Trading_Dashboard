@@ -28,47 +28,85 @@ def copy_values(source_sheet, dest_sheet, source_range, dest_range):
                 break
 
 def initial_function():
-    # Rates - Supplier Rates for the Month_July 2024
-    # Defining the base directory
-    base_directory_1 = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\MORE Energy Sourcing\013. Rate Analysis\005. 2024 Rate Analysis"
+    # # Rates - Supplier Rates for the Month_July 2024
+    # # Defining the base directory
+    # base_directory_1 = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\MORE Energy Sourcing\013. Rate Analysis\005. 2024 Rate Analysis"
 
-    # Getting the current month and year
+    # # Getting the current month and year
+    # current_date = datetime.now()
+    # current_month_numeric = current_date.strftime("%m")  # Month in numeric format (e.g., '01' for January)
+    # current_month_name = current_date.strftime("%B")   # Full month name (e.g., 'January')
+    # current_day = current_date.strftime("%d") # Day in numeric format (e.g., '26')
+    # current_year = current_date.strftime("%Y")   # Year in 4-digit format (e.g., '2024')
+
+    # #List of all month names
+    # months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    # #Find index of current month
+    # current_month_index = months.index(current_month_name)
+
+    # # Initialize current_month_numeric_increment
+    # current_month_numeric_increment = current_month_numeric # Default to current month if condition not met
+
+    # if (current_day > '25') and (current_date.strftime("%m") == current_month_numeric):
+    #     #Increment current month by converting to integer, adding 1, and formatting back to zero-padded string
+    #     current_month_numeric_increment = '{:02d}'.format((int(current_month_numeric) % 12) + 1)
+    #     #Calculate index of next month
+    #     next_month_index = (current_month_index + 1) % 12
+    #     current_month_name = months[next_month_index]
+
+    # # Constructing the folder name
+    # folder_prefix = current_month_numeric_increment.zfill(3)  # Zero-padded three-digit month number (e.g., '006' for June)
+    # folder_name = f"{folder_prefix}. {current_month_name} {current_year}"
+
+    # # Constructing the directory path
+    # folder_path = os.path.join(base_directory_1, folder_name)
+
+    # # Additional needed variables for the folder name
+    # drs = "Daily Rate Simulation_"
+    # extension = ".xlsx"
+
+    # # Folder name (Example: Daily Rate Simulation_06252024) 
+    # folder_name_2 = f"{drs}{current_month_numeric}{current_day}{current_year}{extension}"
+    # folder_path_2 = os.path.join(folder_path, folder_name_2)
+
+    base_directory = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections"
     current_date = datetime.now()
-    current_month_numeric = current_date.strftime("%m")  # Month in numeric format (e.g., '01' for January)
-    current_month_name = current_date.strftime("%B")   # Full month name (e.g., 'January')
-    current_day = current_date.strftime("%d") # Day in numeric format (e.g., '26')
-    current_year = current_date.strftime("%Y")   # Year in 4-digit format (e.g., '2024')
+    current_month_numeric = current_date.strftime("%m")
+    current_month_name = current_date.strftime("%B")
+    current_day = current_date.strftime("%d")
+    current_year = current_date.strftime("%Y")
+
+    folder_path = os.path.join(base_directory, current_year)
 
     #List of all month names
     months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     #Find index of current month
     current_month_index = months.index(current_month_name)
 
-    # Initialize current_month_numeric_increment
-    current_month_numeric_increment = current_month_numeric # Default to current month if condition not met
-
-    if (current_day > '25') and (current_date.strftime("%m") == current_month_numeric):
+    if (current_day>'25') and (current_date.strftime("%m")==current_month_numeric):
         #Increment current month by converting to integer, adding 1, and formatting back to zero-padded string
         current_month_numeric_increment = '{:02d}'.format((int(current_month_numeric) % 12) + 1)
         #Calculate index of next month
         next_month_index = (current_month_index + 1) % 12
         current_month_name = months[next_month_index]
+    elif(current_day<='25') and (current_date.strftime("%m")==current_month_numeric):
+        current_month_numeric_increment = current_month_numeric
 
     # Constructing the folder name
     folder_prefix = current_month_numeric_increment.zfill(3)  # Zero-padded three-digit month number (e.g., '006' for June)
     folder_name = f"{folder_prefix}. {current_month_name} {current_year}"
 
     # Constructing the directory path
-    folder_path = os.path.join(base_directory_1, folder_name)
+    folder_path_2 = os.path.join(folder_path, folder_name)
 
     # Additional needed variables for the folder name
     drs = "Daily Rate Simulation_"
     extension = ".xlsx"
 
-    # Folder name (Example: Daily Rate Simulation_06252024) 
+    # Folder Name (Example: Daily Rate Simulation_06252024) 
     folder_name_2 = f"{drs}{current_month_numeric}{current_day}{current_year}{extension}"
-    folder_path_2 = os.path.join(folder_path, folder_name_2)
-
+    folder_path_3 = os.path.join(folder_path_2, folder_name_2)
+    
     # For creating a new Excel file with the needed columns
     workbook = openpyxl.Workbook()
     sheet = workbook.active
@@ -104,7 +142,7 @@ def initial_function():
     destination_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\current_rate.xlsx'
 
     # Load source workbook
-    source_wb = load_workbook(folder_path_2, data_only=True)  # Use data_only=True to get values instead of formulas
+    source_wb = load_workbook(folder_path_3, data_only=True)  # Use data_only=True to get values instead of formulas
     # Sheet name of the source workbook
     source_sheet = source_wb['6. DAP Report']
 
@@ -331,7 +369,7 @@ def initial_function():
     month_var = date_currently.strftime("%B") # Example: "August"
     extension = ".xlsx"
     supplier_rates_folder = f"{srftm}{month_var} {current_year}{extension}"
-    supplier_rates_path = os.path.join(folder_path, supplier_rates_folder)
+    supplier_rates_path = os.path.join(folder_path_2, supplier_rates_folder)
 
     # File path for destination Excel file
     destination_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\current_rate.xlsx'
