@@ -9543,36 +9543,62 @@ def find_total():
 
 # RESOURCE NAMES -> 08PEDC_T1L1, 08PEDC_T1L2, 08STBAR_T1L1 
 
-# Function to insert value into MySQL database
 def insert_into_mysql(conn, float_final_total):
-    cursor = conn.cursor()
-    sql = "INSERT INTO more_trading_node (float_final_total) VALUES (%s)"
-    cursor.execute(sql, (float_final_total,))
-    conn.commit()  # Commit the transaction
-    cursor.close()
-    print(f"Value {float_final_total} inserted successfully into MySQL.")
+    try:
+        cursor = conn.cursor()
+        sql = "INSERT INTO more_trading_node (float_final_total) VALUES (%s)"
+        cursor.execute(sql, (float_final_total,))
+        conn.commit()  # Commit the transaction
+        print(f"Value {float_final_total} inserted successfully into MySQL.")
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        conn.rollback()
+    finally:
+        if cursor:
+            cursor.close()
 
-def get_last_value_from_mysql(conn):
-    cursor = conn.cursor()
-    sql = "SELECT float_final_total FROM more_trading_node ORDER BY id DESC LIMIT 1"
-    cursor.execute(sql)
-    result = cursor.fetchone()
-    last_result = result[0]
-    cursor.close()
-    print(f"Value {last_result} inserted successfully into MySQL.")
-    return last_result
-    
+def retrieve_and_insert_last_value(conn):
+    try:
+        cursor = conn.cursor()
+        
+        # SQL Query to get the last value
+        sql_retrieve = "SELECT float_final_total FROM more_trading_node ORDER BY id DESC LIMIT 1"
+        cursor.execute(sql_retrieve)
+        result = cursor.fetchone()
+        
+        # Check if a result was found
+        if result:
+            last_value = result[0]
+            print(f"Last value retrieved from the database: {last_value}")
+            
+            # SQL Insert Statement to insert the last value back into the database
+            sql_insert = "INSERT INTO more_trading_node (float_final_total) VALUES (%s)"
+            cursor.execute(sql_insert, (last_value,))
+            conn.commit()
+            print(f"Last value {last_value} inserted successfully into MySQL.")
+        else:
+            print("No previous value found in the database.")
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        conn.rollback()
+    finally:
+        if cursor:
+            cursor.close()
+
 def run_continuously(conn):
-    float_final_total = find_total()
-    if float_final_total is not None:
-        insert_into_mysql(conn, float_final_total)
-    else:
-        get_last_value_from_mysql(conn)
-    # Wait for 60 seconds before next update
-    time.sleep(60)
-    
-if __name__ == "__main__":
     while True:
+        try:
+            float_final_total = find_total()
+            insert_into_mysql(conn, float_final_total)
+        except pd.errors.EmptyDataError:
+            retrieve_and_insert_last_value(conn)
+        except Exception as e:
+            print(f"Unexpected error: {e}")
+        time.sleep(60) # Wait for 60 seconds before next update
+
+if __name__ == "__main__":
+    conn = None
+    try:
         conn = mysql.connector.connect(
             host='localhost',
             database='myDb',
@@ -9588,5 +9614,9 @@ if __name__ == "__main__":
             )
         """)
         cursor.close()
+        
         # Run this function to continuously check and update database
         run_continuously(conn)
+    finally:
+        if conn and conn.is_connected():
+            conn.close()

@@ -11161,53 +11161,79 @@ def get_current_rate_for_current_hour(excel_file, current_hour, default_value=0.
 
     return float_current_rate_value
 
-# Function to insert value into MySQL database
 def insert_into_mysql(conn, float_current_rate_value):
-    # Create a cursor object
-    cursor = conn.cursor()
-    # SQL Insert Statement
-    sql = "INSERT INTO current_rate (rate) VALUES (%s)"
-    # Execute the SQL Query
-    cursor.execute(sql, (float_current_rate_value,))
-    # Commit the transaction
-    conn.commit()
-    # Close the cursor
-    cursor.close()
-    # Print a confirmation message
-    print(f"Value {float_current_rate_value} inserted successfully into MySQL.")
+    try:
+        # Create a cursor object
+        cursor = conn.cursor()
+        # SQL Insert Statement
+        sql = "INSERT INTO current_rate (rate) VALUES (%s)"
+        # Execute the SQL Query
+        cursor.execute(sql, (float_current_rate_value,))
+        # Commit the transaction
+        conn.commit()
+        # Print a confirmation message
+        print(f"Value {float_current_rate_value} inserted successfully into MySQL.")
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        conn.rollback()
+    finally:
+        if cursor:
+            cursor.close()
 
-def get_last_value_from_mysql(conn):
-    cursor = conn.cursor()
-    sql = "SELECT rate FROM current_rate ORDER BY id DESC LIMIT 1"
-    cursor.execute(sql)
-    result = cursor.fetchone()
-    last_result = result[0]
-    cursor.close()
-    print(f"Value {last_result} inserted successfully into MySQL.")
-    return last_result
+def retrieve_and_insert_last_value(conn):
+    try:
+        # Create a cursor object
+        cursor = conn.cursor()
+        # SQL Query to get the last value
+        sql_retrieve = "SELECT rate FROM current_rate ORDER BY id DESC LIMIT 1"
+        cursor.execute(sql_retrieve)
+        result = cursor.fetchone()
 
-# Main function to run the script
+        # Check if a result was found
+        if result:
+            last_value = result[0]
+            print(f"Last value retrieved from the database: {last_value}")
+
+            # SQL Insert Statement to insert the last value back into the database
+            sql_insert = "INSERT INTO current_rate (rate) VALUES (%s)"
+            cursor.execute(sql_insert, (last_value,))
+            conn.commit()
+            print(f"Last value {last_value} inserted successfully into MySQL.")
+        else:
+            print("No previous value found in the database.")
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        conn.rollback()
+    finally:
+        if cursor:
+            cursor.close()
+
 def main(excel_file, conn):
-    initial_function()
-    total_ss_load()
-    contestable_energy()
-    find_total()
-    find_total_2()
-    find_total_3()
-    current_hour = get_current_hour()
-    float_current_rate_value = get_current_rate_for_current_hour(excel_file, current_hour)
-    if float_current_rate_value is not None:
-        # Insert into MySQL database
-        insert_into_mysql(conn, float_current_rate_value)
-    else: 
-        get_last_value_from_mysql(conn)
-    # Wait for 60 seconds before next update
-    time.sleep(60)
+    while True:
+        try:
+            # Ensure initial_function and others are correctly defined
+            initial_function()
+            total_ss_load()
+            contestable_energy()
+            find_total()
+            find_total_2()
+            find_total_3()
+            
+            current_hour = get_current_hour()
+            float_current_rate_value = get_current_rate_for_current_hour(excel_file, current_hour)
+
+            # Insert into MySQL database
+            insert_into_mysql(conn, float_current_rate_value)
+        except pd.errors.EmptyDataError:
+            retrieve_and_insert_last_value(conn)
+        except Exception as e:
+            print(f"Unexpected error: {e}")
+        time.sleep(60) # Wait for 60 seconds before next update
 
 if __name__ == "__main__":
+    excel_file = 'current_rate.xlsx'
+    
     while True:
-        excel_file = 'current_rate.xlsx'
-        
         conn = mysql.connector.connect(
             host='localhost',
             database='myDb',
@@ -11216,15 +11242,25 @@ if __name__ == "__main__":
         )
 
         # Create MySQL table if it doesn't exist
-        cursor = conn.cursor()
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS current_rate (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                rate FLOAT(10, 4) NOT NULL,
-                insert_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        """)
-        cursor.close()
+        try:
+            cursor = conn.cursor()
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS current_rate (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    rate FLOAT(10, 4) NOT NULL,
+                    insert_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+            """)
+        except mysql.connector.Error as err:
+            print(f"Error creating table: {err}")
+        finally:
+            cursor.close()
 
-        # Run main function to continuously check and update database
-        main(excel_file, conn)
+        try:
+            # Run main function to continuously check and update database
+            main(excel_file, conn)
+        except Exception as e:
+            print(f"Error in main function: {e}")
+        finally:
+            # Close the connection
+            conn.close()

@@ -236,6 +236,24 @@ def copy_values(source_sheet, dest_sheet, source_range, dest_range):
             else:
                 break
 
+# Function to check if a column is working (Part 1)
+def check_column_working(column_id):
+    if column_id == 1:
+        return True  # Simulate that column 1 is working
+    elif column_id == 2:
+        return True  # Simulate that column 2 is working
+    return False
+
+# Function to check if a column is working (Part 2)
+def check_column_working_2(column_id_2):
+    if column_id_2 == 1:
+        return True  # Simulate that column 1 is working
+    elif column_id_2 == 2:
+        return True  # Simulate that column 2 is working
+    elif column_id_2 == 3:
+        return True
+    return False
+
 # -- END OF FUNCTIONS --
 
 while True:
@@ -257,8 +275,7 @@ while True:
         db = "myDb"
     )
 
-    c = conn.cursor()
-
+    c=conn.cursor()
 
     # -- START OF SO ADVISORIES HEADER --
 
@@ -440,56 +457,39 @@ while True:
     # Create columns with small gap
     card1, card2, card3, card4, card5, card6, card7, card8, card9, card10 = st.columns(10, gap='small')
 
-    # Custom CSS for styling
     st.markdown("""
-        <style>
-        /* Shorter in width */
-        .custom-box {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 0px;
-            margin: 0px;
-            background-color: #00B74C;
-            height: 150px;
-            width: 120%;
-        }
-        .custom-box h4, .custom-box p {
-            display: inline-block;
-            margin: 0;
-            padding: 0;
-        }
-        .custom-box-2 h4, .custom-box p {
-            display: inline-block;
-            margin: 0;
-            padding: 0;
-        }
-        .custom-box h4 {
-            font-size: 14px;
-            font-family: Helvetica;
-            font-weight: normal;
-            color: #000000;
-        }
-        .custom-box-2 h4 {
-            font-size: 14px;
-            font-family: Helvetica;
-            font-weight: normal;
-            color: #000000;
-        }
-        .custom-box p {
-            font-size: 20px;
-            font-family: Helvetica;
-            font-weight: bold;
-            color: #000000;
-        }
-        .custom-box-2 p {
-            font-size: 20px;
-            font-family: Helvetica;
-            font-weight: bold;
-            color: #000000;
-        }
-        </style>
-    """, unsafe_allow_html=True)
-    
+    <style>
+    /* Responsive box styling */
+    .custom-box {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 0;
+        margin: 0;
+        background-color: #017208;
+        height: 27vh;  /* Responsive height */
+        max-width: 100%;  /* Prevents overflow */
+        box-sizing: border-box;
+    }
+    .custom-box h4, .custom-box p, .custom-box-2 h4, .custom-box-2 p {
+        display: inline-block;
+        margin: 0;
+        padding: 0;
+    }
+    .custom-box h4, .custom-box-2 h4 {
+        font-size: 1rem;  /* Relative font size */
+        font-family: Helvetica, Arial, sans-serif;  /* Fallback font */
+        font-weight: normal;
+        color: #FFFFFF;
+    }
+    .custom-box p, .custom-box-2 p {
+        font-size: 1.25rem;  /* Relative font size */
+        font-family: Helvetica, Arial, sans-serif;  /* Fallback font */
+        font-weight: bold;
+        color: #FFFFFF;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
     with card1:
         st.markdown('<div class="custom-box"><h4>Current Date</h4><p>{}</p></div>'.format(formatted_date), unsafe_allow_html=True)
 
@@ -521,7 +521,6 @@ while True:
         st.markdown('<div class="custom-box"><h4>Current Rate (PhP/kWh)</h4><p>{}</p></div>'.format(current_rate), unsafe_allow_html=True)
 
     # -- END OF CURRENT INTERVAL SUMMARY --
-
 
     # -- START OF DISPLAYING THE BCQ NOMINATIONS PER SUPPLIER AREA CHART --
 
@@ -561,7 +560,7 @@ while True:
         'KSPC2': kspc2_values,
         'EDC': edc_values
     }
-
+    
     df_bcq = pd.DataFrame(data_bcq)
 
     # Melt the DataFrame for Altair
@@ -573,8 +572,13 @@ while True:
         y='BCQ:Q',
         color='Supplier:N'
     ).properties(
-        width=470,  
-        height=300
+        width=450,  
+        height=300,
+        padding={"left": 10, "top": 10, "right": 10, "bottom": 10}  # Add padding to prevent clipping
+    ).configure_view(
+        stroke=None # Remove border around the chart
+    ).configure(
+        background='black' # Set the background color to black
     )
 
     # -- END OF DISPLAYING THE BCQ NOMINATIONS PER SUPPLIER AREA CHART --
@@ -692,8 +696,14 @@ while True:
         xaxis_title='Interval',
         yaxis_title='kWh'
     )
+
+    fig.update_layout(
+        plot_bgcolor='black',
+        paper_bgcolor='black'
+    )
+
     # Update the layout to set the bar mode to stacked and add a title
-    fig.update_layout(barmode='stack', height=420, width=700)
+    fig.update_layout(barmode='stack', height=420, width=800)
 
     # -- END OF DISPLAYING THE ACTUAL VS FORECASTED ENERGY CHART --
 
@@ -740,45 +750,59 @@ while True:
     fig_ss_load.update_layout(
         uniformtext_minsize=8,
         uniformtext_mode='hide',
-        width=600,  # Set the width of the bar chart
+        width=800,  # Set the width of the bar chart
         height=420  # Set the height of the bar chart
+    )
+
+    fig_ss_load.update_layout(
+        plot_bgcolor='black',
+        paper_bgcolor='black'
     )
 
     # -- END OF DISPLAYING THE SUBSTATION LOAD (KW) BAR CHART -- 
 
-    # Custom CSS to make components very close to each other
-    st.markdown("""
-        <style>
-        /* Reduce space between columns */
-        .stApp {
-            padding: 0.5rem;  /* Overall app padding */
-        }
-        .stColumn > div {
-            padding: 0rem;  /* Remove padding between column content */
-        }
-        .stMarkdown {
-            margin: 0;  /* Remove margin around markdown elements */
-            padding: 0rem 0rem 0rem 0rem; /* Remove padding around markdown (top, right, bottom, left) */
-        }
-        .stMarkdown h3 {
-            margin: 0 0 -50px 0; /* Negative bottom margin, zero for others */
-            padding: 0;           
-        }
-        .stPlotlyChart {
-            margin: -10px 0 0 0;  /* Remove margin around Plotly charts */
-            padding: 0;  
-        }
-        </style>
-        """, unsafe_allow_html=True)
+    # # Custom CSS to make components very close to each other
+    # st.markdown("""
+    #     <style>
+    #     /* Reduce space between columns */
+    #     .stApp {
+    #         padding: 0.5rem;  /* Overall app padding */
+    #     }
+    #     .stColumn > div {
+    #         padding: 0rem;  /* Remove padding between column content */
+    #     }
+    #     .stMarkdown {
+    #         margin: 0;  /* Remove margin around markdown elements */
+    #         padding: 0rem 0rem 0rem 0rem; /* Remove padding around markdown (top, right, bottom, left) */
+    #     }
+    #     .stMarkdown h3 {
+    #         margin: 0 0 -50px 0; /* Negative bottom margin, zero for others */
+    #         padding: 0;           
+    #     }
+    #     .stPlotlyChart {
+    #         margin: -10px 0 0 0;  /* Remove margin around Plotly charts */
+    #         padding: 0;  
+    #     }
+    #     </style>
+    #     """, unsafe_allow_html=True)
 
     # Layout with smaller padding
-    col1, col2 = st.columns([1, 1])  # Adjust width ratios if needed
-    with col1:
-        st.subheader("Substation Load (kW)", divider=True)
-        st.plotly_chart(fig_ss_load)
-    with col2:
-        st.subheader("Actual vs Forecasted Energy (kWh)", divider=True)
-        st.plotly_chart(fig)
+    col1, col2 = st.columns(2)  # Adjust width ratios if needed
+    if check_column_working(1) and check_column_working(2):
+        with col1:
+            st.subheader("Substation Load (kW)", divider=True)
+            st.plotly_chart(fig_ss_load)
+        with col2:
+            st.subheader("Actual vs Forecasted Energy (kWh)", divider=True)
+            st.plotly_chart(fig)
+    elif check_column_working(1):
+        with col1:
+            st.subheader("Substation Load (kW)", divider=True)
+            st.plotly_chart(fig_ss_load)
+    elif check_column_working(2):
+        with col2:
+            st.subheader("Actual vs Forecasted Energy (kWh)", divider=True)
+            st.plotly_chart(fig)
 
     # -- START OF TRADING INTERVAL PRICE CALCULATION LINE CHART --
 
@@ -1789,6 +1813,11 @@ while True:
     # Customize hover information
     fig_tipc.update_traces(hovertemplate='%{customdata[0]}', customdata=df_long[['Hover']].values)
 
+    fig_tipc.update_layout(
+        plot_bgcolor='black',
+        paper_bgcolor='black'
+    )
+
     # -- END OF TRADING INTERVAL PRICE CALCULATION LINE CHART --
 
     # -- START OF DISPLAYING THE GENERATION MIX DONUT CHART --
@@ -2407,18 +2436,56 @@ while True:
         height=300
     )
 
+    fig_genmix.update_layout(
+        plot_bgcolor='black',
+        paper_bgcolor='black'
+    )
+
     # -- END OF DISPLAYING THE GENERATION MIX DONUT CHART --
 
-    col1, col2, col3 = st.columns([1, 1, 1])
-    with col1:
-        st.subheader("BCQ Nominations per Supplier", divider=True)
-        st.altair_chart(chart_bcq)
-    with col2:
-        st.subheader("Trading Interval Price Calculation", divider=True)
-        st.plotly_chart(fig_tipc)
-    with col3:
-        st.subheader("Generation Mix", divider=True)
-        st.plotly_chart(fig_genmix)
+    col1, col2, col3 = st.columns(3)
+    if check_column_working_2(1) and check_column_working_2(2) and check_column_working_2(3):
+        with col1:
+            st.subheader("BCQ Nominations per Supplier", divider=True)
+            st.altair_chart(chart_bcq)
+        with col2:
+            st.subheader("Trading Interval Price Calculation", divider=True)
+            st.plotly_chart(fig_tipc)
+        with col3:
+            st.subheader("Generation Mix", divider=True)
+            st.plotly_chart(fig_genmix)
+    elif check_column_working_2(1):
+        with col1:
+            st.subheader("BCQ Nominations per Supplier", divider=True)
+            st.altair_chart(chart_bcq)
+    elif check_column_working_2(2):
+        with col2:
+            st.subheader("Trading Interval Price Calculation", divider=True)
+            st.plotly_chart(fig_tipc)
+    elif check_column_working_2(3):
+        with col3:
+            st.subheader("Generation Mix", divider=True)
+            st.plotly_chart(fig_genmix)
+    elif check_column_working_2(1) and check_column_working_2(2):
+        with col1:
+            st.subheader("BCQ Nominations per Supplier", divider=True)
+            st.altair_chart(chart_bcq)
+        with col2:
+            st.subheader("Trading Interval Price Calculation", divider=True)
+            st.plotly_chart(fig_tipc)
+    elif check_column_working_2(1) and check_column_working_2(3):
+        with col1:
+            st.subheader("BCQ Nominations per Supplier", divider=True)
+            st.altair_chart(chart_bcq)
+        with col3:
+            st.subheader("Generation Mix", divider=True)
+            st.plotly_chart(fig_genmix)
+    elif check_column_working_2(2) and check_column_working_2(3):
+        with col2:
+            st.subheader("Trading Interval Price Calculation", divider=True)
+            st.plotly_chart(fig_tipc)
+        with col3:
+            st.subheader("Generation Mix", divider=True)
 
     # For rerunning the script every 60 seconds
     time.sleep(REFRESH_INTERVAL)
