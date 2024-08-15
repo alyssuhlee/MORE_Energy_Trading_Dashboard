@@ -2,9 +2,8 @@
 from datetime import datetime
 from mysql.connector import Error
 from openpyxl import load_workbook
-from threading import Timer
+from pandas.errors import EmptyDataError
 import altair as alt
-import matplotlib.pyplot as plt
 import mysql.connector
 import openpyxl
 import os
@@ -236,27 +235,28 @@ def copy_values(source_sheet, dest_sheet, source_range, dest_range):
             else:
                 break
 
-# Function to check if a column is working (Part 1)
-def check_column_working(column_id):
-    if column_id == 1:
-        return True  # Simulate that column 1 is working
-    elif column_id == 2:
-        return True  # Simulate that column 2 is working
-    return False
+# # Function to check if a column is working (Part 1)
+# def check_column_working(column_id):
+#     if column_id == 1:
+#         return True  # Simulate that column 1 is working
+#     elif column_id == 2:
+#         return True  # Simulate that column 2 is working
+#     return False
 
-# Function to check if a column is working (Part 2)
-def check_column_working_2(column_id_2):
-    if column_id_2 == 1:
-        return True  # Simulate that column 1 is working
-    elif column_id_2 == 2:
-        return True  # Simulate that column 2 is working
-    elif column_id_2 == 3:
-        return True
-    return False
+# # Function to check if a column is working (Part 2)
+# def check_column_working_2(column_id_2):
+#     if column_id_2 == 1:
+#         return True  # Simulate that column 1 is working
+#     elif column_id_2 == 2:
+#         return True  # Simulate that column 2 is working
+#     elif column_id_2 == 3:
+#         return True
+#     return False
 
 # -- END OF FUNCTIONS --
 
 while True:
+
     # Set page config
     st.set_page_config(page_title="MEPC Energy Trading Dashboard", page_icon="data/logo_only.png", layout="wide")
 
@@ -265,6 +265,16 @@ while True:
 
     # Set the image's width to the column width
     st.image(image_path, use_column_width=True)
+
+    # Hide the Streamlit header and footer
+    st.markdown("""
+        <style>
+        /* Hide Streamlit header */
+        header {visibility: hidden;}
+        /* Hide Streamlit footer */
+        footer {visibility: hidden;}
+        </style>
+        """, unsafe_allow_html=True)
 
     # Connection
     conn=mysql.connector.connect(
@@ -321,72 +331,76 @@ while True:
         entry_text_2 = f"{time_message_2} - {message_2}"
         scrollable_content_2.append(entry_text_2)
 
+    # -- END OF MO ADVISORIES HEADER --
+
     # HTML and CSS for the tickers
     html_code = f"""
     <style>
     * {{
-    box-sizing: border-box;
+        box-sizing: border-box;
     }}
     @-webkit-keyframes ticker {{
-    0% {{
-        -webkit-transform: translate3d(0, 0, 0);
-        transform: translate3d(0, 0, 0);
-        visibility: visible;
-    }}
-    100% {{
-        -webkit-transform: translate3d(-100%, 0, 0);
-        transform: translate3d(-100%, 0, 0);
-    }}
+        0% {{
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }}
+        100% {{
+            -webkit-transform: translate3d(-100%, 0, 0);
+            transform: translate3d(-100%, 0, 0);
+        }}
     }}
     @keyframes ticker {{
-    0% {{
-        -webkit-transform: translate3d(0, 0, 0);
-        transform: translate3d(0, 0, 0);
-        visibility: visible;
-    }}
-    100% {{
-        -webkit-transform: translate3d(-100%, 0, 0);
-        transform: translate3d(-100%, 0, 0);
-    }}
+        0% {{
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }}
+        100% {{
+            -webkit-transform: translate3d(-100%, 0, 0);
+            transform: translate3d(-100%, 0, 0);
+        }}
     }}
     .ticker-wrap {{
-    position: fixed;
-    bottom: 2.5rem;  /* Adjusted to make space between tickers */
-    width: 100%;
-    overflow: hidden;
-    height: 2.5rem;
-    background-color: #000000; 
-    padding-left: 100%;
-    box-sizing: content-box;
+        position: fixed;
+        width: calc(100% - 2px);  /* Adjust width to account for border */
+        overflow: hidden;
+        height: 2.5rem;
+        background-color: #000000;
+        box-sizing: border-box;
+        border: 2px solid white;  /* White border around the entire box */
+        border-radius: 5px;  /* Optional: Add rounded corners */
+        padding: 0;  /* Remove padding to avoid clipping */
+        margin: 0;  /* Remove margin to avoid shifting */
     }}
     .ticker {{
-    display: inline-block;
-    height: 2.5rem;
-    line-height: 2.5rem;  
-    white-space: nowrap;
-    padding-right: 100%;
-    box-sizing: content-box;
-    -webkit-animation-iteration-count: infinite; 
-    animation-iteration-count: infinite;
-    -webkit-animation-timing-function: linear;
-    animation-timing-function: linear;
-    -webkit-animation-name: ticker;
-    animation-name: ticker;
-    -webkit-animation-duration: 180s;
-    animation-duration: 180s;
+        display: inline-block;
+        height: 2.5rem;
+        line-height: 2.5rem;
+        white-space: nowrap;
+        box-sizing: content-box;
+        -webkit-animation-iteration-count: infinite;
+        animation-iteration-count: infinite;
+        -webkit-animation-timing-function: linear;
+        animation-timing-function: linear;
+        -webkit-animation-name: ticker;
+        animation-name: ticker;
+        -webkit-animation-duration: 180s;
+        animation-duration: 180s;
     }}
     .ticker__item {{
-    display: inline-block;
-    padding: 0 0.5rem;
-    font-size: 1rem;
-    font-family: Helvetica;
-    font-weight: bold;
-    color: #FFFFFF;   
+        display: inline-block;
+        padding: 0 2rem; /* Increased padding for more space between entries */
+        font-size: 1rem;
+        font-family: Helvetica;
+        font-weight: bold;
+        color: #FFFFFF;
+    }}
+    .ticker__item:first-child {{
+        margin-left: 100rem; /* Adjust this value for more space before the first entry */
     }}
     body {{ margin: 0; padding-bottom: 5rem; }}
     h1, h2, p {{ padding: 0 5%; }}
     </style>
-    <div class="ticker-wrap">
+    <div class="ticker-wrap" style="bottom: 2.5rem;">  <!-- Bottom ticker -->
     <div class="ticker">
     """
 
@@ -396,7 +410,7 @@ while True:
     html_code += """
     </div>
     </div>
-    <div class="ticker-wrap" style="bottom: 0;">
+    <div class="ticker-wrap" style="bottom: 0;">  <!-- Top ticker -->
     <div class="ticker">
     """
 
@@ -410,8 +424,6 @@ while True:
 
     # Display the HTML and CSS in Streamlit
     st.components.v1.html(html_code, height=80)
-
-    # -- END OF MO ADVISORIES HEADER --
 
     # -- START OF CURRENT INTERVAL SUMMARY --
 
@@ -456,26 +468,38 @@ while True:
 
     # Create columns with small gap
     card1, card2, card3, card4, card5, card6, card7, card8, card9, card10 = st.columns(10, gap='small')
-
+    
     st.markdown("""
     <style>
-    /* Responsive box styling */
-    .custom-box {
+    /* Styling for equal-sized boxes */
+    .custom-box, .custom-box-2 {
         border: 1px solid #ddd;
         border-radius: 5px;
-        padding: 0;
+        padding: 10px;
         margin: 0;
         background-color: #017208;
-        height: 27vh;  /* Responsive height */
+        height: 30vh;  /* Fixed height to ensure all boxes are the same size */
         max-width: 100%;  /* Prevents overflow */
         box-sizing: border-box;
     }
+    
+    /* Ensure equal height on smaller screens */
+    @media (max-width: 768px) {
+        .custom-box, .custom-box-2 {
+            height: 25vh;  /* Consistent height on smaller screens */
+        }
+    }
+
+    /* Consistent height for very small screens */
+    @media (max-width: 480px) {
+        .custom-box, .custom-box-2 {
+            height: 30vh;  /* Equal height for all boxes on very small screens */
+        }
+    }
+
     .custom-box h4, .custom-box p, .custom-box-2 h4, .custom-box-2 p {
-        display: inline-block;
         margin: 0;
         padding: 0;
-    }
-    .custom-box h4, .custom-box-2 h4 {
         font-size: 1rem;  /* Relative font size */
         font-family: Helvetica, Arial, sans-serif;  /* Fallback font */
         font-weight: normal;
@@ -503,7 +527,7 @@ while True:
         st.markdown('<div class="custom-box"><h4>Total Substation Load (kW)</h4><p>{}</p></div>'.format(total_substation_load), unsafe_allow_html=True)
 
     with card5:
-        st.markdown('<div class="custom-box"><h4>Actual Energy (kWh)</h4><p>{}</p><h4>Contestable Energy (kWh)</h4><p>{}</p></div>'.format(actual_energy, forecasted_energy), unsafe_allow_html=True)
+        st.markdown('<div class="custom-box"><h4>Actual Energy (kWh)</h4><p>{}</p><h4>Forecasted Energy (kWh)</h4><p>{}</p></div>'.format(actual_energy, forecasted_energy), unsafe_allow_html=True)
 
     with card6:
         st.markdown('<div class="custom-box"><h4>WESM Exposure (kWh)</h4><p>{}</p><h4>Contestable Energy (kWh)</h4><p>{}</p></div>'.format(wesm_exposure, contestable_energy), unsafe_allow_html=True)
@@ -523,6 +547,63 @@ while True:
     # -- END OF CURRENT INTERVAL SUMMARY --
 
     # -- START OF DISPLAYING THE BCQ NOMINATIONS PER SUPPLIER AREA CHART --
+
+    # # Load the workbook and select the active sheet
+    # filepath_bcq = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\total_bcq_nomination.xlsx"
+    # wb_bcq = openpyxl.load_workbook(filepath_bcq)
+    # sheet_bcq = wb_bcq.active
+
+    # # Create lists to store the data
+    # hours = []
+    # scpc_values = []
+    # kspc1_values = []
+    # kspc2_values = []
+    # edc_values = []
+
+    # # Loop through column 'A' to get values for each hour, skip the header
+    # for row in sheet_bcq.iter_rows(min_row=2, max_row=25, min_col=1, max_col=4):
+    #     hour = int(row[0].value)
+    #     scpc = int(row[1].value)
+    #     kspc = int(row[2].value)
+    #     kspc1 = int(kspc / 2)
+    #     kspc2 = int(kspc / 2)
+    #     edc = int(row[3].value)
+
+    #     # Store the values in the lists
+    #     hours.append(hour)
+    #     scpc_values.append(scpc)
+    #     kspc1_values.append(kspc1)
+    #     kspc2_values.append(kspc2)
+    #     edc_values.append(edc)
+
+    # # Create a DataFrame with proper structure
+    # data_bcq = {
+    #     'Hour': hours,
+    #     'SCPC': scpc_values,
+    #     'KSPC1': kspc1_values,
+    #     'KSPC2': kspc2_values,
+    #     'EDC': edc_values
+    # }
+    
+    # df_bcq = pd.DataFrame(data_bcq)
+
+    # # Melt the DataFrame for Altair
+    # df_bcq_melted = df_bcq.melt('Hour', var_name='Supplier', value_name='BCQ')
+
+    # # Create an Altair area chart
+    # chart_bcq = alt.Chart(df_bcq_melted).mark_area().encode(
+    #     x='Hour:O',
+    #     y='BCQ:Q',
+    #     color='Supplier:N'
+    # ).properties(
+    #     height=300,
+    #     width=550,
+    #     padding={"left": 10, "top": 10, "right": 50, "bottom": 10}  # Add padding to prevent clipping
+    # ).configure_view(
+    #     stroke=None # Remove border around the chart
+    # ).configure(
+    #     background='black' # Set the background color to black
+    # )
 
     # Load the workbook and select the active sheet
     filepath_bcq = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\total_bcq_nomination.xlsx"
@@ -555,31 +636,42 @@ while True:
     # Create a DataFrame with proper structure
     data_bcq = {
         'Hour': hours,
-        'SCPC': scpc_values,
+        'SEMCAL': scpc_values,
         'KSPC1': kspc1_values,
         'KSPC2': kspc2_values,
         'EDC': edc_values
     }
-    
+
     df_bcq = pd.DataFrame(data_bcq)
 
-    # Melt the DataFrame for Altair
-    df_bcq_melted = df_bcq.melt('Hour', var_name='Supplier', value_name='BCQ')
+    # Melt the DataFrame for Plotly
+    df_bcq_melted = df_bcq.melt('Hour', var_name='Contracted Supplier', value_name='BCQ')
 
-    # Create an Altair area chart
-    chart_bcq = alt.Chart(df_bcq_melted).mark_area().encode(
-        x='Hour:O',
-        y='BCQ:Q',
-        color='Supplier:N'
-    ).properties(
-        width=450,  
-        height=300,
-        padding={"left": 10, "top": 10, "right": 10, "bottom": 10}  # Add padding to prevent clipping
-    ).configure_view(
-        stroke=None # Remove border around the chart
-    ).configure(
-        background='black' # Set the background color to black
+    # Define the color map
+    color_map = {
+        'SEMCAL': 'orangered', # orange
+        'KSPC1': 'cornflowerblue', # powder blue
+        'KSPC2': 'darkblue', # dark blue
+        'EDC': 'green' # green
+    }
+
+    # Create a Plotly area chart
+    fig_bcq = px.area(df_bcq_melted, x='Hour', y='BCQ', color='Contracted Supplier', 
+                labels={'Hour': 'Hour', 'BCQ': 'BCQ'}, color_discrete_map=color_map, # Apply the color map
+                height=300)
+
+    # Update layout to match the Altair configuration
+    fig_bcq.update_layout(
+        plot_bgcolor='black',  # Set background color to black
+        paper_bgcolor='black',  # Set paper background color to black
+        margin=dict(r=10),  # Add padding to prevent clipping
+        xaxis_title='Interval',
+        yaxis_title='kW',
+        legend_title='Contracted Supplier'
     )
+
+    # Update y-axis to show full number format
+    fig_bcq.update_yaxes(tickformat=',')  # Use ',' to show numbers without abbreviating
 
     # -- END OF DISPLAYING THE BCQ NOMINATIONS PER SUPPLIER AREA CHART --
 
@@ -589,6 +681,123 @@ while True:
     # BCQ Nomination - total_bcq_nomination.xlsx
     # Forecasted Energy - forecasted_energy.xlsx
 
+    # station_load_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load_graph.xlsx'
+    # bcq_nomination_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\total_bcq_nomination.xlsx'
+    # forecasted_energy_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\forecasted_energy.xlsx'
+
+    # # Read the Excel file into a DataFrame
+    # df = pd.read_excel(station_load_destination_path)
+
+    # # Initialize a dictionary to store the results
+    # data = {'Hour': list(range(1, 25))}
+
+    # # List of stations
+    # stations = ['Lapaz', 'Jaro', 'Mandurriao', 'Molo', 'Diversion', 'Mobile SS 1', 'Mobile SS 2', 'Megaworld']
+
+    # # Loop through each station and add their hourly values to the dictionary
+    # for station in stations:
+    #     data[station] = [safe_get(df, hour - 1, station) for hour in data['Hour']]
+
+    # # Calculate total values for each hour
+    # data['Total'] = [sum(data[station][hour - 1] for station in stations) for hour in data['Hour']]
+
+    # # Convert the dictionary to a DataFrame
+    # result_df = pd.DataFrame(data)
+
+    # # Create a Figure object for the plot
+    # fig = go.Figure()
+
+    # # Add the first station as a bar trace
+    # fig.add_trace(go.Bar(
+    #     x=result_df['Hour'],      # Set the x-axis values to the hours
+    #     y=result_df['Lapaz'],  # Set the y-axis values to the first station values
+    #     name='Lapaz'    # Name of the first station
+    # ))
+
+    # # Add the second station as a bar trace
+    # fig.add_trace(go.Bar(
+    #     x=result_df['Hour'],      # Set the x-axis values to the hours
+    #     y=result_df['Jaro'],  # Set the y-axis values to the second station values
+    #     name='Jaro'    # Name of the second station
+    # ))
+
+    # # Add the second station as a bar trace
+    # fig.add_trace(go.Bar(
+    #     x=result_df['Hour'],      # Set the x-axis values to the hours
+    #     y=result_df['Mandurriao'],  # Set the y-axis values to the second station values
+    #     name='Mandurriao'    # Name of the second station
+    # ))
+
+    # # Add the second station as a bar trace
+    # fig.add_trace(go.Bar(
+    #     x=result_df['Hour'],      # Set the x-axis values to the hours
+    #     y=result_df['Molo'],  # Set the y-axis values to the second station values
+    #     name='Molo'    # Name of the second station
+    # ))
+
+    # # Add the second station as a bar trace
+    # fig.add_trace(go.Bar(
+    #     x=result_df['Hour'],      # Set the x-axis values to the hours
+    #     y=result_df['Diversion'],  # Set the y-axis values to the second station values
+    #     name='Diversion'    # Name of the second station
+    # ))
+
+    # # Add the second station as a bar trace
+    # fig.add_trace(go.Bar(
+    #     x=result_df['Hour'],      # Set the x-axis values to the hours
+    #     y=result_df['Mobile SS 1'],  # Set the y-axis values to the second station values
+    #     name='Mobile SS 1'    # Name of the second station
+    # ))
+
+    # # Add the second station as a bar trace
+    # fig.add_trace(go.Bar(
+    #     x=result_df['Hour'],      # Set the x-axis values to the hours
+    #     y=result_df['Mobile SS 2'],  # Set the y-axis values to the second station values
+    #     name='Mobile SS 2'    # Name of the second station
+    # ))
+
+    # # Add the second station as a bar trace
+    # fig.add_trace(go.Bar(
+    #     x=result_df['Hour'],      # Set the x-axis values to the hours
+    #     y=result_df['Megaworld'],  # Set the y-axis values to the second station values
+    #     name='Megaworld'    # Name of the second station
+    # ))
+
+    # df_2 = pd.read_excel(forecasted_energy_destination_path)
+
+    # # Add the total as a scatter trace with a straight line
+    # fig.add_trace(go.Scatter(
+    #     x=df_2['HOUR'],      # Set the x-axis values to the hours
+    #     y=df_2['NET'],     # Set the y-axis values to the total values
+    #     mode='lines',      # Set the mode to lines
+    #     name='Forecasted Energy'       
+    # ))
+
+    # df_3 = pd.read_excel(bcq_nomination_destination_path)
+
+    # # Add a crooked line for demonstration
+    # fig.add_trace(go.Scatter(
+    #     x=df_3['HOUR'],      # Set the x-axis values to the hours
+    #     y=df_3['TOTAL_BCQ'],# Example values for the crooked line
+    #     mode='lines+markers', # Set the mode to lines and markers
+    #     name='BCQ Nomination',
+    #     line=dict(color='white')
+    # ))
+    # # Update layout with x and y axis labels
+    # fig.update_layout(
+    #     xaxis_title='Interval',
+    #     yaxis_title='kWh'
+    # )
+
+    # fig.update_layout(
+    #     plot_bgcolor='black',
+    #     paper_bgcolor='black'
+    # )
+
+    # # Update the layout to set the bar mode to stacked and add a title
+    # fig.update_layout(barmode='stack', height=420)
+
+    # UPDATED
     station_load_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load_graph.xlsx'
     bcq_nomination_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\total_bcq_nomination.xlsx'
     forecasted_energy_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\forecasted_energy.xlsx'
@@ -599,15 +808,24 @@ while True:
     # Initialize a dictionary to store the results
     data = {'Hour': list(range(1, 25))}
 
-    # List of stations
-    stations = ['Lapaz', 'Jaro', 'Mandurriao', 'Molo', 'Diversion', 'Mobile SS 1', 'Mobile SS 2', 'Megaworld']
+    # List of stations and their corresponding colors
+    stations = {
+        'Lapaz': 'red',
+        'Jaro': 'orange',
+        'Mandurriao': 'yellow',
+        'Molo': 'lime',
+        'Diversion': 'green',
+        'Mobile SS 1': 'cornflowerblue',
+        'Mobile SS 2': 'darkblue',
+        'Megaworld': 'mediumpurple'
+    }
 
     # Loop through each station and add their hourly values to the dictionary
-    for station in stations:
+    for station in stations.keys():
         data[station] = [safe_get(df, hour - 1, station) for hour in data['Hour']]
 
     # Calculate total values for each hour
-    data['Total'] = [sum(data[station][hour - 1] for station in stations) for hour in data['Hour']]
+    data['Total'] = [sum(data[station][hour - 1] for station in stations.keys()) for hour in data['Hour']]
 
     # Convert the dictionary to a DataFrame
     result_df = pd.DataFrame(data)
@@ -615,99 +833,100 @@ while True:
     # Create a Figure object for the plot
     fig = go.Figure()
 
-    # Add the first station as a bar trace
-    fig.add_trace(go.Bar(
-        x=result_df['Hour'],      # Set the x-axis values to the hours
-        y=result_df['Lapaz'],  # Set the y-axis values to the first station values
-        name='Lapaz'    # Name of the first station
-    ))
-
-    # Add the second station as a bar trace
-    fig.add_trace(go.Bar(
-        x=result_df['Hour'],      # Set the x-axis values to the hours
-        y=result_df['Jaro'],  # Set the y-axis values to the second station values
-        name='Jaro'    # Name of the second station
-    ))
-
-    # Add the second station as a bar trace
-    fig.add_trace(go.Bar(
-        x=result_df['Hour'],      # Set the x-axis values to the hours
-        y=result_df['Mandurriao'],  # Set the y-axis values to the second station values
-        name='Mandurriao'    # Name of the second station
-    ))
-
-    # Add the second station as a bar trace
-    fig.add_trace(go.Bar(
-        x=result_df['Hour'],      # Set the x-axis values to the hours
-        y=result_df['Molo'],  # Set the y-axis values to the second station values
-        name='Molo'    # Name of the second station
-    ))
-
-    # Add the second station as a bar trace
-    fig.add_trace(go.Bar(
-        x=result_df['Hour'],      # Set the x-axis values to the hours
-        y=result_df['Diversion'],  # Set the y-axis values to the second station values
-        name='Diversion'    # Name of the second station
-    ))
-
-    # Add the second station as a bar trace
-    fig.add_trace(go.Bar(
-        x=result_df['Hour'],      # Set the x-axis values to the hours
-        y=result_df['Mobile SS 1'],  # Set the y-axis values to the second station values
-        name='Mobile SS 1'    # Name of the second station
-    ))
-
-    # Add the second station as a bar trace
-    fig.add_trace(go.Bar(
-        x=result_df['Hour'],      # Set the x-axis values to the hours
-        y=result_df['Mobile SS 2'],  # Set the y-axis values to the second station values
-        name='Mobile SS 2'    # Name of the second station
-    ))
-
-    # Add the second station as a bar trace
-    fig.add_trace(go.Bar(
-        x=result_df['Hour'],      # Set the x-axis values to the hours
-        y=result_df['Megaworld'],  # Set the y-axis values to the second station values
-        name='Megaworld'    # Name of the second station
-    ))
+    # Add each station as a bar trace with specified colors
+    for station, color in stations.items():
+        fig.add_trace(go.Bar(
+            x=result_df['Hour'],
+            y=result_df[station],
+            name=station,
+            marker_color=color  # Set the color for the bar trace
+        ))
 
     df_2 = pd.read_excel(forecasted_energy_destination_path)
 
     # Add the total as a scatter trace with a straight line
     fig.add_trace(go.Scatter(
-        x=df_2['HOUR'],      # Set the x-axis values to the hours
-        y=df_2['NET'],     # Set the y-axis values to the total values
-        mode='lines',      # Set the mode to lines
-        name='Forecasted Energy'       
+        x=df_2['HOUR'],
+        y=df_2['NET'],
+        mode='lines',
+        name='Forecasted Energy',
+        line=dict(color='white')
     ))
 
     df_3 = pd.read_excel(bcq_nomination_destination_path)
 
     # Add a crooked line for demonstration
     fig.add_trace(go.Scatter(
-        x=df_3['HOUR'],      # Set the x-axis values to the hours
-        y=df_3['TOTAL_BCQ'],# Example values for the crooked line
-        mode='lines+markers', # Set the mode to lines and markers
+        x=df_3['HOUR'],
+        y=df_3['TOTAL_BCQ'],
+        mode='lines+markers',
         name='BCQ Nomination',
-        line=dict(color='white')
+        line=dict(color='silver')
     ))
-    # Update layout with x and y axis labels
+
+    # Update layout with x and y axis labels and custom y-axis formatting
     fig.update_layout(
         xaxis_title='Interval',
-        yaxis_title='kWh'
-    )
-
-    fig.update_layout(
+        yaxis_title='kWh',
+        yaxis_tickformat=',',  # Format y-axis to use commas for thousands
         plot_bgcolor='black',
-        paper_bgcolor='black'
+        paper_bgcolor='black',
+        barmode='stack',
+        height=420
     )
-
-    # Update the layout to set the bar mode to stacked and add a title
-    fig.update_layout(barmode='stack', height=420, width=800)
 
     # -- END OF DISPLAYING THE ACTUAL VS FORECASTED ENERGY CHART --
 
     # -- START OF DISPLAYING THE SUBSTATION LOAD (KW) BAR CHART -- 
+
+    # # Load data
+    # df_excel = load_data_from_excel()
+
+    # # For getting the current hour
+    # now = datetime.now()
+    # now_hour = now.hour
+    # if now_hour == 0:
+    #     now_hour = 24
+
+    # # Find the row where the hour matches the current hour
+    # matching_row = df_excel[df_excel['Hour'] == now_hour]
+
+    # hour_value = matching_row.iloc[0]['Hour']
+    # lapaz_value = matching_row.iloc[0]['Lapaz']
+    # jaro_value = matching_row.iloc[0]['Jaro']
+    # mandurriao_value = matching_row.iloc[0]['Mandurriao']
+    # molo_value = matching_row.iloc[0]['Molo']
+    # diversion_value = matching_row.iloc[0]['Diversion']
+    # mobile_ss1_value = matching_row.iloc[0]['Mobile SS 1']
+    # mobile_ss2_value = matching_row.iloc[0]['Mobile SS 2']
+    # megaworld_value = matching_row.iloc[0]['Megaworld']
+
+    # # Prepare data for the bar chart
+    # chart_data = pd.DataFrame({
+    #     'Substation': ['Lapaz', 'Jaro', 'Mandurriao', 'Molo', 'Diversion', 'Mobile SS 1', 'Mobile SS 2', 'Megaworld'],
+    #     'kW': [lapaz_value, jaro_value, mandurriao_value, molo_value, diversion_value, mobile_ss1_value, mobile_ss2_value, megaworld_value]
+    # })
+
+    # # Create the bar chart with Plotly
+    # fig_ss_load = px.bar(chart_data, x='Substation', y='kW', text='kW')
+
+    # # Customize the bar colors
+    # colors = ['orangered', 'green', 'cornflowerblue', 'darkblue', 'yellow', 'lightpink', 'mediumpurple', 'lime'] 
+    # fig_ss_load.update_traces(marker_color=colors)
+
+    # # Customize the layout
+    # fig_ss_load.update_traces(texttemplate='%{text:.2s}', textposition='outside')
+
+    # fig_ss_load.update_layout(
+    #     uniformtext_minsize=8,
+    #     uniformtext_mode='hide',
+    #     height=420  # Set the height of the bar chart
+    # )
+
+    # fig_ss_load.update_layout(
+    #     plot_bgcolor='black',
+    #     paper_bgcolor='black'
+    # )
 
     # Load data
     df_excel = load_data_from_excel()
@@ -737,20 +956,32 @@ while True:
         'kW': [lapaz_value, jaro_value, mandurriao_value, molo_value, diversion_value, mobile_ss1_value, mobile_ss2_value, megaworld_value]
     })
 
-    # Create the bar chart with Plotly
-    fig_ss_load = px.bar(chart_data, x='Substation', y='kW', text='kW')
+    # Create the horizontal bar chart with Plotly
+    fig_ss_load = px.bar(chart_data, y='Substation', x='kW', text='kW', orientation='h')
 
     # Customize the bar colors
-    colors = ['#e74c3c', '#e67e22', '#239b56', '#2874a6', '#5dade2', '#a569bd', '#FF69B4', '#48c9b0'] # COLORS: Red, Orange, Green, Dark Blue, Light Blue, Purple, Pink, Turquoise
+    colors = ['orangered', 'green', 'cornflowerblue', 'darkblue', 'yellow', 'lightpink', 'mediumpurple', 'lime']
     fig_ss_load.update_traces(marker_color=colors)
 
     # Customize the layout
-    fig_ss_load.update_traces(texttemplate='%{text:.2s}', textposition='outside')
+    fig_ss_load.update_traces(
+        texttemplate='%{x:,.0f}',  # Format numbers with thousands separators and no decimal places
+        textposition='outside',
+        textfont_size=12  # Reduce text size if needed
+    )
 
+    # Add padding by adjusting the layout
     fig_ss_load.update_layout(
+        margin=dict(r=30, t=30, b=30),  # Increase margins further
+        xaxis=dict(
+            title='kW',
+            tickformat=',',  # Format axis ticks with commas as thousands separators
+            showgrid=False,
+            zeroline=False,
+            range=[0, max(chart_data['kW']) * 1.2]  # Extend the x-axis range further
+        ),
         uniformtext_minsize=8,
         uniformtext_mode='hide',
-        width=800,  # Set the width of the bar chart
         height=420  # Set the height of the bar chart
     )
 
@@ -761,48 +992,22 @@ while True:
 
     # -- END OF DISPLAYING THE SUBSTATION LOAD (KW) BAR CHART -- 
 
-    # # Custom CSS to make components very close to each other
-    # st.markdown("""
-    #     <style>
-    #     /* Reduce space between columns */
-    #     .stApp {
-    #         padding: 0.5rem;  /* Overall app padding */
-    #     }
-    #     .stColumn > div {
-    #         padding: 0rem;  /* Remove padding between column content */
-    #     }
-    #     .stMarkdown {
-    #         margin: 0;  /* Remove margin around markdown elements */
-    #         padding: 0rem 0rem 0rem 0rem; /* Remove padding around markdown (top, right, bottom, left) */
-    #     }
-    #     .stMarkdown h3 {
-    #         margin: 0 0 -50px 0; /* Negative bottom margin, zero for others */
-    #         padding: 0;           
-    #     }
-    #     .stPlotlyChart {
-    #         margin: -10px 0 0 0;  /* Remove margin around Plotly charts */
-    #         padding: 0;  
-    #     }
-    #     </style>
-    #     """, unsafe_allow_html=True)
-
     # Layout with smaller padding
     col1, col2 = st.columns(2)  # Adjust width ratios if needed
-    if check_column_working(1) and check_column_working(2):
+
+    try:
         with col1:
             st.subheader("Substation Load (kW)", divider=True)
             st.plotly_chart(fig_ss_load)
+    except Exception as e:
+        pass
+
+    try:
         with col2:
             st.subheader("Actual vs Forecasted Energy (kWh)", divider=True)
             st.plotly_chart(fig)
-    elif check_column_working(1):
-        with col1:
-            st.subheader("Substation Load (kW)", divider=True)
-            st.plotly_chart(fig_ss_load)
-    elif check_column_working(2):
-        with col2:
-            st.subheader("Actual vs Forecasted Energy (kWh)", divider=True)
-            st.plotly_chart(fig)
+    except Exception as e:
+        pass
 
     # -- START OF TRADING INTERVAL PRICE CALCULATION LINE CHART --
 
@@ -1808,7 +2013,7 @@ while True:
     df_long['Hover'] = df_long['HOUR'].map(hover_info)
 
     # Create the interactive line chart with Plotly
-    fig_tipc = px.line(df_long, x='HOUR', y='Value', color='Resource', width=600, height=300)
+    fig_tipc = px.line(df_long, x='HOUR', y='Value', color='Resource', height=300)
 
     # Customize hover information
     fig_tipc.update_traces(hovertemplate='%{customdata[0]}', customdata=df_long[['Hover']].values)
@@ -2427,12 +2632,11 @@ while True:
         textinfo='label+percent', # Shows both the label and percentage inside the slices
         insidetextorientation='horizontal',  # Keeps text horizontal inside the slices
         marker=dict(
-            colors=['#FF5733', '#33FF57', '#3357FF', '#F5F5F5', '#FF33A1']
+            colors=['orangered', 'cornflowerblue', 'darkblue', 'green', 'yellow']
         )
     )
 
     fig_genmix.update_layout(
-        width=600,
         height=300
     )
 
@@ -2444,48 +2648,26 @@ while True:
     # -- END OF DISPLAYING THE GENERATION MIX DONUT CHART --
 
     col1, col2, col3 = st.columns(3)
-    if check_column_working_2(1) and check_column_working_2(2) and check_column_working_2(3):
+    # if check_column_working_2(1) and check_column_working_2(2) and check_column_working_2(3):
+    try:  
         with col1:
             st.subheader("BCQ Nominations per Supplier", divider=True)
-            st.altair_chart(chart_bcq)
+            st.plotly_chart(fig_bcq)
+    except Exception as e:
+        pass
+
+    try:
         with col2:
             st.subheader("Trading Interval Price Calculation", divider=True)
             st.plotly_chart(fig_tipc)
+    except Exception as e:
+        pass
+    try:
         with col3:
             st.subheader("Generation Mix", divider=True)
             st.plotly_chart(fig_genmix)
-    elif check_column_working_2(1):
-        with col1:
-            st.subheader("BCQ Nominations per Supplier", divider=True)
-            st.altair_chart(chart_bcq)
-    elif check_column_working_2(2):
-        with col2:
-            st.subheader("Trading Interval Price Calculation", divider=True)
-            st.plotly_chart(fig_tipc)
-    elif check_column_working_2(3):
-        with col3:
-            st.subheader("Generation Mix", divider=True)
-            st.plotly_chart(fig_genmix)
-    elif check_column_working_2(1) and check_column_working_2(2):
-        with col1:
-            st.subheader("BCQ Nominations per Supplier", divider=True)
-            st.altair_chart(chart_bcq)
-        with col2:
-            st.subheader("Trading Interval Price Calculation", divider=True)
-            st.plotly_chart(fig_tipc)
-    elif check_column_working_2(1) and check_column_working_2(3):
-        with col1:
-            st.subheader("BCQ Nominations per Supplier", divider=True)
-            st.altair_chart(chart_bcq)
-        with col3:
-            st.subheader("Generation Mix", divider=True)
-            st.plotly_chart(fig_genmix)
-    elif check_column_working_2(2) and check_column_working_2(3):
-        with col2:
-            st.subheader("Trading Interval Price Calculation", divider=True)
-            st.plotly_chart(fig_tipc)
-        with col3:
-            st.subheader("Generation Mix", divider=True)
+    except Exception as e:
+        pass
 
     # For rerunning the script every 60 seconds
     time.sleep(REFRESH_INTERVAL)
