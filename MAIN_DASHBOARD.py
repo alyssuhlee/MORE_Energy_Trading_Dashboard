@@ -235,23 +235,23 @@ def copy_values(source_sheet, dest_sheet, source_range, dest_range):
             else:
                 break
 
-# # Function to check if a column is working (Part 1)
-# def check_column_working(column_id):
-#     if column_id == 1:
-#         return True  # Simulate that column 1 is working
-#     elif column_id == 2:
-#         return True  # Simulate that column 2 is working
-#     return False
-
-# # Function to check if a column is working (Part 2)
-# def check_column_working_2(column_id_2):
-#     if column_id_2 == 1:
-#         return True  # Simulate that column 1 is working
-#     elif column_id_2 == 2:
-#         return True  # Simulate that column 2 is working
-#     elif column_id_2 == 3:
-#         return True
-#     return False
+def render_black_background():
+    st.markdown(
+        """
+        <style>
+        .black-background {
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        </style>
+        <div class="black-background"></div>
+        """,
+        unsafe_allow_html=True
+    )
 
 # -- END OF FUNCTIONS --
 
@@ -478,7 +478,7 @@ while True:
         padding: 10px;
         margin: 0;
         background-color: #017208;
-        height: 30vh;  /* Fixed height to ensure all boxes are the same size */
+        height: 20vh;  /* Fixed height to ensure all boxes are the same size */
         max-width: 100%;  /* Prevents overflow */
         box-sizing: border-box;
     }
@@ -486,27 +486,27 @@ while True:
     /* Ensure equal height on smaller screens */
     @media (max-width: 768px) {
         .custom-box, .custom-box-2 {
-            height: 25vh;  /* Consistent height on smaller screens */
+            height: 15vh;  /* Consistent height on smaller screens */
         }
     }
 
     /* Consistent height for very small screens */
     @media (max-width: 480px) {
         .custom-box, .custom-box-2 {
-            height: 30vh;  /* Equal height for all boxes on very small screens */
+            height: 15vh;  /* Equal height for all boxes on very small screens */
         }
     }
 
     .custom-box h4, .custom-box p, .custom-box-2 h4, .custom-box-2 p {
         margin: 0;
         padding: 0;
-        font-size: 1rem;  /* Relative font size */
+        font-size: 0.75rem;  /* Relative font size */
         font-family: Helvetica, Arial, sans-serif;  /* Fallback font */
         font-weight: normal;
         color: #FFFFFF;
     }
     .custom-box p, .custom-box-2 p {
-        font-size: 1.25rem;  /* Relative font size */
+        font-size: 1rem;  /* Relative font size */
         font-family: Helvetica, Arial, sans-serif;  /* Fallback font */
         font-weight: bold;
         color: #FFFFFF;
@@ -797,10 +797,98 @@ while True:
     # # Update the layout to set the bar mode to stacked and add a title
     # fig.update_layout(barmode='stack', height=420)
 
-    # UPDATED
+    # # UPDATED
     station_load_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load_graph.xlsx'
+    
     bcq_nomination_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\total_bcq_nomination.xlsx'
+    
     forecasted_energy_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\forecasted_energy.xlsx'
+    
+    # station_load_total_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load.xlsx'
+    # dest_wb_station_load_total = load_workbook(station_load_total_destination_path)
+    # dest_sheet_station_load_total = dest_wb_station_load_total['Sheet1']
+    
+    # contestable_energy_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\contestable_energy.xlsx'
+    # dest_wb_contestable_energy = load_workbook(contestable_energy_destination_path)
+    # dest_sheet_contestable_energy = dest_wb_contestable_energy['Sheet']
+    
+    # # excel file: station_load.xlsx
+    # total_station_load_1 = dest_sheet_station_load_total['K2'].value # hour 1
+    # total_station_load_2 = dest_sheet_station_load_total['K3'].value # hour 2
+    # total_station_load_3 = dest_sheet_station_load_total['K4'].value # hour 3
+    # total_station_load_4 = dest_sheet_station_load_total['K5'].value # hour 4
+    # total_station_load_5 = dest_sheet_station_load_total['K6'].value # hour 5
+    # total_station_load_6 = dest_sheet_station_load_total['K7'].value # hour 6
+    # total_station_load_7 = dest_sheet_station_load_total['K8'].value # hour 7
+    # total_station_load_8 = dest_sheet_station_load_total['K9'].value # hour 8
+    # total_station_load_9 = dest_sheet_station_load_total['K10'].value # hour 9
+    # total_station_load_10 = dest_sheet_station_load_total['K11'].value # hour 10
+    # total_station_load_11 = dest_sheet_station_load_total['K12'].value # hour 11
+    # total_station_load_12 = dest_sheet_station_load_total['K13'].value # hour 12
+    # total_station_load_13 = dest_sheet_station_load_total['K14'].value # hour 13
+    # total_station_load_14 = dest_sheet_station_load_total['K15'].value # hour 14
+    # total_station_load_15 = dest_sheet_station_load_total['K16'].value # hour 15
+    # total_station_load_16 = dest_sheet_station_load_total['K17'].value # hour 16
+    # total_station_load_17 = dest_sheet_station_load_total['K18'].value # hour 17
+    # total_station_load_18 = dest_sheet_station_load_total['K19'].value # hour 18
+    # total_station_load_19 = dest_sheet_station_load_total['K20'].value # hour 19
+    # total_station_load_20 = dest_sheet_station_load_total['K21'].value # hour 20
+    # total_station_load_21 = dest_sheet_station_load_total['K22'].value # hour 21
+    # total_station_load_22 = dest_sheet_station_load_total['K23'].value # hour 22
+    # total_station_load_23 = dest_sheet_station_load_total['K24'].value # hour 23
+    # total_station_load_24 = dest_sheet_station_load_total['K25'].value # hour 24
+    
+    # # excel file: contestable_energy.xlsx
+    # total_contestable_energy_1 = dest_sheet_contestable_energy['B2'].value # hour 1
+    # total_contestable_energy_2 = dest_sheet_contestable_energy['B3'].value # hour 2
+    # total_contestable_energy_3 = dest_sheet_contestable_energy['B4'].value # hour 3
+    # total_contestable_energy_4 = dest_sheet_contestable_energy['B5'].value # hour 4
+    # total_contestable_energy_5 = dest_sheet_contestable_energy['B6'].value # hour 5
+    # total_contestable_energy_6 = dest_sheet_contestable_energy['B7'].value # hour 6
+    # total_contestable_energy_7 = dest_sheet_contestable_energy['B8'].value # hour 7
+    # total_contestable_energy_8 = dest_sheet_contestable_energy['B9'].value # hour 8
+    # total_contestable_energy_9 = dest_sheet_contestable_energy['B10'].value # hour 9
+    # total_contestable_energy_10 = dest_sheet_contestable_energy['B11'].value # hour 10
+    # total_contestable_energy_11 = dest_sheet_contestable_energy['B12'].value # hour 11
+    # total_contestable_energy_12 = dest_sheet_contestable_energy['B13'].value # hour 12
+    # total_contestable_energy_13 = dest_sheet_contestable_energy['B14'].value # hour 13
+    # total_contestable_energy_14 = dest_sheet_contestable_energy['B15'].value # hour 14
+    # total_contestable_energy_15 = dest_sheet_contestable_energy['B16'].value # hour 15
+    # total_contestable_energy_16 = dest_sheet_contestable_energy['B17'].value # hour 16
+    # total_contestable_energy_17 = dest_sheet_contestable_energy['B18'].value # hour 17
+    # total_contestable_energy_18 = dest_sheet_contestable_energy['B19'].value # hour 18
+    # total_contestable_energy_19 = dest_sheet_contestable_energy['B20'].value # hour 19
+    # total_contestable_energy_20 = dest_sheet_contestable_energy['B21'].value # hour 20
+    # total_contestable_energy_21 = dest_sheet_contestable_energy['B22'].value # hour 21
+    # total_contestable_energy_22 = dest_sheet_contestable_energy['B23'].value # hour 22
+    # total_contestable_energy_23 = dest_sheet_contestable_energy['B24'].value # hour 23
+    # total_contestable_energy_24 = dest_sheet_contestable_energy['B25'].value # hour 24
+
+    # # Values to be shown at the top of the bar chart
+    # value_top_1 = total_station_load_1 - total_contestable_energy_1 # Hour 1
+    # value_top_2 = total_station_load_2 - total_contestable_energy_2 # Hour 2
+    # value_top_3 = total_station_load_3 - total_contestable_energy_3 # Hour 3
+    # value_top_4 = total_station_load_4 - total_contestable_energy_4 # Hour 4
+    # value_top_5 = total_station_load_5 - total_contestable_energy_5 # Hour 5
+    # value_top_6 = total_station_load_6 - total_contestable_energy_6 # Hour 6
+    # value_top_7 = total_station_load_7 - total_contestable_energy_7 # Hour 7
+    # value_top_8 = total_station_load_8 - total_contestable_energy_8 # Hour 8
+    # value_top_9 = total_station_load_9 - total_contestable_energy_9 # Hour 9
+    # value_top_10 = total_station_load_10 - total_contestable_energy_10 # Hour 10
+    # value_top_11 = total_station_load_11 - total_contestable_energy_11 # Hour 11
+    # value_top_12 = total_station_load_12 - total_contestable_energy_12 # Hour 12
+    # value_top_13 = total_station_load_13 - total_contestable_energy_13 # Hour 13
+    # value_top_14 = total_station_load_14 - total_contestable_energy_14 # Hour 14
+    # value_top_15 = total_station_load_15 - total_contestable_energy_15 # Hour 15
+    # value_top_16 = total_station_load_16 - total_contestable_energy_16 # Hour 16
+    # value_top_17 = total_station_load_17 - total_contestable_energy_17 # Hour 17
+    # value_top_18 = total_station_load_18 - total_contestable_energy_18 # Hour 18
+    # value_top_19 = total_station_load_19 - total_contestable_energy_19 # Hour 19
+    # value_top_20 = total_station_load_20 - total_contestable_energy_20 # Hour 20
+    # value_top_21 = total_station_load_21 - total_contestable_energy_21 # Hour 21
+    # value_top_22 = total_station_load_22 - total_contestable_energy_22 # Hour 22
+    # value_top_23 = total_station_load_23 - total_contestable_energy_23 # Hour 23
+    # value_top_24 = total_station_load_24 - total_contestable_energy_24 # Hour 24
 
     # Read the Excel file into a DataFrame
     df = pd.read_excel(station_load_destination_path)
@@ -872,7 +960,7 @@ while True:
         plot_bgcolor='black',
         paper_bgcolor='black',
         barmode='stack',
-        height=420
+        height=300
     )
 
     # -- END OF DISPLAYING THE ACTUAL VS FORECASTED ENERGY CHART --
@@ -982,7 +1070,7 @@ while True:
         ),
         uniformtext_minsize=8,
         uniformtext_mode='hide',
-        height=420  # Set the height of the bar chart
+        height=300  # Set the height of the bar chart
     )
 
     fig_ss_load.update_layout(
@@ -992,22 +1080,35 @@ while True:
 
     # -- END OF DISPLAYING THE SUBSTATION LOAD (KW) BAR CHART -- 
 
+
     # Layout with smaller padding
     col1, col2 = st.columns(2)  # Adjust width ratios if needed
+
+    # Flags to control chart display
+    show_ss_load_chart = True
+    show_energy_chart = True
 
     try:
         with col1:
             st.subheader("Substation Load (kW)", divider=True)
             st.plotly_chart(fig_ss_load)
     except Exception as e:
-        pass
+        show_ss_load_chart = False
 
     try:
         with col2:
             st.subheader("Actual vs Forecasted Energy (kWh)", divider=True)
             st.plotly_chart(fig)
     except Exception as e:
-        pass
+        show_energy_chart = False
+
+    if not show_ss_load_chart:
+        with col1:
+            render_black_background()
+    
+    if not show_energy_chart:
+        with col2:
+            render_black_background()
 
     # -- START OF TRADING INTERVAL PRICE CALCULATION LINE CHART --
 
@@ -2648,26 +2749,43 @@ while True:
     # -- END OF DISPLAYING THE GENERATION MIX DONUT CHART --
 
     col1, col2, col3 = st.columns(3)
-    # if check_column_working_2(1) and check_column_working_2(2) and check_column_working_2(3):
+
+    # Flags to control chart display
+    show_bcq_chart = True
+    show_tipc_chart = True
+    show_genmix_chart = True
+
     try:  
         with col1:
             st.subheader("BCQ Nominations per Supplier", divider=True)
             st.plotly_chart(fig_bcq)
     except Exception as e:
-        pass
+        show_bcq_chart = False
 
     try:
         with col2:
             st.subheader("Trading Interval Price Calculation", divider=True)
             st.plotly_chart(fig_tipc)
     except Exception as e:
-        pass
+        show_tipc_chart = False
     try:
         with col3:
             st.subheader("Generation Mix", divider=True)
             st.plotly_chart(fig_genmix)
     except Exception as e:
-        pass
+        show_genmix_chart = False
+
+    if not show_bcq_chart:
+        with col1:
+            render_black_background()
+    
+    if not show_tipc_chart:
+        with col2:
+            render_black_background()
+    
+    if not show_genmix_chart:
+        with col3:
+            render_black_background()
 
     # For rerunning the script every 60 seconds
     time.sleep(REFRESH_INTERVAL)
