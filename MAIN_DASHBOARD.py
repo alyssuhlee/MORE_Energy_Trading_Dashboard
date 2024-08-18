@@ -235,23 +235,14 @@ def copy_values(source_sheet, dest_sheet, source_range, dest_range):
             else:
                 break
 
-def render_black_background():
-    st.markdown(
-        """
-        <style>
-        .black-background {
-            width: 100%;
-            height: 100%;
-            background-color: black;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        </style>
-        <div class="black-background"></div>
-        """,
-        unsafe_allow_html=True
-    )
+# Helper function to format numbers in 'k' or 'M' style without decimal places
+def format_value(value):
+    if value >= 1_000_000:
+        return f'{value // 1_000_000}M'  # Truncate to millions
+    elif value >= 1_000:
+        return f'{value // 1_000}k'  # Truncate to thousands
+    else:
+        return f'{value}'  # No change for values less than 1,000
 
 # -- END OF FUNCTIONS --
 
@@ -262,9 +253,6 @@ while True:
 
     # Path to your image
     image_path = 'data/MORE_Power_Logo.png'
-
-    # Set the image's width to the column width
-    st.image(image_path, use_column_width=True)
 
     # Hide the Streamlit header and footer
     st.markdown("""
@@ -395,9 +383,9 @@ while True:
         color: #FFFFFF;
     }}
     .ticker__item:first-child {{
-        margin-left: 100rem; /* Adjust this value for more space before the first entry */
+        margin-top: 0;
     }}
-    body {{ margin: 0; padding-bottom: 5rem; }}
+    body {{ margin: 0; padding-bottom: 0; }}
     h1, h2, p {{ padding: 0 5%; }}
     </style>
     <div class="ticker-wrap" style="bottom: 2.5rem;">  <!-- Bottom ticker -->
@@ -422,8 +410,91 @@ while True:
     </div>
     """
 
-    # Display the HTML and CSS in Streamlit
-    st.components.v1.html(html_code, height=80)
+    # # HTML and CSS for the tickers
+    # html_code = f"""
+    # <style>
+    # * {{
+    #     box-sizing: border-box;
+    # }}
+    # @-webkit-keyframes ticker {{
+    #     0% {{
+    #         -webkit-transform: translate3d(0, 0, 0);
+    #         transform: translate3d(0, 0, 0);
+    #     }}
+    #     100% {{
+    #         -webkit-transform: translate3d(-100%, 0, 0);
+    #         transform: translate3d(-100%, 0, 0);
+    #     }}
+    # }}
+    # @keyframes ticker {{
+    #     0% {{
+    #         -webkit-transform: translate3d(0, 0, 0);
+    #         transform: translate3d(0, 0, 0);
+    #     }}
+    #     100% {{
+    #         -webkit-transform: translate3d(-100%, 0, 0);
+    #         transform: translate3d(-100%, 0, 0);
+    #     }}
+    # }}
+    # .ticker-wrap {{
+    #     position: fixed;
+    #     width: 100%;  /* Full width */
+    #     overflow: hidden;
+    #     height: 2.5rem;
+    #     background-color: #000000;
+    #     box-sizing: border-box;
+    #     border: 2px solid white;  /* White border around the entire box */
+    #     border-radius: 5px;  /* Optional: Add rounded corners */
+    #     padding: 0;  /* Remove padding to avoid clipping */
+    #     margin: 0;  /* Remove margin to avoid shifting */
+    #     z-index: 1000;  /* Ensure it is on top */
+    # }}
+    # .ticker {{
+    #     display: inline-block;
+    #     height: 2.5rem;
+    #     line-height: 2.5rem;
+    #     white-space: nowrap;
+    #     box-sizing: content-box;
+    #     -webkit-animation-iteration-count: infinite;
+    #     animation-iteration-count: infinite;
+    #     -webkit-animation-timing-function: linear;
+    #     animation-timing-function: linear;
+    #     -webkit-animation-name: ticker;
+    #     animation-name: ticker;
+    #     -webkit-animation-duration: 180s;
+    #     animation-duration: 180s;
+    # }}
+    # .ticker__item {{
+    #     display: inline-block;
+    #     padding: 0 2rem; /* Increased padding for more space between entries */
+    #     font-size: 1rem;
+    #     font-family: Helvetica;
+    #     font-weight: bold;
+    #     color: #FFFFFF;
+    # }}
+    # .ticker__item:first-child {{
+    #     margin-left: 100rem; /* Adjust this value for more space before the first entry */
+    # }}
+    # body {{ margin: 0; padding-bottom: 0; }}
+    # h1, h2, p {{ padding: 0; }}
+    # </style>
+    # <div class="ticker-wrap" style="top: 0;">  <!-- Top ticker -->
+    #     <div class="ticker">
+    #         {''.join(f'<div class="ticker__item">{entry}</div>' for entry in scrollable_content_2)}
+    #     </div>
+    # </div>
+    # <div class="ticker-wrap" style="top: 2.5rem;">  <!-- Bottom ticker -->
+    #     <div class="ticker">
+    #         {''.join(f'<div class="ticker__item">{entry}</div>' for entry in scrollable_content)}
+    #     </div>
+    # </div>
+    # """
+
+    with st.container():
+        # Set the image's width to the column width
+        st.image(image_path, use_column_width=True)
+        # Display the HTML and CSS in Streamlit
+        st.components.v1.html(html_code, height=80)
 
     # -- START OF CURRENT INTERVAL SUMMARY --
 
@@ -469,47 +540,106 @@ while True:
     # Create columns with small gap
     card1, card2, card3, card4, card5, card6, card7, card8, card9, card10 = st.columns(10, gap='small')
     
+#     st.markdown("""
+#     <style>
+#     /* Styling for equal-sized boxes */
+#     .custom-box, .custom-box-2 {
+#         border: 1px solid #ddd;
+#         border-radius: 5px;
+#         padding: 10px;
+#         margin: 0;
+#         background-color: #000000;
+#         height: 15vh;  /* Fixed height to ensure all boxes are the same size */
+#         max-width: 100%;  /* Prevents overflow */
+#         box-sizing: border-box;
+#     }
+    
+#     /* Ensure equal height on smaller screens */
+#     @media (max-width: 768px) {
+#         .custom-box, .custom-box-2 {
+#             height: 10vh;  /* Consistent height on smaller screens */
+#         }
+#     }
+
+#     /* Consistent height for very small screens */
+#     @media (max-width: 480px) {
+#         .custom-box, .custom-box-2 {
+#             height: 10vh;  /* Equal height for all boxes on very small screens */
+#         }
+#     }
+
+#     .custom-box h4, .custom-box p, .custom-box-2 h4, .custom-box-2 p {
+#         margin: 0;
+#         padding: 0;
+#         font-size: 0.75rem;  /* Relative font size */
+#         font-family: Helvetica, Arial, sans-serif;  /* Fallback font */
+#         font-weight: normal;
+#         color: #FFFFFF;
+#     }
+#     .custom-box p, .custom-box-2 p {
+#         font-size: 1rem;  /* Relative font size */
+#         font-family: Helvetica, Arial, sans-serif;  /* Fallback font */
+#         font-weight: bold;
+#         color: #FFFFFF;
+#     }
+#     </style>
+# """, unsafe_allow_html=True)
+
+    # LATEST / UPDATED
     st.markdown("""
     <style>
-    /* Styling for equal-sized boxes */
+    /* Styling for equal-sized boxes with minimal padding */
     .custom-box, .custom-box-2 {
         border: 1px solid #ddd;
         border-radius: 5px;
-        padding: 10px;
+        padding: 2px;  /* Reduced padding */
         margin: 0;
-        background-color: #017208;
-        height: 20vh;  /* Fixed height to ensure all boxes are the same size */
+        background-color: #000000;
+        height: 15vh;  /* Fixed height to ensure all boxes are the same size */
         max-width: 100%;  /* Prevents overflow */
         box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
     }
     
     /* Ensure equal height on smaller screens */
     @media (max-width: 768px) {
         .custom-box, .custom-box-2 {
-            height: 15vh;  /* Consistent height on smaller screens */
+            height: 12vh;  /* Adjust height for smaller screens */
         }
     }
 
     /* Consistent height for very small screens */
     @media (max-width: 480px) {
         .custom-box, .custom-box-2 {
-            height: 15vh;  /* Equal height for all boxes on very small screens */
+            height: 10vh;  /* Equal height for all boxes on very small screens */
         }
     }
 
+    /* Smaller font sizes with minimal padding and overflow control */
     .custom-box h4, .custom-box p, .custom-box-2 h4, .custom-box-2 p {
         margin: 0;
         padding: 0;
-        font-size: 0.75rem;  /* Relative font size */
+        font-size: 0.75rem;
         font-family: Helvetica, Arial, sans-serif;  /* Fallback font */
         font-weight: normal;
         color: #FFFFFF;
+        max-height: 100%;  /* Ensure text does not exceed box height */
+        overflow: hidden;  /* Hide any overflow text */
+        text-overflow: ellipsis;  /* Add ellipsis if text overflows */
     }
+
     .custom-box p, .custom-box-2 p {
-        font-size: 1rem;  /* Relative font size */
+        font-size: 0.9rem;
         font-family: Helvetica, Arial, sans-serif;  /* Fallback font */
         font-weight: bold;
         color: #FFFFFF;
+        max-height: 100%;  /* Ensure text does not exceed box height */
+        overflow: hidden;  /* Hide any overflow text */
+        text-overflow: ellipsis;  /* Add ellipsis if text overflows */
     }
     </style>
 """, unsafe_allow_html=True)
@@ -662,9 +792,10 @@ while True:
 
     # Update layout to match the Altair configuration
     fig_bcq.update_layout(
+        title='BCQ Nominations per Supplier',
+        margin=dict(r=30, t=30, b=30),
         plot_bgcolor='black',  # Set background color to black
         paper_bgcolor='black',  # Set paper background color to black
-        margin=dict(r=10),  # Add padding to prevent clipping
         xaxis_title='Interval',
         yaxis_title='kW',
         legend_title='Contracted Supplier'
@@ -798,99 +929,341 @@ while True:
     # fig.update_layout(barmode='stack', height=420)
 
     # # UPDATED
+    # station_load_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load_graph.xlsx'
+    
+    # bcq_nomination_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\total_bcq_nomination.xlsx'
+    
+    # forecasted_energy_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\forecasted_energy.xlsx'
+
+    # # COLUMNS: HOUR, ACTUAL_ENERGY
+    # actual_energy_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\actual_energy.xlsx'
+    # actual_energy_wb = openpyxl.load_workbook(actual_energy_destination_path)
+    # actual_energy_sheet = actual_energy_wb.active
+
+    # actual_energy_values = [] # Initialize Actual Energy list
+
+    # now = datetime.now()
+    # current_hour = now.hour
+    # if current_hour == 0:
+    #     current_hour = 24
+
+    # # Create a loop to append the appropriate values based on the current hour
+    # for i in range(2, current_hour + 2):
+    #     ae_value = actual_energy_sheet[f'D{i}'].value
+    #     actual_energy_values.append(ae_value)
+
+    # # Read the Excel file into a DataFrame
+    # df = pd.read_excel(station_load_destination_path)
+
+    # # Initialize a dictionary to store the results
+    # data = {'Hour': list(range(1, 25))}
+
+    # # List of stations and their corresponding colors
+    # stations = {
+    #     'Lapaz': 'red',
+    #     'Jaro': 'orange',
+    #     'Mandurriao': 'yellow',
+    #     'Molo': 'lime',
+    #     'Diversion': 'green',
+    #     'Mobile SS 1': 'cornflowerblue',
+    #     'Mobile SS 2': 'darkblue',
+    #     'Megaworld': 'mediumpurple'
+    # }
+
+    # # Loop through each station and add their hourly values to the dictionary
+    # for station in stations.keys():
+    #     data[station] = [safe_get(df, hour - 1, station) for hour in data['Hour']]
+
+    # # Calculate total values for each hour
+    # data['Total'] = [sum(data[station][hour - 1] for station in stations.keys()) for hour in data['Hour']]
+
+    # # Convert the dictionary to a DataFrame
+    # result_df = pd.DataFrame(data)
+
+    # # Create a Figure object for the plot
+    # fig = go.Figure()
+
+    # # Add each station as a bar trace with specified colors
+    # for station, color in stations.items():
+    #     fig.add_trace(go.Bar(
+    #         x=result_df['Hour'],
+    #         y=result_df[station],
+    #         name=station,
+    #         marker_color=color  # Set the color for the bar trace
+    #     ))
+
+    # df_2 = pd.read_excel(forecasted_energy_destination_path)
+
+    # # Add the total as a scatter trace with a straight line
+    # fig.add_trace(go.Scatter(
+    #     x=df_2['HOUR'],
+    #     y=df_2['NET'],
+    #     mode='lines',
+    #     name='Forecasted Energy',
+    #     line=dict(color='white')
+    # ))
+
+    # df_3 = pd.read_excel(bcq_nomination_destination_path)
+
+    # # Add a crooked line for demonstration
+    # fig.add_trace(go.Scatter(
+    #     x=df_3['HOUR'],
+    #     y=df_3['TOTAL_BCQ'],
+    #     mode='lines+markers',
+    #     name='BCQ Nomination',
+    #     line=dict(color='silver')
+    # ))
+
+    # # Update layout with x and y axis labels and custom y-axis formatting
+    # fig.update_layout(
+    #     title='Actual vs Forecasted Energy (kWh)',
+    #     margin=dict(r=30, t=30, b=30),
+    #     xaxis_title='Interval',
+    #     yaxis_title='kWh',
+    #     yaxis_tickformat=',',  # Format y-axis to use commas for thousands
+    #     plot_bgcolor='black',
+    #     paper_bgcolor='black',
+    #     barmode='stack',
+    #     height=300
+    # )
+
+    # # MOST UPDATED
+    # station_load_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load_graph.xlsx'
+    # bcq_nomination_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\total_bcq_nomination.xlsx'
+    # forecasted_energy_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\forecasted_energy.xlsx'
+    # actual_energy_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\actual_energy.xlsx'
+
+    # # Load Actual Energy data
+    # actual_energy_wb = openpyxl.load_workbook(actual_energy_destination_path)
+    # actual_energy_sheet = actual_energy_wb.active
+    # actual_energy_values = [] # Initialize Actual Energy list
+
+    # now = datetime.now()
+    # current_hour = now.hour
+    # if current_hour == 0:
+    #     current_hour = 24
+
+    # # Create a list of actual energy values for current hour backwards
+    # for i in range(2, current_hour + 2):
+    #     ae_value = actual_energy_sheet[f'D{i}'].value
+    #     actual_energy_values.append(ae_value)
+
+    # # Read the station load data into a DataFrame
+    # df = pd.read_excel(station_load_destination_path)
+
+    # # Initialize a dictionary to store the results
+    # data = {'Hour': list(range(1, 25))}
+
+    # # List of stations and their corresponding colors
+    # stations = {
+    #     'Lapaz': 'red',
+    #     'Jaro': 'orange',
+    #     'Mandurriao': 'yellow',
+    #     'Molo': 'lime',
+    #     'Diversion': 'green',
+    #     'Mobile SS 1': 'cornflowerblue',
+    #     'Mobile SS 2': 'darkblue',
+    #     'Megaworld': 'mediumpurple'
+    # }
+
+    # # Loop through each station and add their hourly values to the dictionary
+    # for station in stations.keys():
+    #     data[station] = [safe_get(df, hour - 1, station) for hour in data['Hour']]
+
+    # # Calculate total values for each hour
+    # data['Total'] = [sum(data[station][hour - 1] for station in stations.keys()) for hour in data['Hour']]
+
+    # # Convert the dictionary to a DataFrame
+    # result_df = pd.DataFrame(data)
+
+    # # Create a Figure object for the plot
+    # fig = go.Figure()
+
+    # # Add each station as a bar trace with specified colors
+    # for station, color in stations.items():
+    #     fig.add_trace(go.Bar(
+    #         x=result_df['Hour'],
+    #         y=result_df[station],
+    #         name=station,
+    #         marker_color=color  # Set the color for the bar trace
+    #     ))
+
+    # # Add total as a scatter trace with a straight line
+    # df_2 = pd.read_excel(forecasted_energy_destination_path)
+    # fig.add_trace(go.Scatter(
+    #     x=df_2['HOUR'],
+    #     y=df_2['NET'],
+    #     mode='lines',
+    #     name='Forecasted Energy',
+    #     line=dict(color='white')
+    # ))
+
+    # # Add a crooked line for demonstration
+    # df_3 = pd.read_excel(bcq_nomination_destination_path)
+    # fig.add_trace(go.Scatter(
+    #     x=df_3['HOUR'],
+    #     y=df_3['TOTAL_BCQ'],
+    #     mode='lines+markers',
+    #     name='BCQ Nomination',
+    #     line=dict(color='silver')
+    # ))
+
+    # # Update layout with x and y axis labels and custom y-axis formatting
+    # fig.update_layout(
+    #     title='Actual vs Forecasted Energy (kWh)',
+    #     margin=dict(r=30, t=30, b=30),
+    #     xaxis_title='Interval',
+    #     yaxis_title='kWh',
+    #     yaxis_tickformat=',',  # Format y-axis to use commas for thousands
+    #     plot_bgcolor='black',
+    #     paper_bgcolor='black',
+    #     barmode='stack',
+    #     height=300
+    # )
+
+    # # Add actual energy values as text annotations on top of the bars
+    # for i, hour in enumerate(result_df['Hour']):
+    #     if i < len(actual_energy_values) and hour <= current_hour:
+    #         fig.add_trace(go.Scatter(
+    #             x=[hour],
+    #             y=[result_df['Total'][i]],
+    #             mode='text',
+    #             text=[f'{actual_energy_values[i]:,.2f}'],
+    #             textposition='top center',
+    #             showlegend=False
+    #         ))
+
+    # # PINAKA UPDATED SA TANAN
+
+    # # File paths
+    # station_load_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load_graph.xlsx'
+    # bcq_nomination_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\total_bcq_nomination.xlsx'
+    # forecasted_energy_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\forecasted_energy.xlsx'
+    # actual_energy_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\actual_energy.xlsx'
+
+    # # Load Actual Energy data
+    # actual_energy_wb = openpyxl.load_workbook(actual_energy_destination_path)
+    # actual_energy_sheet = actual_energy_wb.active
+    # actual_energy_values = []  # Initialize Actual Energy list
+
+    # now = datetime.now()
+    # current_hour = now.hour
+    # if current_hour == 0:
+    #     current_hour = 24
+
+    # # Create a list of actual energy values for current hour backwards
+    # for i in range(2, current_hour + 2):
+    #     ae_value = actual_energy_sheet[f'D{i}'].value
+    #     actual_energy_values.append(ae_value)
+
+    # # Read the station load data into a DataFrame
+    # df = pd.read_excel(station_load_destination_path)
+
+    # # Initialize a dictionary to store the results
+    # data = {'Hour': list(range(1, 25))}
+
+    # # List of stations and their corresponding colors
+    # stations = {
+    #     'Lapaz': 'red',
+    #     'Jaro': 'orange',
+    #     'Mandurriao': 'yellow',
+    #     'Molo': 'lime',
+    #     'Diversion': 'green',
+    #     'Mobile SS 1': 'cornflowerblue',
+    #     'Mobile SS 2': 'darkblue',
+    #     'Megaworld': 'mediumpurple'
+    # }
+
+    # # Loop through each station and add their hourly values to the dictionary
+    # for station in stations.keys():
+    #     data[station] = [safe_get(df, hour - 1, station) for hour in data['Hour']]
+
+    # # Calculate total values for each hour
+    # data['Total'] = [sum(data[station][hour - 1] for station in stations.keys()) for hour in data['Hour']]
+
+    # # Convert the dictionary to a DataFrame
+    # result_df = pd.DataFrame(data)
+
+    # # Create a Figure object for the plot
+    # fig = go.Figure()
+
+    # # Add each station as a bar trace with specified colors
+    # for station, color in stations.items():
+    #     fig.add_trace(go.Bar(
+    #         x=result_df['Hour'],
+    #         y=result_df[station],
+    #         name=station,
+    #         marker_color=color  # Set the color for the bar trace
+    #     ))
+
+    # # Add total as a scatter trace with a straight line
+    # df_2 = pd.read_excel(forecasted_energy_destination_path)
+    # fig.add_trace(go.Scatter(
+    #     x=df_2['HOUR'],
+    #     y=df_2['NET'],
+    #     mode='lines',
+    #     name='Forecasted Energy',
+    #     line=dict(color='white')
+    # ))
+
+    # # Add a crooked line for demonstration
+    # df_3 = pd.read_excel(bcq_nomination_destination_path)
+    # fig.add_trace(go.Scatter(
+    #     x=df_3['HOUR'],
+    #     y=df_3['TOTAL_BCQ'],
+    #     mode='lines+markers',
+    #     name='BCQ Nomination',
+    #     line=dict(color='silver')
+    # ))
+
+    # # Update layout with x and y axis labels and custom y-axis formatting
+    # fig.update_layout(
+    #     title='Actual vs Forecasted Energy (kWh)',
+    #     margin=dict(r=30, t=30, b=30),
+    #     xaxis_title='Interval',
+    #     yaxis_title='kWh',
+    #     yaxis_tickformat=',',  # Format y-axis to use commas for thousands
+    #     plot_bgcolor='black',
+    #     paper_bgcolor='black',
+    #     barmode='stack',
+    #     height=300
+    # )
+
+    # # Add actual energy values as text annotations on top of the bars
+    # for i, hour in enumerate(result_df['Hour']):
+    #     if i < len(actual_energy_values) and hour <= current_hour:
+    #         formatted_value = format_value(actual_energy_values[i])
+    #         fig.add_trace(go.Scatter(
+    #             x=[hour],
+    #             y=[result_df['Total'][i]],
+    #             mode='text',
+    #             text=[formatted_value],
+    #             textposition='top center',
+    #             showlegend=False
+    #         ))
+
+    # File paths
     station_load_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load_graph.xlsx'
-    
     bcq_nomination_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\total_bcq_nomination.xlsx'
-    
     forecasted_energy_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\forecasted_energy.xlsx'
-    
-    # station_load_total_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load.xlsx'
-    # dest_wb_station_load_total = load_workbook(station_load_total_destination_path)
-    # dest_sheet_station_load_total = dest_wb_station_load_total['Sheet1']
-    
-    # contestable_energy_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\contestable_energy.xlsx'
-    # dest_wb_contestable_energy = load_workbook(contestable_energy_destination_path)
-    # dest_sheet_contestable_energy = dest_wb_contestable_energy['Sheet']
-    
-    # # excel file: station_load.xlsx
-    # total_station_load_1 = dest_sheet_station_load_total['K2'].value # hour 1
-    # total_station_load_2 = dest_sheet_station_load_total['K3'].value # hour 2
-    # total_station_load_3 = dest_sheet_station_load_total['K4'].value # hour 3
-    # total_station_load_4 = dest_sheet_station_load_total['K5'].value # hour 4
-    # total_station_load_5 = dest_sheet_station_load_total['K6'].value # hour 5
-    # total_station_load_6 = dest_sheet_station_load_total['K7'].value # hour 6
-    # total_station_load_7 = dest_sheet_station_load_total['K8'].value # hour 7
-    # total_station_load_8 = dest_sheet_station_load_total['K9'].value # hour 8
-    # total_station_load_9 = dest_sheet_station_load_total['K10'].value # hour 9
-    # total_station_load_10 = dest_sheet_station_load_total['K11'].value # hour 10
-    # total_station_load_11 = dest_sheet_station_load_total['K12'].value # hour 11
-    # total_station_load_12 = dest_sheet_station_load_total['K13'].value # hour 12
-    # total_station_load_13 = dest_sheet_station_load_total['K14'].value # hour 13
-    # total_station_load_14 = dest_sheet_station_load_total['K15'].value # hour 14
-    # total_station_load_15 = dest_sheet_station_load_total['K16'].value # hour 15
-    # total_station_load_16 = dest_sheet_station_load_total['K17'].value # hour 16
-    # total_station_load_17 = dest_sheet_station_load_total['K18'].value # hour 17
-    # total_station_load_18 = dest_sheet_station_load_total['K19'].value # hour 18
-    # total_station_load_19 = dest_sheet_station_load_total['K20'].value # hour 19
-    # total_station_load_20 = dest_sheet_station_load_total['K21'].value # hour 20
-    # total_station_load_21 = dest_sheet_station_load_total['K22'].value # hour 21
-    # total_station_load_22 = dest_sheet_station_load_total['K23'].value # hour 22
-    # total_station_load_23 = dest_sheet_station_load_total['K24'].value # hour 23
-    # total_station_load_24 = dest_sheet_station_load_total['K25'].value # hour 24
-    
-    # # excel file: contestable_energy.xlsx
-    # total_contestable_energy_1 = dest_sheet_contestable_energy['B2'].value # hour 1
-    # total_contestable_energy_2 = dest_sheet_contestable_energy['B3'].value # hour 2
-    # total_contestable_energy_3 = dest_sheet_contestable_energy['B4'].value # hour 3
-    # total_contestable_energy_4 = dest_sheet_contestable_energy['B5'].value # hour 4
-    # total_contestable_energy_5 = dest_sheet_contestable_energy['B6'].value # hour 5
-    # total_contestable_energy_6 = dest_sheet_contestable_energy['B7'].value # hour 6
-    # total_contestable_energy_7 = dest_sheet_contestable_energy['B8'].value # hour 7
-    # total_contestable_energy_8 = dest_sheet_contestable_energy['B9'].value # hour 8
-    # total_contestable_energy_9 = dest_sheet_contestable_energy['B10'].value # hour 9
-    # total_contestable_energy_10 = dest_sheet_contestable_energy['B11'].value # hour 10
-    # total_contestable_energy_11 = dest_sheet_contestable_energy['B12'].value # hour 11
-    # total_contestable_energy_12 = dest_sheet_contestable_energy['B13'].value # hour 12
-    # total_contestable_energy_13 = dest_sheet_contestable_energy['B14'].value # hour 13
-    # total_contestable_energy_14 = dest_sheet_contestable_energy['B15'].value # hour 14
-    # total_contestable_energy_15 = dest_sheet_contestable_energy['B16'].value # hour 15
-    # total_contestable_energy_16 = dest_sheet_contestable_energy['B17'].value # hour 16
-    # total_contestable_energy_17 = dest_sheet_contestable_energy['B18'].value # hour 17
-    # total_contestable_energy_18 = dest_sheet_contestable_energy['B19'].value # hour 18
-    # total_contestable_energy_19 = dest_sheet_contestable_energy['B20'].value # hour 19
-    # total_contestable_energy_20 = dest_sheet_contestable_energy['B21'].value # hour 20
-    # total_contestable_energy_21 = dest_sheet_contestable_energy['B22'].value # hour 21
-    # total_contestable_energy_22 = dest_sheet_contestable_energy['B23'].value # hour 22
-    # total_contestable_energy_23 = dest_sheet_contestable_energy['B24'].value # hour 23
-    # total_contestable_energy_24 = dest_sheet_contestable_energy['B25'].value # hour 24
+    actual_energy_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\actual_energy.xlsx'
 
-    # # Values to be shown at the top of the bar chart
-    # value_top_1 = total_station_load_1 - total_contestable_energy_1 # Hour 1
-    # value_top_2 = total_station_load_2 - total_contestable_energy_2 # Hour 2
-    # value_top_3 = total_station_load_3 - total_contestable_energy_3 # Hour 3
-    # value_top_4 = total_station_load_4 - total_contestable_energy_4 # Hour 4
-    # value_top_5 = total_station_load_5 - total_contestable_energy_5 # Hour 5
-    # value_top_6 = total_station_load_6 - total_contestable_energy_6 # Hour 6
-    # value_top_7 = total_station_load_7 - total_contestable_energy_7 # Hour 7
-    # value_top_8 = total_station_load_8 - total_contestable_energy_8 # Hour 8
-    # value_top_9 = total_station_load_9 - total_contestable_energy_9 # Hour 9
-    # value_top_10 = total_station_load_10 - total_contestable_energy_10 # Hour 10
-    # value_top_11 = total_station_load_11 - total_contestable_energy_11 # Hour 11
-    # value_top_12 = total_station_load_12 - total_contestable_energy_12 # Hour 12
-    # value_top_13 = total_station_load_13 - total_contestable_energy_13 # Hour 13
-    # value_top_14 = total_station_load_14 - total_contestable_energy_14 # Hour 14
-    # value_top_15 = total_station_load_15 - total_contestable_energy_15 # Hour 15
-    # value_top_16 = total_station_load_16 - total_contestable_energy_16 # Hour 16
-    # value_top_17 = total_station_load_17 - total_contestable_energy_17 # Hour 17
-    # value_top_18 = total_station_load_18 - total_contestable_energy_18 # Hour 18
-    # value_top_19 = total_station_load_19 - total_contestable_energy_19 # Hour 19
-    # value_top_20 = total_station_load_20 - total_contestable_energy_20 # Hour 20
-    # value_top_21 = total_station_load_21 - total_contestable_energy_21 # Hour 21
-    # value_top_22 = total_station_load_22 - total_contestable_energy_22 # Hour 22
-    # value_top_23 = total_station_load_23 - total_contestable_energy_23 # Hour 23
-    # value_top_24 = total_station_load_24 - total_contestable_energy_24 # Hour 24
+    # Load Actual Energy data
+    actual_energy_wb = openpyxl.load_workbook(actual_energy_destination_path)
+    actual_energy_sheet = actual_energy_wb.active
+    actual_energy_values = []  # Initialize Actual Energy list
 
-    # Read the Excel file into a DataFrame
+    now = datetime.now()
+    current_hour = now.hour
+    if current_hour == 0:
+        current_hour = 24
+
+    # Create a list of actual energy values for current hour backwards
+    for i in range(2, current_hour + 2):
+        ae_value = actual_energy_sheet[f'D{i}'].value
+        actual_energy_values.append(ae_value)
+
+    # Read the station load data into a DataFrame
     df = pd.read_excel(station_load_destination_path)
 
     # Initialize a dictionary to store the results
@@ -930,9 +1303,8 @@ while True:
             marker_color=color  # Set the color for the bar trace
         ))
 
+    # Add total as a scatter trace with a straight line
     df_2 = pd.read_excel(forecasted_energy_destination_path)
-
-    # Add the total as a scatter trace with a straight line
     fig.add_trace(go.Scatter(
         x=df_2['HOUR'],
         y=df_2['NET'],
@@ -941,9 +1313,8 @@ while True:
         line=dict(color='white')
     ))
 
-    df_3 = pd.read_excel(bcq_nomination_destination_path)
-
     # Add a crooked line for demonstration
+    df_3 = pd.read_excel(bcq_nomination_destination_path)
     fig.add_trace(go.Scatter(
         x=df_3['HOUR'],
         y=df_3['TOTAL_BCQ'],
@@ -954,6 +1325,8 @@ while True:
 
     # Update layout with x and y axis labels and custom y-axis formatting
     fig.update_layout(
+        title='Actual vs Forecasted Energy (kWh)',
+        margin=dict(r=30, t=30, b=30),
         xaxis_title='Interval',
         yaxis_title='kWh',
         yaxis_tickformat=',',  # Format y-axis to use commas for thousands
@@ -962,6 +1335,19 @@ while True:
         barmode='stack',
         height=300
     )
+
+    # Add actual energy values as text annotations on top of the bars
+    for i, hour in enumerate(result_df['Hour']):
+        if i < len(actual_energy_values) and hour <= current_hour:
+            formatted_value = format_value(int(actual_energy_values[i]))
+            fig.add_trace(go.Scatter(
+                x=[hour],
+                y=[result_df['Total'][i]],
+                mode='text',
+                text=[formatted_value],
+                textposition='top center',
+                showlegend=False
+            ))
 
     # -- END OF DISPLAYING THE ACTUAL VS FORECASTED ENERGY CHART --
 
@@ -1016,6 +1402,69 @@ while True:
     #     paper_bgcolor='black'
     # )
 
+    # # UPDATED
+    # # Load data
+    # df_excel = load_data_from_excel()
+
+    # # For getting the current hour
+    # now = datetime.now()
+    # now_hour = now.hour
+    # if now_hour == 0:
+    #     now_hour = 24
+
+    # # Find the row where the hour matches the current hour
+    # matching_row = df_excel[df_excel['Hour'] == now_hour]
+
+    # hour_value = matching_row.iloc[0]['Hour']
+    # lapaz_value = matching_row.iloc[0]['Lapaz']
+    # jaro_value = matching_row.iloc[0]['Jaro']
+    # mandurriao_value = matching_row.iloc[0]['Mandurriao']
+    # molo_value = matching_row.iloc[0]['Molo']
+    # diversion_value = matching_row.iloc[0]['Diversion']
+    # mobile_ss1_value = matching_row.iloc[0]['Mobile SS 1']
+    # mobile_ss2_value = matching_row.iloc[0]['Mobile SS 2']
+    # megaworld_value = matching_row.iloc[0]['Megaworld']
+
+    # # Prepare data for the bar chart
+    # chart_data = pd.DataFrame({
+    #     'Substation': ['Lapaz', 'Jaro', 'Mandurriao', 'Molo', 'Diversion', 'Mobile SS 1', 'Mobile SS 2', 'Megaworld'],
+    #     'kW': [lapaz_value, jaro_value, mandurriao_value, molo_value, diversion_value, mobile_ss1_value, mobile_ss2_value, megaworld_value]
+    # })
+
+    # # Create the horizontal bar chart with Plotly
+    # fig_ss_load = px.bar(chart_data, y='Substation', x='kW', text='kW', orientation='h')
+
+    # # Customize the bar colors
+    # colors = ['orangered', 'green', 'cornflowerblue', 'darkblue', 'yellow', 'lightpink', 'mediumpurple', 'lime']
+    # fig_ss_load.update_traces(marker_color=colors)
+
+    # # Customize the layout
+    # fig_ss_load.update_traces(
+    #     texttemplate='%{x:,.0f}',  # Format numbers with thousands separators and no decimal places
+    #     textposition='outside',
+    #     textfont_size=12  # Reduce text size if needed
+    # )
+
+    # # Add padding by adjusting the layout
+    # fig_ss_load.update_layout(
+    #     margin=dict(r=30, t=30, b=30),  # Increase margins further
+    #     xaxis=dict(
+    #         title='kW',
+    #         tickformat=',',  # Format axis ticks with commas as thousands separators
+    #         showgrid=False,
+    #         zeroline=False,
+    #         range=[0, max(chart_data['kW']) * 1.2]  # Extend the x-axis range further
+    #     ),
+    #     uniformtext_minsize=8,
+    #     uniformtext_mode='hide',
+    #     height=300  # Set the height of the bar chart
+    # )
+
+    # fig_ss_load.update_layout(
+    #     plot_bgcolor='black',
+    #     paper_bgcolor='black'
+    # )
+
     # Load data
     df_excel = load_data_from_excel()
 
@@ -1028,15 +1477,23 @@ while True:
     # Find the row where the hour matches the current hour
     matching_row = df_excel[df_excel['Hour'] == now_hour]
 
-    hour_value = matching_row.iloc[0]['Hour']
-    lapaz_value = matching_row.iloc[0]['Lapaz']
-    jaro_value = matching_row.iloc[0]['Jaro']
-    mandurriao_value = matching_row.iloc[0]['Mandurriao']
-    molo_value = matching_row.iloc[0]['Molo']
-    diversion_value = matching_row.iloc[0]['Diversion']
-    mobile_ss1_value = matching_row.iloc[0]['Mobile SS 1']
-    mobile_ss2_value = matching_row.iloc[0]['Mobile SS 2']
-    megaworld_value = matching_row.iloc[0]['Megaworld']
+    # Check if there's no matching data for the current hour
+    if matching_row.empty:
+        # If no data for the current hour, get the latest available data
+        matching_row = df_excel.iloc[-1]  # Get the last row in the DataFrame
+    else:
+        matching_row = matching_row.iloc[0]  # Get the first row matching the current hour
+
+    # Extract the values
+    hour_value = matching_row['Hour']
+    lapaz_value = matching_row['Lapaz']
+    jaro_value = matching_row['Jaro']
+    mandurriao_value = matching_row['Mandurriao']
+    molo_value = matching_row['Molo']
+    diversion_value = matching_row['Diversion']
+    mobile_ss1_value = matching_row['Mobile SS 1']
+    mobile_ss2_value = matching_row['Mobile SS 2']
+    megaworld_value = matching_row['Megaworld']
 
     # Prepare data for the bar chart
     chart_data = pd.DataFrame({
@@ -1060,6 +1517,7 @@ while True:
 
     # Add padding by adjusting the layout
     fig_ss_load.update_layout(
+        title='Substation Load (kW)',
         margin=dict(r=30, t=30, b=30),  # Increase margins further
         xaxis=dict(
             title='kW',
@@ -1080,35 +1538,12 @@ while True:
 
     # -- END OF DISPLAYING THE SUBSTATION LOAD (KW) BAR CHART -- 
 
-
     # Layout with smaller padding
     col1, col2 = st.columns(2)  # Adjust width ratios if needed
-
-    # Flags to control chart display
-    show_ss_load_chart = True
-    show_energy_chart = True
-
-    try:
-        with col1:
-            st.subheader("Substation Load (kW)", divider=True)
-            st.plotly_chart(fig_ss_load)
-    except Exception as e:
-        show_ss_load_chart = False
-
-    try:
-        with col2:
-            st.subheader("Actual vs Forecasted Energy (kWh)", divider=True)
-            st.plotly_chart(fig)
-    except Exception as e:
-        show_energy_chart = False
-
-    if not show_ss_load_chart:
-        with col1:
-            render_black_background()
-    
-    if not show_energy_chart:
-        with col2:
-            render_black_background()
+    with col1:
+        st.plotly_chart(fig_ss_load)
+    with col2:
+        st.plotly_chart(fig)
 
     # -- START OF TRADING INTERVAL PRICE CALCULATION LINE CHART --
 
@@ -1656,8 +2091,6 @@ while True:
                 average_pedc_t1l2 = average_every_12(list_pedc_t1l2)
                 average_stbar_t1l1 = average_every_12(list_stbar_t1l1)
 
-    current_date = datetime.now()
-
     current_time = datetime.now()
     hour_value = current_time.strftime("%H")
 
@@ -2120,6 +2553,8 @@ while True:
     fig_tipc.update_traces(hovertemplate='%{customdata[0]}', customdata=df_long[['Hover']].values)
 
     fig_tipc.update_layout(
+        title='Trading Interval Price Calculation',
+        margin=dict(r=30, t=30, b=30),
         plot_bgcolor='black',
         paper_bgcolor='black'
     )
@@ -2716,6 +3151,7 @@ while True:
         'Names': ['SEMCAL', 'KSPC1', 'KSPC2', 'EDC'],
         'Values': generation_mix_list
         }
+
     elif len(generation_mix_list) == 5:
         genmix_data = {
         'Names': ['SEMCAL', 'KSPC1', 'KSPC2', 'EDC', 'WESM'],
@@ -2742,6 +3178,8 @@ while True:
     )
 
     fig_genmix.update_layout(
+        title='Generation Mix',
+        margin=dict(r=30, t=30, b=30),
         plot_bgcolor='black',
         paper_bgcolor='black'
     )
@@ -2749,43 +3187,12 @@ while True:
     # -- END OF DISPLAYING THE GENERATION MIX DONUT CHART --
 
     col1, col2, col3 = st.columns(3)
-
-    # Flags to control chart display
-    show_bcq_chart = True
-    show_tipc_chart = True
-    show_genmix_chart = True
-
-    try:  
-        with col1:
-            st.subheader("BCQ Nominations per Supplier", divider=True)
-            st.plotly_chart(fig_bcq)
-    except Exception as e:
-        show_bcq_chart = False
-
-    try:
-        with col2:
-            st.subheader("Trading Interval Price Calculation", divider=True)
-            st.plotly_chart(fig_tipc)
-    except Exception as e:
-        show_tipc_chart = False
-    try:
-        with col3:
-            st.subheader("Generation Mix", divider=True)
-            st.plotly_chart(fig_genmix)
-    except Exception as e:
-        show_genmix_chart = False
-
-    if not show_bcq_chart:
-        with col1:
-            render_black_background()
-    
-    if not show_tipc_chart:
-        with col2:
-            render_black_background()
-    
-    if not show_genmix_chart:
-        with col3:
-            render_black_background()
+    with col1:
+        st.plotly_chart(fig_bcq)
+    with col2:
+        st.plotly_chart(fig_tipc)
+    with col3:
+        st.plotly_chart(fig_genmix)
 
     # For rerunning the script every 60 seconds
     time.sleep(REFRESH_INTERVAL)

@@ -24,6 +24,8 @@ def get_time_interval(current_time):
     # If the time is between 12:01 AM and 12:59 AM
     elif hour == 0:
         return '0100 H'
+    elif hour == 23 and minute > 0:
+        return '2400 H'
     # If the time is exactly on the hour (e.g., 1:00 AM, 2:00 AM)
     elif minute == 0:
         return f'{hour:02}00 H'
