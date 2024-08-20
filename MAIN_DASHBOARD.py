@@ -13,7 +13,7 @@ import plotly.graph_objs as go
 import streamlit as st
 import time
 
-REFRESH_INTERVAL = 60 # Refresh Interval Value (60 SECONDS)
+REFRESH_INTERVAL = 120 # Refresh Interval Value (60 SECONDS)
 
 # -- START OF FUNCTIONS --
 def view_all_data():
@@ -248,11 +248,26 @@ def format_value(value):
 
 while True:
 
-    # Set page config
-    st.set_page_config(page_title="MEPC Energy Trading Dashboard", page_icon="data/logo_only.png", layout="wide")
+    # Set the page layout to wide
+    st.set_page_config(
+        page_title="MEPC Energy Trading Dashboard",
+        page_icon="data/logo_only.png",
+        layout="wide"
+    )
+
+    margins_css = """
+    <style>
+        .main > div {
+            padding-left: 0rem;
+            padding-right: 0rem;
+        }
+    </style>
+"""
+
+    st.markdown(margins_css, unsafe_allow_html=True)
 
     # Path to your image
-    image_path = 'data/MORE_Power_Logo.png'
+    image_path = 'data/MORE_Power_Logo (4) (1).png'
 
     # Hide the Streamlit header and footer
     st.markdown("""
@@ -321,94 +336,95 @@ while True:
 
     # -- END OF MO ADVISORIES HEADER --
 
-    # HTML and CSS for the tickers
-    html_code = f"""
-    <style>
-    * {{
-        box-sizing: border-box;
-    }}
-    @-webkit-keyframes ticker {{
-        0% {{
-            -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
-        }}
-        100% {{
-            -webkit-transform: translate3d(-100%, 0, 0);
-            transform: translate3d(-100%, 0, 0);
-        }}
-    }}
-    @keyframes ticker {{
-        0% {{
-            -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
-        }}
-        100% {{
-            -webkit-transform: translate3d(-100%, 0, 0);
-            transform: translate3d(-100%, 0, 0);
-        }}
-    }}
-    .ticker-wrap {{
-        position: fixed;
-        width: calc(100% - 2px);  /* Adjust width to account for border */
-        overflow: hidden;
-        height: 2.5rem;
-        background-color: #000000;
-        box-sizing: border-box;
-        border: 2px solid white;  /* White border around the entire box */
-        border-radius: 5px;  /* Optional: Add rounded corners */
-        padding: 0;  /* Remove padding to avoid clipping */
-        margin: 0;  /* Remove margin to avoid shifting */
-    }}
-    .ticker {{
-        display: inline-block;
-        height: 2.5rem;
-        line-height: 2.5rem;
-        white-space: nowrap;
-        box-sizing: content-box;
-        -webkit-animation-iteration-count: infinite;
-        animation-iteration-count: infinite;
-        -webkit-animation-timing-function: linear;
-        animation-timing-function: linear;
-        -webkit-animation-name: ticker;
-        animation-name: ticker;
-        -webkit-animation-duration: 180s;
-        animation-duration: 180s;
-    }}
-    .ticker__item {{
-        display: inline-block;
-        padding: 0 2rem; /* Increased padding for more space between entries */
-        font-size: 1rem;
-        font-family: Helvetica;
-        font-weight: bold;
-        color: #FFFFFF;
-    }}
-    .ticker__item:first-child {{
-        margin-top: 0;
-    }}
-    body {{ margin: 0; padding-bottom: 0; }}
-    h1, h2, p {{ padding: 0 5%; }}
-    </style>
-    <div class="ticker-wrap" style="bottom: 2.5rem;">  <!-- Bottom ticker -->
-    <div class="ticker">
-    """
+    # # HTML and CSS for the tickers
+    # html_code = f"""
+    # <style>
+    # * {{
+    #     box-sizing: border-box;
+    # }}
+    # @-webkit-keyframes ticker {{
+    #     0% {{
+    #         -webkit-transform: translate3d(0, 0, 0);
+    #         transform: translate3d(0, 0, 0);
+    #     }}
+    #     100% {{
+    #         -webkit-transform: translate3d(-100%, 0, 0);
+    #         transform: translate3d(-100%, 0, 0);
+    #     }}
+    # }}
+    # @keyframes ticker {{
+    #     0% {{
+    #         -webkit-transform: translate3d(0, 0, 0);
+    #         transform: translate3d(0, 0, 0);
+    #     }}
+    #     100% {{
+    #         -webkit-transform: translate3d(-100%, 0, 0);
+    #         transform: translate3d(-100%, 0, 0);
+    #     }}
+    # }}
+    # .ticker-wrap {{
+    #     position: fixed;
+    #     width: calc(100% - 2px);  /* Adjust width to account for border */
+    #     overflow: hidden;
+    #     /* height: 2.5rem; */
+    #     height: 2rem;
+    #     background-color: #000000;
+    #     box-sizing: border-box;
+    #     border: 2px solid white;  /* White border around the entire box */
+    #     border-radius: 5px;  /* Optional: Add rounded corners */
+    #     padding: 0;  /* Remove padding to avoid clipping */
+    #     margin: 0;  /* Remove margin to avoid shifting */
+    # }}
+    # .ticker {{
+    #     display: inline-block;
+    #     height: 2rem;
+    #     line-height: 2rem;
+    #     white-space: nowrap;
+    #     box-sizing: content-box;
+    #     -webkit-animation-iteration-count: infinite;
+    #     animation-iteration-count: infinite;
+    #     -webkit-animation-timing-function: linear;
+    #     animation-timing-function: linear;
+    #     -webkit-animation-name: ticker;
+    #     animation-name: ticker;
+    #     -webkit-animation-duration: 180s;
+    #     animation-duration: 180s;
+    # }}
+    # .ticker__item {{
+    #     display: inline-block;
+    #     padding: 0 2rem; /* Increased padding for more space between entries */
+    #     font-size: 0.8rem;
+    #     font-family: Helvetica;
+    #     font-weight: bold;
+    #     color: #FFFFFF;
+    # }}
+    # .ticker__item:first-child {{
+    #     margin-top: 0;
+    # }}
+    # body {{ margin: 0; padding-bottom: 0; }}
+    # h1, h2, p {{ padding: 0 5%; }}
+    # </style>
+    # <div class="ticker-wrap" style="bottom: 2.5rem;">  <!-- Bottom ticker -->
+    # <div class="ticker">
+    # """
 
-    for entry in scrollable_content:
-        html_code += f'<div class="ticker__item">{entry}</div>'
+    # for entry in scrollable_content:
+    #     html_code += f'<div class="ticker__item">{entry}</div>'
 
-    html_code += """
-    </div>
-    </div>
-    <div class="ticker-wrap" style="bottom: 0;">  <!-- Top ticker -->
-    <div class="ticker">
-    """
+    # html_code += """
+    # </div>
+    # </div>
+    # <div class="ticker-wrap" style="bottom: 0;">  <!-- Top ticker -->
+    # <div class="ticker">
+    # """
 
-    for entry in scrollable_content_2:
-        html_code += f'<div class="ticker__item">{entry}</div>'
+    # for entry in scrollable_content_2:
+    #     html_code += f'<div class="ticker__item">{entry}</div>'
 
-    html_code += """
-    </div>
-    </div>
-    """
+    # html_code += """
+    # </div>
+    # </div>
+    # """
 
     # # HTML and CSS for the tickers
     # html_code = f"""
@@ -490,11 +506,227 @@ while True:
     # </div>
     # """
 
-    with st.container():
-        # Set the image's width to the column width
-        st.image(image_path, use_column_width=True)
-        # Display the HTML and CSS in Streamlit
-        st.components.v1.html(html_code, height=80)
+    # # HTML and CSS for the tickers
+    # html_code = f"""
+    # <style>
+    # * {{
+    #     box-sizing: border-box;
+    # }}
+    # @-webkit-keyframes ticker {{
+    #     0% {{
+    #         -webkit-transform: translate3d(0, 0, 0);
+    #         transform: translate3d(0, 0, 0);
+    #     }}
+    #     100% {{
+    #         -webkit-transform: translate3d(-100%, 0, 0);
+    #         transform: translate3d(-100%, 0, 0);
+    #     }}
+    # }}
+    # @keyframes ticker {{
+    #     0% {{
+    #         -webkit-transform: translate3d(0, 0, 0);
+    #         transform: translate3d(0, 0, 0);
+    #     }}
+    #     100% {{
+    #         -webkit-transform: translate3d(-100%, 0, 0);
+    #         transform: translate3d(-100%, 0, 0);
+    #     }}
+    # }}
+    # .ticker-wrap {{
+    #     position: fixed;
+    #     width: calc(100% - 2px);  /* Adjust width to account for border */
+    #     overflow: hidden;
+    #     /* height: 2.5rem; */
+    #     height: 2rem;
+    #     background-color: #000000;
+    #     box-sizing: border-box;
+    #     border: 2px solid white;  /* White border around the entire box */
+    #     border-radius: 5px;  /* Optional: Add rounded corners */
+    #     padding: 0;  /* Remove padding to avoid clipping */
+    #     margin: 0;  /* Remove margin to avoid shifting */
+    # }}
+    # .ticker1 {{
+    #     display: inline-block;
+    #     height: 2rem;
+    #     line-height: 2rem;
+    #     white-space: nowrap;
+    #     box-sizing: content-box;
+    #     -webkit-animation-iteration-count: infinite;
+    #     animation-iteration-count: infinite;
+    #     -webkit-animation-timing-function: linear;
+    #     animation-timing-function: linear;
+    #     -webkit-animation-name: ticker;
+    #     animation-name: ticker;
+    #     -webkit-animation-duration: 180s;
+    #     animation-duration: 180s;
+    # }}
+    # .ticker2 {{
+    #     display: inline-block;
+    #     height: 2rem;
+    #     line-height: 2rem;
+    #     white-space: nowrap;
+    #     box-sizing: content-box;
+    #     -webkit-animation-iteration-count: infinite;
+    #     animation-iteration-count: infinite;
+    #     -webkit-animation-timing-function: linear;
+    #     animation-timing-function: linear;
+    #     -webkit-animation-name: ticker;
+    #     animation-name: ticker;
+    #     -webkit-animation-duration: 100s;
+    #     animation-duration: 100s;
+    # }}
+    # .ticker__item {{
+    #     display: inline-block;
+    #     padding: 0 2rem; /* Increased padding for more space between entries */
+    #     font-size: 0.8rem;
+    #     font-family: Helvetica;
+    #     font-weight: bold;
+    #     color: #FFFFFF;
+    # }}
+    # .ticker__item:first-child {{
+    #     margin-top: 0;
+    # }}
+    # body {{ margin: 0; padding-bottom: 0; }}
+    # h1, h2, p {{ padding: 0 5%; }}
+    # </style>
+    # /* <div class="ticker-wrap" style="bottom: 2.5rem;">  <!-- Bottom ticker -->
+    # <div class="ticker"> */
+    # <div class="ticker-wrap" style="bottom: 2.5rem;">  <!-- Bottom ticker -->
+    # <div class="ticker ticker1">
+    # <div class="ticker-wrap" style="bottom: 0;">  <!-- Top ticker -->
+    # <div class="ticker ticker2">
+    # """
+
+    # for entry in scrollable_content:
+    #     html_code += f'<div class="ticker__item">{entry}</div>'
+
+    # html_code += """
+    # </div>
+    # </div>
+    # <div class="ticker-wrap" style="bottom: 0;">  <!-- Top ticker -->
+    # <div class="ticker">
+    # """
+
+    # for entry in scrollable_content_2:
+    #     html_code += f'<div class="ticker__item">{entry}</div>'
+
+    # html_code += """
+    # </div>
+    # </div>
+    # """
+
+    # HTML and CSS for the tickers
+    html_code = f"""
+    <style>
+    * {{
+        box-sizing: border-box;
+    }}
+    @-webkit-keyframes ticker {{
+        0% {{
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }}
+        100% {{
+            -webkit-transform: translate3d(-100%, 0, 0);
+            transform: translate3d(-100%, 0, 0);
+        }}
+    }}
+    @keyframes ticker {{
+        0% {{
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }}
+        100% {{
+            -webkit-transform: translate3d(-100%, 0, 0);
+            transform: translate3d(-100%, 0, 0);
+        }}
+    }}
+    .ticker-wrap {{
+        position: fixed;
+        width: calc(100% - 2px);  /* Adjust width to account for border */
+        overflow: hidden;
+        /* height: 2.5rem; */
+        height: 2rem;
+        background-color: #000000;
+        box-sizing: border-box;
+        border: 2px solid white;  /* White border around the entire box */
+        border-radius: 5px;  /* Optional: Add rounded corners */
+        padding: 0;  /* Remove padding to avoid clipping */
+        margin: 0;  /* Remove margin to avoid shifting */
+    }}
+    .ticker1 {{
+        display: inline-block;
+        height: 2rem;
+        line-height: 2rem;
+        white-space: nowrap;
+        box-sizing: content-box;
+        -webkit-animation-iteration-count: infinite;
+        animation-iteration-count: infinite;
+        -webkit-animation-timing-function: linear;
+        animation-timing-function: linear;
+        -webkit-animation-name: ticker;
+        animation-name: ticker;
+        -webkit-animation-duration: 200s;
+        animation-duration: 200s;
+    }}
+    .ticker2 {{
+        display: inline-block;
+        height: 2rem;
+        line-height: 2rem;
+        white-space: nowrap;
+        box-sizing: content-box;
+        -webkit-animation-iteration-count: infinite;
+        animation-iteration-count: infinite;
+        -webkit-animation-timing-function: linear;
+        animation-timing-function: linear;
+        -webkit-animation-name: ticker;
+        animation-name: ticker;
+        -webkit-animation-duration: 40s;
+        animation-duration: 40s;
+    }}
+    .ticker__item {{
+        display: inline-block;
+        padding: 0 2rem; /* Increased padding for more space between entries */
+        font-size: 0.8rem;
+        font-family: Helvetica;
+        font-weight: bold;
+        color: #FFFFFF;
+    }}
+    .ticker__item:first-child {{
+        margin-top: 0;
+    }}
+    body {{ margin: 0; padding-bottom: 0; }}
+    h1, h2, p {{ padding: 0 5%; }}
+    </style>
+
+    <div class="ticker-wrap" style="bottom: 2.5rem;">  <!-- Bottom ticker -->
+        <div class="ticker ticker1">
+    """
+
+    for entry in scrollable_content:
+        html_code += f'<div class="ticker__item">{entry}</div>'
+
+    html_code += """
+        </div>
+    </div>
+
+    <div class="ticker-wrap" style="bottom: 0;">  <!-- Top ticker -->
+        <div class="ticker ticker2">
+    """
+
+    for entry in scrollable_content_2:
+        html_code += f'<div class="ticker__item">{entry}</div>'
+
+    html_code += """
+        </div>
+    </div>
+    """
+
+    # with st.container():
+    #     # Set the image's width to the column width
+    #     st.image(image_path, use_column_width=True)
+    #     # Display the HTML and CSS in Streamlit
+    #     st.components.v1.html(html_code, height=80)
 
     # -- START OF CURRENT INTERVAL SUMMARY --
 
@@ -537,8 +769,8 @@ while True:
     c = datetime.now()
     formatted_date = c.strftime("%Y-%m-%d")
 
-    # Create columns with small gap
-    card1, card2, card3, card4, card5, card6, card7, card8, card9, card10 = st.columns(10, gap='small')
+    # # Create columns with small gap
+    # card1, card2, card3, card4, card5, card6, card7, card8, card9, card10 = st.columns(10, gap='small')
     
 #     st.markdown("""
 #     <style>
@@ -585,17 +817,17 @@ while True:
 #     </style>
 # """, unsafe_allow_html=True)
 
-    # LATEST / UPDATED
+    # UPDATED
     st.markdown("""
     <style>
     /* Styling for equal-sized boxes with minimal padding */
     .custom-box, .custom-box-2 {
         border: 1px solid #ddd;
         border-radius: 5px;
-        padding: 2px;  /* Reduced padding */
+        padding: 0;  /* Reduced padding */
         margin: 0;
         background-color: #000000;
-        height: 15vh;  /* Fixed height to ensure all boxes are the same size */
+        height: 14vh;  /* Fixed height to ensure all boxes are the same size */
         max-width: 100%;  /* Prevents overflow */
         box-sizing: border-box;
         display: flex;
@@ -623,7 +855,7 @@ while True:
     .custom-box h4, .custom-box p, .custom-box-2 h4, .custom-box-2 p {
         margin: 0;
         padding: 0;
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         font-family: Helvetica, Arial, sans-serif;  /* Fallback font */
         font-weight: normal;
         color: #FFFFFF;
@@ -644,35 +876,35 @@ while True:
     </style>
 """, unsafe_allow_html=True)
 
-    with card1:
-        st.markdown('<div class="custom-box"><h4>Current Date</h4><p>{}</p></div>'.format(formatted_date), unsafe_allow_html=True)
+    # with card1:
+    #     st.markdown('<div class="custom-box"><h4>Current Date</h4><p>{}</p></div>'.format(formatted_date), unsafe_allow_html=True)
 
-    with card2:
-        st.markdown('<div class="custom-box"><h4>Current Interval</h4><p>{}</p></div>'.format(last_interval), unsafe_allow_html=True)
+    # with card2:
+    #     st.markdown('<div class="custom-box"><h4>Current Interval</h4><p>{}</p></div>'.format(last_interval), unsafe_allow_html=True)
 
-    with card3:
-        st.markdown('<div class="custom-box"><h4>Temperature</h4><p>{}°C</p><h4>Weather Condition</h4><p>{}</p></div>'.format(temperature, weather_condition), unsafe_allow_html=True)
+    # with card3:
+    #     st.markdown('<div class="custom-box"><h4>Temperature</h4><p>{}°C</p><h4>Weather Condition</h4><p>{}</p></div>'.format(temperature, weather_condition), unsafe_allow_html=True)
 
-    with card4:
-        st.markdown('<div class="custom-box"><h4>Total Substation Load (kW)</h4><p>{}</p></div>'.format(total_substation_load), unsafe_allow_html=True)
+    # with card4:
+    #     st.markdown('<div class="custom-box"><h4>Total Substation Load (kW)</h4><p>{}</p></div>'.format(total_substation_load), unsafe_allow_html=True)
 
-    with card5:
-        st.markdown('<div class="custom-box"><h4>Actual Energy (kWh)</h4><p>{}</p><h4>Forecasted Energy (kWh)</h4><p>{}</p></div>'.format(actual_energy, forecasted_energy), unsafe_allow_html=True)
+    # with card5:
+    #     st.markdown('<div class="custom-box"><h4>Actual Energy (kWh)</h4><p>{}</p><h4>Forecasted Energy (kWh)</h4><p>{}</p></div>'.format(actual_energy, forecasted_energy), unsafe_allow_html=True)
 
-    with card6:
-        st.markdown('<div class="custom-box"><h4>WESM Exposure (kWh)</h4><p>{}</p><h4>Contestable Energy (kWh)</h4><p>{}</p></div>'.format(wesm_exposure, contestable_energy), unsafe_allow_html=True)
+    # with card6:
+    #     st.markdown('<div class="custom-box"><h4>WESM Exposure (kWh)</h4><p>{}</p><h4>Contestable Energy (kWh)</h4><p>{}</p></div>'.format(wesm_exposure, contestable_energy), unsafe_allow_html=True)
 
-    with card7:
-        st.markdown('<div class="custom-box"><h4>Total BCQ Nomination (kW)</h4><p>{}</p></div>'.format(total_bcq), unsafe_allow_html=True)
+    # with card7:
+    #     st.markdown('<div class="custom-box"><h4>Total BCQ Nomination (kW)</h4><p>{}</p></div>'.format(total_bcq), unsafe_allow_html=True)
 
-    with card8:
-        st.markdown('<div class="custom-box"><h4>MORE Trading Node (PhP/kWh)</h4><p>{}</p></div>'.format(final_total), unsafe_allow_html=True)
+    # with card8:
+    #     st.markdown('<div class="custom-box"><h4>MORE Trading Node (PhP/kWh)</h4><p>{}</p></div>'.format(final_total), unsafe_allow_html=True)
 
-    with card9:
-        st.markdown('<div class="custom-box"><h4>PEDC Trading Node (PhP/kWh)</h4><p>On Probation</p></div>', unsafe_allow_html=True)
+    # with card9:
+    #     st.markdown('<div class="custom-box"><h4>PEDC Trading Node (PhP/kWh)</h4><p>On Probation</p></div>', unsafe_allow_html=True)
 
-    with card10:
-        st.markdown('<div class="custom-box"><h4>Current Rate (PhP/kWh)</h4><p>{}</p></div>'.format(current_rate), unsafe_allow_html=True)
+    # with card10:
+    #     st.markdown('<div class="custom-box"><h4>Current Rate (PhP/kWh)</h4><p>{}</p></div>'.format(current_rate), unsafe_allow_html=True)
 
     # -- END OF CURRENT INTERVAL SUMMARY --
 
@@ -779,16 +1011,16 @@ while True:
 
     # Define the color map
     color_map = {
-        'SEMCAL': 'orangered', # orange
-        'KSPC1': 'cornflowerblue', # powder blue
-        'KSPC2': 'darkblue', # dark blue
-        'EDC': 'green' # green
+        'SEMCAL': 'orange', 
+        'KSPC1': 'red', 
+        'KSPC2': 'darkblue', 
+        'EDC': 'green'
     }
 
     # Create a Plotly area chart
     fig_bcq = px.area(df_bcq_melted, x='Hour', y='BCQ', color='Contracted Supplier', 
                 labels={'Hour': 'Hour', 'BCQ': 'BCQ'}, color_discrete_map=color_map, # Apply the color map
-                height=300)
+                height=240)
 
     # Update layout to match the Altair configuration
     fig_bcq.update_layout(
@@ -1242,6 +1474,329 @@ while True:
     #             showlegend=False
     #         ))
 
+    # # File paths
+    # station_load_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load_graph.xlsx'
+    # bcq_nomination_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\total_bcq_nomination.xlsx'
+    # forecasted_energy_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\forecasted_energy.xlsx'
+    # actual_energy_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\actual_energy.xlsx'
+
+    # # Load Actual Energy data
+    # actual_energy_wb = openpyxl.load_workbook(actual_energy_destination_path)
+    # actual_energy_sheet = actual_energy_wb.active
+    # actual_energy_values = []  # Initialize Actual Energy list
+
+    # now = datetime.now()
+    # current_hour = now.hour
+    # if current_hour == 0:
+    #     current_hour = 24
+
+    # # Create a list of actual energy values for current hour backwards
+    # for i in range(2, current_hour + 2):
+    #     ae_value = actual_energy_sheet[f'D{i}'].value
+    #     actual_energy_values.append(ae_value)
+
+    # # Read the station load data into a DataFrame
+    # df = pd.read_excel(station_load_destination_path)
+
+    # # Initialize a dictionary to store the results
+    # data = {'Hour': list(range(1, 25))}
+
+    # # List of stations and their corresponding colors
+    # stations = {
+    #     'Lapaz': 'red',
+    #     'Jaro': 'orange',
+    #     'Mandurriao': 'yellow',
+    #     'Molo': 'lime',
+    #     'Diversion': 'green',
+    #     'Mobile SS 1': 'cornflowerblue',
+    #     'Mobile SS 2': 'darkblue',
+    #     'Megaworld': 'mediumpurple'
+    # }
+
+    # # Loop through each station and add their hourly values to the dictionary
+    # for station in stations.keys():
+    #     data[station] = [safe_get(df, hour - 1, station) for hour in data['Hour']]
+
+    # # Calculate total values for each hour
+    # data['Total'] = [sum(data[station][hour - 1] for station in stations.keys()) for hour in data['Hour']]
+
+    # # Convert the dictionary to a DataFrame
+    # result_df = pd.DataFrame(data)
+
+    # # Create a Figure object for the plot
+    # fig = go.Figure()
+
+    # # Add each station as a bar trace with specified colors
+    # for station, color in stations.items():
+    #     fig.add_trace(go.Bar(
+    #         x=result_df['Hour'],
+    #         y=result_df[station],
+    #         name=station,
+    #         marker_color=color  # Set the color for the bar trace
+    #     ))
+
+    # # Add total as a scatter trace with a straight line
+    # df_2 = pd.read_excel(forecasted_energy_destination_path)
+    # fig.add_trace(go.Scatter(
+    #     x=df_2['HOUR'],
+    #     y=df_2['NET'],
+    #     mode='lines',
+    #     name='Forecasted Energy',
+    #     line=dict(color='white')
+    # ))
+
+    # # Add a crooked line for demonstration
+    # df_3 = pd.read_excel(bcq_nomination_destination_path)
+    # fig.add_trace(go.Scatter(
+    #     x=df_3['HOUR'],
+    #     y=df_3['TOTAL_BCQ'],
+    #     mode='lines+markers',
+    #     name='BCQ Nomination',
+    #     line=dict(color='silver')
+    # ))
+
+    # # Update layout with x and y axis labels and custom y-axis formatting
+    # fig.update_layout(
+    #     title='Actual vs Forecasted Energy (kWh)',
+    #     margin=dict(l=20, r=20, t=40, b=40),
+    #     xaxis_title='Interval',
+    #     yaxis_title='kWh',
+    #     yaxis_tickformat=',',  # Format y-axis to use commas for thousands
+    #     plot_bgcolor='black',
+    #     paper_bgcolor='black',
+    #     barmode='stack',
+    #     height=200
+    # )
+
+    # # Add actual energy values as text annotations on top of the bars
+    # for i, hour in enumerate(result_df['Hour']):
+    #     if i < len(actual_energy_values) and hour <= current_hour:
+    #         formatted_value = format_value(int(actual_energy_values[i]))
+    #         fig.add_trace(go.Scatter(
+    #             x=[hour],
+    #             y=[result_df['Total'][i]],
+    #             mode='text',
+    #             text=[formatted_value],
+    #             textposition='top center',
+    #             showlegend=False
+    #         ))
+
+    # # File paths
+    # station_load_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load_graph.xlsx'
+    # bcq_nomination_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\total_bcq_nomination.xlsx'
+    # forecasted_energy_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\forecasted_energy.xlsx'
+    # actual_energy_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\actual_energy.xlsx'
+
+    # # Load Actual Energy data
+    # actual_energy_wb = openpyxl.load_workbook(actual_energy_destination_path)
+    # actual_energy_sheet = actual_energy_wb.active
+    # actual_energy_values = []  # Initialize Actual Energy list
+
+    # now = datetime.now()
+    # current_hour = now.hour
+    # if (current_hour == 0):
+    #     current_hour = 24
+
+    # # Create a list of actual energy values for current hour backwards
+    # for i in range(2, current_hour + 2):
+    #     ae_value = actual_energy_sheet[f'D{i}'].value
+    #     actual_energy_values.append(ae_value)
+
+    # # Read the station load data into a DataFrame
+    # df = pd.read_excel(station_load_destination_path)
+
+    # # Initialize a dictionary to store the results
+    # data = {'Hour': list(range(1, 25))}
+
+    # # List of stations and their corresponding colors
+    # stations = {
+    #     'Lapaz': 'red',
+    #     'Jaro': 'orange',
+    #     'Mandurriao': 'yellow',
+    #     'Molo': 'lime',
+    #     'Diversion': 'green',
+    #     'Mobile SS 1': 'cornflowerblue',
+    #     'Mobile SS 2': 'darkblue',
+    #     'Megaworld': 'mediumpurple'
+    # }
+
+    # # Loop through each station and add their hourly values to the dictionary
+    # for station in stations.keys():
+    #     data[station] = [safe_get(df, hour - 1, station) for hour in data['Hour']]
+
+    # # Calculate total values for each hour
+    # data['Total'] = [sum(data[station][hour - 1] for station in stations.keys()) for hour in data['Hour']]
+
+    # # Convert the dictionary to a DataFrame
+    # result_df = pd.DataFrame(data)
+
+    # # Create a Figure object for the plot
+    # fig = go.Figure()
+
+    # # Add each station as a bar trace with specified colors
+    # for station, color in stations.items():
+    #     fig.add_trace(go.Bar(
+    #         x=result_df['Hour'],
+    #         y=result_df[station],
+    #         name=station,
+    #         marker_color=color  # Set the color for the bar trace
+    #     ))
+
+    # # Add total as a scatter trace with a straight line
+    # df_2 = pd.read_excel(forecasted_energy_destination_path)
+    # fig.add_trace(go.Scatter(
+    #     x=df_2['HOUR'],
+    #     y=df_2['NET'],
+    #     mode='lines',
+    #     name='Forecasted Energy',
+    #     line=dict(color='white')
+    # ))
+
+    # # Add a crooked line for demonstration
+    # df_3 = pd.read_excel(bcq_nomination_destination_path)
+    # fig.add_trace(go.Scatter(
+    #     x=df_3['HOUR'],
+    #     y=df_3['TOTAL_BCQ'],
+    #     mode='lines+markers',
+    #     name='BCQ Nomination',
+    #     line=dict(color='silver')
+    # ))
+
+    # # Update layout with x and y axis labels and custom y-axis formatting
+    # fig.update_layout(
+    #     title='Actual vs Forecasted Energy (kWh)',
+    #     margin=dict(l=20, r=20, t=40, b=40),  # Adjusted margins to fit small screens
+    #     xaxis_title='Interval',
+    #     yaxis_title='kWh',
+    #     yaxis_tickformat=',',  # Format y-axis to use commas for thousands
+    #     plot_bgcolor='black',
+    #     paper_bgcolor='black',
+    #     barmode='stack',
+    #     height=300  # Maintain the same height
+    # )
+
+    # # Add actual energy values as text annotations on top of the bars
+    # for i, hour in enumerate(result_df['Hour']):
+    #     if i < len(actual_energy_values) and hour <= current_hour:
+    #         formatted_value = format_value(int(actual_energy_values[i]))
+    #         fig.add_trace(go.Scatter(
+    #             x=[hour],
+    #             y=[result_df['Total'][i] + 0.05 * result_df['Total'].max()],  # Position text slightly above the bar
+    #             mode='text',
+    #             text=[formatted_value],
+    #             textposition='top center',
+    #             showlegend=False,
+    #             textfont=dict(size=8, color='white')  # Adjust font size and color for better visibility
+    #         ))
+
+    # # File paths
+    # station_load_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load_graph.xlsx'
+    # bcq_nomination_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\total_bcq_nomination.xlsx'
+    # forecasted_energy_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\forecasted_energy.xlsx'
+    # actual_energy_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\actual_energy.xlsx'
+
+    # # Load Actual Energy data
+    # actual_energy_wb = openpyxl.load_workbook(actual_energy_destination_path)
+    # actual_energy_sheet = actual_energy_wb.active
+    # actual_energy_values = []  # Initialize Actual Energy list
+
+    # now = datetime.now()
+    # current_hour = now.hour
+    # if current_hour == 0:
+    #     current_hour = 24
+
+    # # Create a list of actual energy values for current hour backwards
+    # for i in range(2, current_hour + 2):
+    #     ae_value = actual_energy_sheet[f'D{i}'].value
+    #     actual_energy_values.append(ae_value)
+
+    # # Read the station load data into a DataFrame
+    # df = pd.read_excel(station_load_destination_path)
+
+    # # Initialize a dictionary to store the results
+    # data = {'Hour': list(range(1, 25))}
+
+    # # List of stations and their corresponding colors
+    # stations = {
+    #     'Lapaz': 'red',
+    #     'Jaro': 'orange',
+    #     'Mandurriao': 'yellow',
+    #     'Molo': 'lime',
+    #     'Diversion': 'green',
+    #     'Mobile SS 1': 'cornflowerblue',
+    #     'Mobile SS 2': 'darkblue',
+    #     'Megaworld': 'mediumpurple'
+    # }
+
+    # # Loop through each station and add their hourly values to the dictionary
+    # for station in stations.keys():
+    #     data[station] = [safe_get(df, hour - 1, station) for hour in data['Hour']]
+
+    # # Calculate total values for each hour
+    # data['Total'] = [sum(data[station][hour - 1] for station in stations.keys()) for hour in data['Hour']]
+
+    # # Convert the dictionary to a DataFrame
+    # result_df = pd.DataFrame(data)
+
+    # # Create a Figure object for the plot
+    # fig = go.Figure()
+
+    # # Add each station as a bar trace with specified colors
+    # for station, color in stations.items():
+    #     fig.add_trace(go.Bar(
+    #         x=result_df['Hour'],
+    #         y=[value * 0.9 for value in result_df[station]],  # Lower the bar heights slightly
+    #         name=station,
+    #         marker_color=color
+    #     ))
+
+    # # Add total as a scatter trace with a straight line
+    # df_2 = pd.read_excel(forecasted_energy_destination_path)
+    # fig.add_trace(go.Scatter(
+    #     x=df_2['HOUR'],
+    #     y=df_2['NET'],
+    #     mode='lines',
+    #     name='Forecasted Energy',
+    #     line=dict(color='white')
+    # ))
+
+    # # Add a crooked line for demonstration
+    # df_3 = pd.read_excel(bcq_nomination_destination_path)
+    # fig.add_trace(go.Scatter(
+    #     x=df_3['HOUR'],
+    #     y=df_3['TOTAL_BCQ'],
+    #     mode='lines+markers',
+    #     name='BCQ Nomination',
+    #     line=dict(color='silver')
+    # ))
+
+    # # Update layout with x and y axis labels and custom y-axis formatting
+    # fig.update_layout(
+    #     title='Actual vs Forecasted Energy (kWh)',
+    #     margin=dict(l=0, r=0, t=30, b=0),  # Adjust margins to fit small screens
+    #     xaxis_title='Interval',
+    #     yaxis_title='kWh',
+    #     yaxis_tickformat=',',  # Format y-axis to use commas for thousands
+    #     plot_bgcolor='black',
+    #     paper_bgcolor='black',
+    #     barmode='stack',
+    #     height=260  # Maintain the height at 250
+    # )
+
+    # # Add actual energy values as text annotations on top of the bars
+    # for i, hour in enumerate(result_df['Hour']):
+    #     if i < len(actual_energy_values) and hour <= current_hour:
+    #         formatted_value = format_value(int(actual_energy_values[i]))
+    #         fig.add_trace(go.Scatter(
+    #             x=[hour],
+    #             y=[result_df['Total'][i] * 0.92],  # Position text slightly above the adjusted bar height
+    #             mode='text',
+    #             text=[formatted_value],
+    #             textposition='top center',
+    #             showlegend=False,
+    #             textfont=dict(size=10, color='white')  # Adjust font size and color for better visibility
+    #         ))
+
     # File paths
     station_load_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load_graph.xlsx'
     bcq_nomination_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\total_bcq_nomination.xlsx'
@@ -1298,9 +1853,9 @@ while True:
     for station, color in stations.items():
         fig.add_trace(go.Bar(
             x=result_df['Hour'],
-            y=result_df[station],
+            y=[value * 0.9 for value in result_df[station]],  # Lower the bar heights slightly
             name=station,
-            marker_color=color  # Set the color for the bar trace
+            marker_color=color
         ))
 
     # Add total as a scatter trace with a straight line
@@ -1326,14 +1881,19 @@ while True:
     # Update layout with x and y axis labels and custom y-axis formatting
     fig.update_layout(
         title='Actual vs Forecasted Energy (kWh)',
-        margin=dict(r=30, t=30, b=30),
-        xaxis_title='Interval',
+        margin=dict(l=0, r=0, t=30, b=0),  # Adjust margins to fit small screens
+        xaxis_title='Hour',
         yaxis_title='kWh',
+        xaxis=dict(
+            tickmode='array',
+            tickvals=list(range(1, 25)),
+            ticktext=[str(i) for i in range(1, 25)]
+        ),
         yaxis_tickformat=',',  # Format y-axis to use commas for thousands
         plot_bgcolor='black',
         paper_bgcolor='black',
         barmode='stack',
-        height=300
+        height=260  # Maintain the height at 260
     )
 
     # Add actual energy values as text annotations on top of the bars
@@ -1342,11 +1902,12 @@ while True:
             formatted_value = format_value(int(actual_energy_values[i]))
             fig.add_trace(go.Scatter(
                 x=[hour],
-                y=[result_df['Total'][i]],
+                y=[result_df['Total'][i] * 0.92],  # Position text slightly above the adjusted bar height
                 mode='text',
                 text=[formatted_value],
                 textposition='top center',
-                showlegend=False
+                showlegend=False,
+                textfont=dict(size=10, color='white')  # Adjust font size and color for better visibility
             ))
 
     # -- END OF DISPLAYING THE ACTUAL VS FORECASTED ENERGY CHART --
@@ -1518,7 +2079,7 @@ while True:
     # Add padding by adjusting the layout
     fig_ss_load.update_layout(
         title='Substation Load (kW)',
-        margin=dict(r=30, t=30, b=30),  # Increase margins further
+        margin=dict(r=30, t=30, b=15),  # Increase margins further
         xaxis=dict(
             title='kW',
             tickformat=',',  # Format axis ticks with commas as thousands separators
@@ -1528,7 +2089,7 @@ while True:
         ),
         uniformtext_minsize=8,
         uniformtext_mode='hide',
-        height=300  # Set the height of the bar chart
+        height=260  # Set the height of the bar chart
     )
 
     fig_ss_load.update_layout(
@@ -1538,12 +2099,18 @@ while True:
 
     # -- END OF DISPLAYING THE SUBSTATION LOAD (KW) BAR CHART -- 
 
-    # Layout with smaller padding
-    col1, col2 = st.columns(2)  # Adjust width ratios if needed
-    with col1:
-        st.plotly_chart(fig_ss_load)
-    with col2:
-        st.plotly_chart(fig)
+    # # Layout with smaller padding
+    # col1, col2 = st.columns(2)  # Adjust width ratios if needed
+    # try:
+    #     with col1:
+    #         st.plotly_chart(fig_ss_load)
+    # except Exception as e:
+    #     st.rerun()
+    # try:
+    #     with col2:
+    #         st.plotly_chart(fig)
+    # except Exception as e:
+    #     st.rerun()
 
     # -- START OF TRADING INTERVAL PRICE CALCULATION LINE CHART --
 
@@ -2547,7 +3114,7 @@ while True:
     df_long['Hover'] = df_long['HOUR'].map(hover_info)
 
     # Create the interactive line chart with Plotly
-    fig_tipc = px.line(df_long, x='HOUR', y='Value', color='Resource', height=300)
+    fig_tipc = px.line(df_long, x='HOUR', y='Value', color='Resource', height=240)
 
     # Customize hover information
     fig_tipc.update_traces(hovertemplate='%{customdata[0]}', customdata=df_long[['Hover']].values)
@@ -3169,12 +3736,12 @@ while True:
         textinfo='label+percent', # Shows both the label and percentage inside the slices
         insidetextorientation='horizontal',  # Keeps text horizontal inside the slices
         marker=dict(
-            colors=['orangered', 'cornflowerblue', 'darkblue', 'green', 'yellow']
+            colors=['orangered', 'red', 'darkblue', 'green', 'yellow']
         )
     )
 
     fig_genmix.update_layout(
-        height=300
+        height=240
     )
 
     fig_genmix.update_layout(
@@ -3186,13 +3753,126 @@ while True:
 
     # -- END OF DISPLAYING THE GENERATION MIX DONUT CHART --
 
-    col1, col2, col3 = st.columns(3)
+    # col1, col2, col3 = st.columns(3)
+    # try:
+    #     with col1:
+    #         st.plotly_chart(fig_bcq)
+    # except Exception as e:
+    #     st.rerun()
+    # try:
+    #     with col2:
+    #         st.plotly_chart(fig_tipc)
+    # except Exception as e:
+    #     st.rerun()
+    # try:
+    #     with col3:
+    #         st.plotly_chart(fig_genmix)
+    # except Exception as e:
+    #     st.rerun()
+
+    # Define your custom CSS
+    custom_css = """
+    <style>
+    .container-class {
+        min-height: 100%;
+    }
+    </style>
+    """
+
+    # Apply the custom CSS
+    st.markdown(custom_css, unsafe_allow_html=True)
+
+    # FINALE
+    with st.container():
+
+        # Set the image's width to the column width
+        st.image(image_path, use_column_width=True)
+
+        # Display the HTML and CSS in Streamlit
+        st.components.v1.html(html_code, height=80)
+
+        # CARDS
+        # Create columns with small gap
+        card1, card2, card3, card4, card5, card6, card7, card8, card9, card10 = st.columns(10, gap='small')
+
+        with card1:
+            st.markdown('<div class="custom-box"><h4>Current Date</h4><p>{}</p></div>'.format(formatted_date), unsafe_allow_html=True)
+
+        with card2:
+            st.markdown('<div class="custom-box"><h4>Current Interval</h4><p>{}</p></div>'.format(last_interval), unsafe_allow_html=True)
+
+        with card3:
+            st.markdown('<div class="custom-box"><h4>Temperature</h4><p>{}°C</p><h4>Weather Condition</h4><p>{}</p></div>'.format(temperature, weather_condition), unsafe_allow_html=True)
+
+        with card4:
+            st.markdown('<div class="custom-box"><h4>Total Substation Load (kW)</h4><p>{}</p></div>'.format(total_substation_load), unsafe_allow_html=True)
+
+        with card5:
+            st.markdown('<div class="custom-box"><h4>Actual Energy (kWh)</h4><p>{}</p><h4>Forecasted Energy (kWh)</h4><p>{}</p></div>'.format(actual_energy, forecasted_energy), unsafe_allow_html=True)
+
+        with card6:
+            st.markdown('<div class="custom-box"><h4>WESM Exposure (kWh)</h4><p>{}</p><h4>Contestable Energy (kWh)</h4><p>{}</p></div>'.format(wesm_exposure, contestable_energy), unsafe_allow_html=True)
+
+        with card7:
+            st.markdown('<div class="custom-box"><h4>Total BCQ Nomination (kW)</h4><p>{}</p></div>'.format(total_bcq), unsafe_allow_html=True)
+
+        with card8:
+            st.markdown('<div class="custom-box"><h4>MORE Trading Node (PhP/kWh)</h4><p>{}</p></div>'.format(final_total), unsafe_allow_html=True)
+
+        with card9:
+            st.markdown('<div class="custom-box"><h4>PEDC Trading Node (PhP/kWh)</h4><p>Pending</p></div>', unsafe_allow_html=True)
+
+        with card10:
+            st.markdown('<div class="custom-box"><h4>Current Rate (PhP/kWh)</h4><p>{}</p></div>'.format(current_rate), unsafe_allow_html=True)
+
+    # # Add small padding before the charts
+    # st.markdown("<br>", unsafe_allow_html=True)  # Adds a bit of space between sections
+
+    # # Add very small padding before the charts
+    # st.markdown("<div style='height:0.1px;'></div>", unsafe_allow_html=True)  # Adds a small space
+
+    st.markdown("""
+    <style>
+    .small-space {
+        margin-bottom: 0.3px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # Layout with smaller padding
+    col1, col2 = st.columns([1, 1.5])  # Adjust width ratios if needed
     with col1:
-        st.plotly_chart(fig_bcq)
+        try:
+            st.plotly_chart(fig_ss_load)
+        except:
+            time.sleep(1)
+            st.rerun()
     with col2:
-        st.plotly_chart(fig_tipc)
-    with col3:
-        st.plotly_chart(fig_genmix)
+        try:
+            st.plotly_chart(fig)
+        except:
+            time.sleep(1)
+            st.rerun()
+
+    col4, col5, col6 = st.columns([1, 1, 0.65])
+    with col4:
+        try:
+            st.plotly_chart(fig_bcq)
+        except:
+            time.sleep(1)
+            st.rerun()
+    with col5:
+        try:
+            st.plotly_chart(fig_tipc)
+        except:
+            time.sleep(1)
+            st.rerun()
+    with col6:
+        try:
+            st.plotly_chart(fig_genmix)
+        except:
+            time.sleep(1)
+            st.rerun()
 
     # For rerunning the script every 60 seconds
     time.sleep(REFRESH_INTERVAL)
