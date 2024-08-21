@@ -386,7 +386,7 @@ def main(excel_file, conn):
             else:
                 print(f"Invalid total_bcq_value: {total_bcq_value}")
 
-            time.sleep(60)
+            time.sleep(800)
 
         except KeyboardInterrupt:
             print("\nTerminating the script.")

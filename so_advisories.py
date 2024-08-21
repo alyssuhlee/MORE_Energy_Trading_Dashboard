@@ -1,6 +1,7 @@
 # Necessary imports
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options  # Import Options for headless mode
 import csv
 import glob
 import os
@@ -55,7 +56,17 @@ def remove_problematic_characters(text):
     return text.replace('\x02', '').replace('', '')
 
 def main():
-    driver = webdriver.Chrome()
+
+    # Set up options for headless mode
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")  # Enable headless mode
+    chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration (optional)
+    chrome_options.add_argument("--window-size=1920,1080")  # Set the window size (optional)
+
+    # Initialize the WebDriver with the specified options
+    driver = webdriver.Chrome(options=chrome_options)
+
+    # driver = webdriver.Chrome()
     # URL of website
     url = 'https://embi.iemop.ph/t/tod/views/SYSTEM_ADVISORY/SOADVISORIES?%3AshowAppBanner=false&%3Adisplay_count=n&%3AshowVizHome=n&%3Aorigin=viz_share_link&%3AisGuestRedirectFromVizportal=y&%3Aembed=y'
     # Opening the website

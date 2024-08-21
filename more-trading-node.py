@@ -10,7 +10,7 @@ FTP_USER = "MORE_01"
 FTP_PASSWD = "ar@pNkRW4v"
 FTP_DIRECTORY = "/LMP/DIPC/"
 LOCAL_DIRECTORY = "C:\\Users\\aslee\\OneDrive - MORE ELECTRIC AND POWER CORPORATION\\Desktop\\DASHBOARD_FINAL\\MORE Trading Node\\"
-CHECK_INTERVAL = 60  # In seconds
+CHECK_INTERVAL = 300  # In seconds
 
 # Function to connect to the FTP server
 def connect_ftp():

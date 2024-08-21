@@ -13,7 +13,7 @@ import plotly.graph_objs as go
 import streamlit as st
 import time
 
-REFRESH_INTERVAL = 120 # Refresh Interval Value (60 SECONDS)
+REFRESH_INTERVAL = 900 # Refresh Interval Value (900 SECONDS)
 
 # -- START OF FUNCTIONS --
 def view_all_data():
@@ -656,8 +656,8 @@ while True:
     }}
     .ticker1 {{
         display: inline-block;
-        height: 2rem;
-        line-height: 2rem;
+        height: 1.8rem;
+        line-height: 1.8rem;
         white-space: nowrap;
         box-sizing: content-box;
         -webkit-animation-iteration-count: infinite;
@@ -671,8 +671,8 @@ while True:
     }}
     .ticker2 {{
         display: inline-block;
-        height: 2rem;
-        line-height: 2rem;
+        height: 1.8rem;
+        line-height: 1.8rem;
         white-space: nowrap;
         box-sizing: content-box;
         -webkit-animation-iteration-count: infinite;
@@ -824,17 +824,18 @@ while True:
     .custom-box, .custom-box-2 {
         border: 1px solid #ddd;
         border-radius: 5px;
-        padding: 0;  /* Reduced padding */
+        padding: 0;  
         margin: 0;
         background-color: #000000;
-        height: 14vh;  /* Fixed height to ensure all boxes are the same size */
-        max-width: 100%;  /* Prevents overflow */
+        height: 13.5vh;  
+        max-width: 100%;  
+        margin: 1px;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        text-align: center;
+        text-align: center; 
     }
     
     /* Ensure equal height on smaller screens */
@@ -865,11 +866,12 @@ while True:
     }
 
     .custom-box p, .custom-box-2 p {
-        font-size: 0.9rem;
+        font-size: 1rem;
         font-family: Helvetica, Arial, sans-serif;  /* Fallback font */
         font-weight: bold;
         color: #FFFFFF;
         max-height: 100%;  /* Ensure text does not exceed box height */
+        max-width: 100%;
         overflow: hidden;  /* Hide any overflow text */
         text-overflow: ellipsis;  /* Add ellipsis if text overflows */
     }
@@ -1020,7 +1022,7 @@ while True:
     # Create a Plotly area chart
     fig_bcq = px.area(df_bcq_melted, x='Hour', y='BCQ', color='Contracted Supplier', 
                 labels={'Hour': 'Hour', 'BCQ': 'BCQ'}, color_discrete_map=color_map, # Apply the color map
-                height=240)
+                height=210)
 
     # Update layout to match the Altair configuration
     fig_bcq.update_layout(
@@ -3114,7 +3116,7 @@ while True:
     df_long['Hover'] = df_long['HOUR'].map(hover_info)
 
     # Create the interactive line chart with Plotly
-    fig_tipc = px.line(df_long, x='HOUR', y='Value', color='Resource', height=240)
+    fig_tipc = px.line(df_long, x='HOUR', y='Value', color='Resource', height=210)
 
     # Customize hover information
     fig_tipc.update_traces(hovertemplate='%{customdata[0]}', customdata=df_long[['Hover']].values)
@@ -3123,7 +3125,12 @@ while True:
         title='Trading Interval Price Calculation',
         margin=dict(r=30, t=30, b=30),
         plot_bgcolor='black',
-        paper_bgcolor='black'
+        paper_bgcolor='black',
+        xaxis=dict(
+            tickmode='array',
+            tickvals=list(range(1, 25)),
+            ticktext=[str(i) for i in range(1, 25)]
+        ),
     )
 
     # -- END OF TRADING INTERVAL PRICE CALCULATION LINE CHART --
@@ -3741,7 +3748,7 @@ while True:
     )
 
     fig_genmix.update_layout(
-        height=240
+        height=210
     )
 
     fig_genmix.update_layout(
@@ -3834,7 +3841,7 @@ while True:
     st.markdown("""
     <style>
     .small-space {
-        margin-bottom: 0.3px;
+        margin-bottom: 0.1px;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -3874,6 +3881,6 @@ while True:
             time.sleep(1)
             st.rerun()
 
-    # For rerunning the script every 60 seconds
+    # For rerunning the script every 300 seconds (5 minutes)
     time.sleep(REFRESH_INTERVAL)
     st.rerun()

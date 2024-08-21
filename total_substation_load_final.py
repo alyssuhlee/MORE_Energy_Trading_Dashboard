@@ -106,7 +106,7 @@ def main(excel_file, conn):
                 insert_into_mysql(conn, total_substation_load_value)
             else:
                 print(f"Invalid total_substation_load_value: {total_substation_load_value}")
-            time.sleep(60)
+            time.sleep(800)
         except KeyboardInterrupt:
             print("\nTerminating the script.")
             break
@@ -120,7 +120,7 @@ def query_run():
         read_file = pd.read_csv(file_loc + 'station_load.csv')
         read_file.to_excel(file_loc + 'station_load.xlsx', index=False, header=True)
         print("station_load.xlsx updated from station_load.csv.")
-        time.sleep(60)
+        time.sleep(800)
 
 if __name__ == "__main__":
 

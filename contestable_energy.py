@@ -192,8 +192,8 @@ def main(excel_file, conn):
             else:
                 print(f"Invalid cc_value: {cc_value}")
 
-            # Delay for 1 minute (60 seconds) before checking again
-            time.sleep(60)
+            # Delay for 800 seconds before checking again
+            time.sleep(800)
         
         except KeyboardInterrupt:
             print("\nTerminating the script.")

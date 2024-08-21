@@ -64,7 +64,7 @@ def main(excel_file, conn):
             else:
                 print(f"Invalid temperature valu: {temperature} and invalid weather condition value: {weather_condition}")
                 
-            time.sleep(720)
+            time.sleep(800)
         
         except KeyboardInterrupt:
             print("\nTerminating the script.")

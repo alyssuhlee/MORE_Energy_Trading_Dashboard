@@ -2,18 +2,27 @@
 from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.options import Options  # Import Options for headless mode
 import os
 import pandas as pd
 import time
 
 def fetch_weather_data():
-    # Set up Selenium options
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")  # Run in headless mode (no browser window)
+    # # Set up Selenium options
+    # chrome_options = Options()
+    # chrome_options.add_argument("--headless")  # Run in headless mode (no browser window)
 
-    # Initialize the webdriver
-    driver = webdriver.Chrome()
+    # # Initialize the webdriver
+    # driver = webdriver.Chrome()
+
+    # Set up options for headless mode
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")  # Enable headless mode
+    chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration (optional)
+    chrome_options.add_argument("--window-size=1920,1080")  # Set the window size (optional)
+
+    # Initialize the WebDriver with the specified options
+    driver = webdriver.Chrome(options=chrome_options)
 
     # URL of The Weather Channel
     url = 'https://weather.com/en-TT/weather/today/l/d5c2f0e4c2053e855f8c6f30f8c21aedcedfe8c9f8842071a894732e8b0eff99'
@@ -62,4 +71,4 @@ def fetch_weather_data():
 
 while True:
     fetch_weather_data()
-    time.sleep(600) # Every 600 seconds (10 minutes)
+    time.sleep(600) # Every 600 seconds

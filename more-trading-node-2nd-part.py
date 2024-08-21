@@ -9594,7 +9594,7 @@ def run_continuously(conn):
             retrieve_and_insert_last_value(conn)
         except Exception as e:
             print(f"Unexpected error: {e}")
-        time.sleep(60) # Wait for 60 seconds before next update
+        time.sleep(800) # Wait for 800 seconds before next update
 
 if __name__ == "__main__":
     conn = None

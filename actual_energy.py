@@ -171,8 +171,8 @@ def main(excel_file, conn):
             dest_wb.close()
             source_wb2.close()
 
-            # Delay for 1 minute (60 seconds) before checking again
-            time.sleep(60)
+            # Delay for 800 seconds before checking again
+            time.sleep(800)
         except KeyboardInterrupt:
             print("\nTerminating the script.")
             break

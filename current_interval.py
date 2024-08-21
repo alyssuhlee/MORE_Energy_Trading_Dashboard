@@ -73,5 +73,5 @@ while True:
     # Insert the time interval into the database
     insert_time_interval(time_interval)
     
-    # Wait for 60 seconds (1 minute) before checking again
-    time.sleep(60)
+    # Wait for 800 seconds before checking again
+    time.sleep(800)

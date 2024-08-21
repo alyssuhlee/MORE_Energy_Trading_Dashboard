@@ -201,8 +201,8 @@ def main(excel_file, conn):
                 insert_into_mysql(conn, wesm_exposure_value)
             else:
                 insert_into_mysql(conn, wesm_exposure_value)
-            # Delay for 1 minute (60 seconds) before checking again
-            time.sleep(60)
+            # Delay for 800 seconds before checking again
+            time.sleep(800)
         except KeyboardInterrupt:
             print("\nTerminating the script.")
             break
