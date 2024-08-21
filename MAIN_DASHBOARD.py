@@ -1022,7 +1022,7 @@ while True:
     # Create a Plotly area chart
     fig_bcq = px.area(df_bcq_melted, x='Hour', y='BCQ', color='Contracted Supplier', 
                 labels={'Hour': 'Hour', 'BCQ': 'BCQ'}, color_discrete_map=color_map, # Apply the color map
-                height=210)
+                height=200)
 
     # Update layout to match the Altair configuration
     fig_bcq.update_layout(
@@ -3116,7 +3116,7 @@ while True:
     df_long['Hover'] = df_long['HOUR'].map(hover_info)
 
     # Create the interactive line chart with Plotly
-    fig_tipc = px.line(df_long, x='HOUR', y='Value', color='Resource', height=210)
+    fig_tipc = px.line(df_long, x='HOUR', y='Value', color='Resource', height=200)
 
     # Customize hover information
     fig_tipc.update_traces(hovertemplate='%{customdata[0]}', customdata=df_long[['Hover']].values)
@@ -3403,7 +3403,6 @@ while True:
             generation_mix_list.append(dest_sheet_genmix['F4'].value) #KSPC2
             generation_mix_list.append(dest_sheet_genmix['G4'].value) #EDC
             generation_mix_list.append(dest_sheet_genmix['H4'].value) #WESM
-
 
     # HOUR 4
     elif current_hour == dest_sheet_genmix['I5'].value:
@@ -3739,7 +3738,7 @@ while True:
 
     # Customizing the labels to appear on the slices
     fig_genmix.update_traces(
-        textposition='inside',    # Places the text inside the slices
+        textposition='outside',    # Places the text inside the slices
         textinfo='label+percent', # Shows both the label and percentage inside the slices
         insidetextorientation='horizontal',  # Keeps text horizontal inside the slices
         marker=dict(
@@ -3748,12 +3747,12 @@ while True:
     )
 
     fig_genmix.update_layout(
-        height=210
+        height=200
     )
 
     fig_genmix.update_layout(
         title='Generation Mix',
-        margin=dict(r=30, t=30, b=30),
+        margin=dict(r=40, t=40, b=40),
         plot_bgcolor='black',
         paper_bgcolor='black'
     )
@@ -3832,12 +3831,6 @@ while True:
         with card10:
             st.markdown('<div class="custom-box"><h4>Current Rate (PhP/kWh)</h4><p>{}</p></div>'.format(current_rate), unsafe_allow_html=True)
 
-    # # Add small padding before the charts
-    # st.markdown("<br>", unsafe_allow_html=True)  # Adds a bit of space between sections
-
-    # # Add very small padding before the charts
-    # st.markdown("<div style='height:0.1px;'></div>", unsafe_allow_html=True)  # Adds a small space
-
     st.markdown("""
     <style>
     .small-space {
@@ -3881,6 +3874,6 @@ while True:
             time.sleep(1)
             st.rerun()
 
-    # For rerunning the script every 300 seconds (5 minutes)
+    # For rerunning the script every 900 seconds
     time.sleep(REFRESH_INTERVAL)
     st.rerun()
