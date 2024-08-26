@@ -12,7 +12,8 @@ import plotly.express as px
 import plotly.graph_objs as go
 import streamlit as st
 import time
-# Authenticator imports
+
+# Authenticator Imports
 import pickle
 from pathlib import Path
 import streamlit_authenticator as stauth
@@ -2172,594 +2173,636 @@ def genmix_func():
         # -- END OF DISPLAYING THE GENERATION MIX DONUT CHART --
 
 # -- END OF FUNCTIONS --
+# Set the page layout to wide
+st.set_page_config(
+    page_title="MEPC Energy Trading Dashboard",
+    page_icon="data/logo_only.png",
+    layout="wide"
+)
 
-# # -- USER AUTHENTICATION --
-# names = ["MORE Electric and Power Corporation", "Niel Parcon", "Roel Castro"]
-# usernames = ["more", "nparcon", "rcastro"]
+# -- USER AUTHENTICATION --
+names = ["MORE Electric and Power Corporation", "Niel Parcon", "Roel Castro"]
+usernames = ["more", "nparcon", "rcastro"]
 
-# # Load hashed passwords
-# file_path = Path(__file__).parent / "hashed_pw.pkl"
-# if file_path.exists():
-#     with file_path.open("rb") as file:
-#         hashed_passwords = pickle.load(file)
-# else:
-#     st.error("Hashed passwords file not found.")
-#     st.stop()
+file_path = Path(__file__).parent / "hashed_pw.pkl"
+if file_path.exists():
+    with file_path.open("rb") as file:
+        hashed_passwords = pickle.load(file)
+else:
+    st.error("Hashed passwords file not found.")
+    st.stop()
 
-# # Combine the usernames and names into a credentials dictionary
-# credentials = {
-#     "usernames": {
-#         usernames[i]: {"name": names[i], "password": hashed_passwords[i]}
-#         for i in range(len(usernames))
-#     }
-# }
+credentials = {
+    "usernames": {
+        usernames[i]: {"name": names[i], "password": hashed_passwords[i]}
+        for i in range(len(usernames))
+    }
+}
 
-# # Initialize the authenticator only once
-# authenticator = stauth.Authenticate(
-#     credentials,
-#     "mepc_energy_trading_dashboard",
-#     "morepower",
-#     cookie_expiry_days=0
-# )
+authenticator = stauth.Authenticate(
+    credentials,
+    "mepc_energy_trading_dashboard",
+    "morepower",
+    cookie_expiry_days=0
+)
 
-# # Perform login
-# name, authentication_status, username = authenticator.login("main")
 
-# if authentication_status == False:
-#     st.error("Wrong username/password!")
+name, authentication_status, username = authenticator.login("main")
 
-# # Yellow warning box
-# if authentication_status is None:
-#     st.warning("Please enter your username and password.")
+if authentication_status == False:
+    st.error("Wrong username/password!")
 
-# if authentication_status:
-while True:
+if authentication_status is None:
+    st.warning("Please enter your username and password.")
 
-    # Set the page layout to wide
-    st.set_page_config(
-        page_title="MEPC Energy Trading Dashboard",
-        page_icon="data/logo_only.png",
-        layout="wide"
-    )
+if authentication_status == True:
+    while True: 
+        # Logout Button
+        authenticator.logout("Logout", "main")
 
-    # Add custom CSS
-    st.markdown(
-        """
+        # Add custom CSS
+        st.markdown(
+            """
+            <style>
+            /* This targets the main block content within a container */
+            .main .block-container {
+                padding-left: 13px;    /* Adjust left padding */
+                padding-right: 13px;   /* Adjust right padding */
+                padding-top: 0px;
+                padding-bottom: 13px;
+            }
+            /* Additional styles to target specific elements within the container if needed */
+            .stContainer {
+                padding-left: 13px;    /* Adjust left padding */
+                padding-right: 13px;   /* Adjust right padding */
+                padding-top: 0rem;
+                padding-bottom: 0rem;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+
+        margins_css = """
         <style>
-        /* This targets the main block content within a container */
-        .main .block-container {
-            padding-left: 13px;    /* Adjust left padding */
-            padding-right: 13px;   /* Adjust right padding */
-            padding-top: 0px;
-            padding-bottom: 13px;
-        }
-        /* Additional styles to target specific elements within the container if needed */
-        .stContainer {
-            padding-left: 13px;    /* Adjust left padding */
-            padding-right: 13px;   /* Adjust right padding */
-            padding-top: 0rem;
-            padding-bottom: 0rem;
-        }
+            .main > div {
+                padding-left: 0rem;
+                padding-right: 0rem;
+            }
         </style>
-        """,
-        unsafe_allow_html=True
-    )
+    """
 
-    margins_css = """
-    <style>
-        .main > div {
-            padding-left: 0rem;
-            padding-right: 0rem;
-        }
-    </style>
-"""
+        st.markdown(margins_css, unsafe_allow_html=True)
 
-    st.markdown(margins_css, unsafe_allow_html=True)
+        # Path to your image
+        image_path = 'data/MORE_Power_Logo.png'
 
-    # Path to your image
-    image_path = 'data/MORE_Power_Logo.png'
+        # Hide the Streamlit header and footer
+        st.markdown("""
+            <style>
+            /* Hide Streamlit header */
+            header {visibility: hidden;}
+            /* Hide Streamlit footer */
+            footer {visibility: hidden;}
+            </style>
+            """, unsafe_allow_html=True)
 
-    # Hide the Streamlit header and footer
-    st.markdown("""
+        # Connection
+        conn=mysql.connector.connect(
+            host = "localhost",
+            port = "3306",
+            user = "root",
+            passwd = "",
+            db = "myDb"
+        )
+
+        c=conn.cursor()
+
+        # -- START OF SO ADVISORIES HEADER --
+
+        # Load your Excel file
+        excel_file = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\SO_ADVISORIES.xlsx"
+        df = pd.read_excel(excel_file)
+
+        # Convert TIME_MESSAGE to datetime format (if it's not already)
+        df['TIME_MESSAGE'] = pd.to_datetime(df['TIME_MESSAGE'], errors='coerce')
+
+        # Drop rows where TIME_MESSAGE couldn't be converted to datetime (if needed)
+        df = df.dropna(subset=['TIME_MESSAGE'])
+
+        # Sort dataframe by TIME_MESSAGE in descending order
+        df = df.sort_values(by='TIME_MESSAGE', ascending=False)
+
+        # Prepare the initial data for scrolling
+        scrollable_content = []
+        latest_10_entries = fetch_latest_10_entries()
+        for index, row in latest_10_entries.iterrows():
+            time_message = row['TIME_MESSAGE'].strftime('%Y/%m/%d %H:%M:%S')
+            message = row['MESSAGE']
+            entry_text = f"{time_message}: {message}"
+            scrollable_content.append(entry_text)       
+
+        # -- END OF SO ADVISORIES HEADER --
+
+        # -- START OF MO ADVISORIES HEADER --
+
+        # Load your Excel file
+        excel_file = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MO_ADVISORIES.xlsx"
+        df = pd.read_excel(excel_file)
+
+        # Sort dataframe by TIMESTAMP in descending order
+        df = df.sort_values(by='TIMESTAMP', ascending=False)
+
+        # Prepare the initial data for scrolling
+        scrollable_content_2 = []
+        latest_entry = fetch_latest_entry()
+        for index, row in latest_entry.iterrows():
+            time_message_2 = row['TIMESTAMP']
+            message_2 = row['ADVISORY']
+            entry_text_2 = f"{time_message_2} - {message_2}"
+            scrollable_content_2.append(entry_text_2)
+
+        # -- END OF MO ADVISORIES HEADER --
+
+        # # HTML and CSS for the tickers
+        # html_code = f"""
+        # <style>
+        # * {{
+        #     box-sizing: border-box;
+        # }}
+        # @-webkit-keyframes ticker {{
+        #     0% {{
+        #         -webkit-transform: translate3d(100%, 0, 0);
+        #         transform: translate3d(100%, 0, 0);
+        #     }}
+        #     100% {{
+        #         -webkit-transform: translate3d(-100%, 0, 0);
+        #         transform: translate3d(-100%, 0, 0);
+        #     }}
+        # }}
+        # @keyframes ticker {{
+        #     0% {{
+        #         -webkit-transform: translate3d(100%, 0, 0);
+        #         transform: translate3d(100%, 0, 0);
+        #     }}
+        #     100% {{
+        #         -webkit-transform: translate3d(-100%, 0, 0);
+        #         transform: translate3d(-100%, 0, 0);
+        #     }}
+        # }}
+        # .ticker-wrap {{
+        #     position: fixed;
+        #     width: calc(100% - 2px);  /* Adjust width to account for border */
+        #     overflow: hidden;
+        #     height: 2rem;
+        #     background-color: #000000;
+        #     box-sizing: border-box;
+        #     border: 2px solid white;  /* White border around the entire box */
+        #     border-radius: 5px;  /* Optional: Add rounded corners */
+        #     padding: 0;  /* Remove padding to avoid clipping */
+        #     margin: 0;  /* Remove margin to avoid shifting */
+        # }}
+        # .ticker1 {{
+        #     display: inline-block;
+        #     height: 1.8rem;
+        #     line-height: 1.8rem;
+        #     white-space: nowrap;
+        #     box-sizing: content-box;
+        #     -webkit-animation-iteration-count: infinite;
+        #     animation-iteration-count: infinite;
+        #     -webkit-animation-timing-function: linear;
+        #     animation-timing-function: linear;
+        #     -webkit-animation-name: ticker;
+        #     animation-name: ticker;
+        #     -webkit-animation-duration: 200s;
+        #     animation-duration: 200s;
+        # }}
+        # .ticker2 {{
+        #     display: inline-block;
+        #     height: 1.8rem;
+        #     line-height: 1.8rem;
+        #     white-space: nowrap;
+        #     box-sizing: content-box;
+        #     -webkit-animation-iteration-count: infinite;
+        #     animation-iteration-count: infinite;
+        #     -webkit-animation-timing-function: linear;
+        #     animation-timing-function: linear;
+        #     -webkit-animation-name: ticker;
+        #     animation-name: ticker;
+        #     -webkit-animation-duration: 40s;
+        #     animation-duration: 40s;
+        # }}
+        # .ticker__item {{
+        #     display: inline-block;
+        #     padding: 0 2rem; /* Increased padding for more space between entries */
+        #     font-size: 0.8rem;
+        #     font-family: Helvetica;
+        #     font-weight: bold;
+        #     color: #FFFFFF;
+        # }}
+        # .ticker__item:first-child {{
+        #     margin-top: 0;
+        # }}
+        # body {{ margin: 0; padding-bottom: 0; }}
+        # h1, h2, p {{ padding: 0 5%; }}
+        # </style>
+
+        # <div class="ticker-wrap" style="bottom: 2.5rem;">  <!-- Bottom ticker -->
+        #     <div class="ticker ticker1">
+        # """
+
+        # for entry in scrollable_content:
+        #     html_code += f'<div class="ticker__item">{entry}</div>'
+
+        # html_code += """
+        #     </div>
+        # </div>
+
+        # <div class="ticker-wrap" style="bottom: 0;">  <!-- Top ticker -->
+        #     <div class="ticker ticker2">
+        # """
+
+        # for entry in scrollable_content_2:
+        #     html_code += f'<div class="ticker__item">{entry}</div>'
+
+        # html_code += """
+        #     </div>
+        # </div>
+        # """
+
+        # HTML and CSS for the tickers
+        html_code = f"""
         <style>
-        /* Hide Streamlit header */
-        header {visibility: hidden;}
-        /* Hide Streamlit footer */
-        footer {visibility: hidden;}
+        * {{
+            box-sizing: border-box;
+        }}
+        @-webkit-keyframes ticker {{
+            0% {{
+                -webkit-transform: translate3d(100%, 0, 0);
+                transform: translate3d(100%, 0, 0);
+            }}
+            100% {{
+                -webkit-transform: translate3d(-100%, 0, 0);
+                transform: translate3d(-100%, 0, 0);
+            }}
+        }}
+        @keyframes ticker {{
+            0% {{
+                -webkit-transform: translate3d(100%, 0, 0);
+                transform: translate3d(100%, 0, 0);
+            }}
+            100% {{
+                -webkit-transform: translate3d(-100%, 0, 0);
+                transform: translate3d(-100%, 0, 0);
+            }}
+        }}
+        .ticker-wrap {{
+            position: fixed;
+            width: calc(100% - 2px);  /* Adjust width to account for border */
+            overflow: hidden;
+            height: 2rem;
+            background-color: #000000;
+            box-sizing: border-box;
+            border: 2px solid white;  /* White border around the entire box */
+            border-radius: 5px;  /* Optional: Add rounded corners */
+            padding: 0;  /* Remove padding to avoid clipping */
+            margin: 0;  /* Remove margin to avoid shifting */
+        }}
+        .ticker1 {{
+            display: inline-block;
+            height: 1.8rem;
+            line-height: 1.8rem;
+            white-space: nowrap;
+            box-sizing: content-box;
+            -webkit-animation-iteration-count: infinite;
+            animation-iteration-count: infinite;
+            -webkit-animation-timing-function: linear;
+            animation-timing-function: linear;
+            -webkit-animation-name: ticker;
+            animation-name: ticker;
+            -webkit-animation-duration: 280s;
+            animation-duration: 280s;
+            transform: translate3d(100%, 0, 0); /* Start position to ensure it's visible immediately */
+        }}
+        .ticker2 {{
+            display: inline-block;
+            height: 1.8rem;
+            line-height: 1.8rem;
+            white-space: nowrap;
+            box-sizing: content-box;
+            -webkit-animation-iteration-count: infinite;
+            animation-iteration-count: infinite;
+            -webkit-animation-timing-function: linear;
+            animation-timing-function: linear;
+            -webkit-animation-name: ticker;
+            animation-name: ticker;
+            -webkit-animation-duration: 40s;
+            animation-duration: 40s;
+        }}
+        .ticker__item {{
+            display: inline-block;
+            padding: 0 2rem; /* Increased padding for more space between entries */
+            font-size: 0.8rem;
+            font-family: Helvetica;
+            font-weight: bold;
+            color: #FFFFFF;
+        }}
+        .ticker__item:first-child {{
+            margin-top: 0;
+        }}
+        body {{ margin: 0; padding-bottom: 0; }}
+        h1, h2, p {{ padding: 0 5%; }}
+        </style>
+
+        <div class="ticker-wrap" style="bottom: 2.5rem;">  <!-- Bottom ticker -->
+            <div class="ticker ticker1">
+        """
+
+        for entry in scrollable_content:
+            html_code += f'<div class="ticker__item">{entry}</div>'
+
+        html_code += """
+            </div>
+        </div>
+
+        <div class="ticker-wrap" style="bottom: 0;">  <!-- Top ticker -->
+            <div class="ticker ticker2">
+        """
+
+        for entry in scrollable_content_2:
+            html_code += f'<div class="ticker__item">{entry}</div>'
+
+        html_code += """
+            </div>
+        </div>
+        """
+
+        # -- START OF CURRENT INTERVAL SUMMARY --
+
+        # Fetch Data
+        result = view_all_data()
+        result2 = view_all_data2()
+        result3 = view_all_data3()
+        result4 = view_all_data4()
+        result5 = view_all_data5()
+        result6 = view_all_data6()
+        result7 = view_all_data7()
+        result8 = view_all_data8()
+        result9 = view_all_data9()
+        result10 = view_all_data10()
+
+        df = pd.DataFrame(result,columns=["id", "time_interval", "timestamp"])
+        df2 = pd.DataFrame(result2, columns=["id", "net", "insert_time"])
+        df3 = pd.DataFrame(result3, columns=["id", "total_bcq", "insert_time"])
+        df4 = pd.DataFrame(result4, columns=["id", "substation_load", "insert_time"])
+        df5 = pd.DataFrame(result5, columns=["id", "cc", "insert_time"])
+        df6 = pd.DataFrame(result6, columns=["id", "actual_energy", "insert_time"])
+        df7 = pd.DataFrame(result7, columns=["id", "wesm_exposure", "insert_time"])
+        df8 = pd.DataFrame(result8, columns=["id", "final_total", "insert_time"])
+        df9 = pd.DataFrame(result9, columns=["id", "rate", "insert_time"])
+        df10 = pd.DataFrame(result10, columns=["id", "temp", "weather", "insert_time"])
+
+        last_interval= df['time_interval'].iloc[-1]
+        forecasted_energy = df2['net'].iloc[-1]
+        total_bcq = df3['total_bcq'].iloc[-1]
+        total_substation_load = df4['substation_load'].iloc[-1]
+        contestable_energy = df5['cc'].iloc[-1]
+        actual_energy= df6['actual_energy'].iloc[-1]
+        wesm_exposure = df7['wesm_exposure'].iloc[-1]
+        final_total = df8['final_total'].iloc[-1]
+        current_rate = df9['rate'].iloc[-1]
+        temperature = df10['temp'].iloc[-1]
+        weather_condition = df10['weather'].iloc[-1]
+
+        # Define the current date
+        c = datetime.now()
+        formatted_date = c.strftime("%Y-%m-%d")
+
+        # Current Interval Aesthetics
+        st.markdown("""
+        <style>
+        /* Styling for equal-sized boxes with minimal padding */
+        .custom-box {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 0;  
+            margin: 0;
+            background-color: #000000;
+            height: 13vh;  
+            max-width: 100%;  
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center; 
+        }
+                    
+        .custom-box-2 {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 0;  
+            margin: 0;
+            background-color: #000000;
+            height: 13vh;  
+            max-width: 100%;  
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center; 
+        }
+        
+        @media (max-width: 768px) {
+            .custom-box {
+                justify-content: center;
+                align-items: center;
+                text-align: center; 
+                height: 17.33vh;  
+            }
+        }
+
+        @media (max-width: 480px) {
+            .custom-box {
+                justify-content: center;
+                align-items: center;
+                text-align: center; 
+                height: 21.67vh;  
+            }
+        }
+
+        /* Smaller font sizes with minimal padding and overflow control */
+        .custom-box h4, .custom-box p {
+            margin: 0;
+            padding: 0;
+            font-size: 0.7rem;
+            font-family: Helvetica;
+            font-weight: normal;
+            color: #FFFFFF;
+            max-height: 100%;  
+            overflow: hidden;  
+            text-overflow: ellipsis;  
+            justify-content: center;
+            align-items: center;
+            text-align: center; 
+        }
+                    
+        .custom-box-2 h4, .custom-box-2 p {
+            margin: 0;
+            padding: 0;
+            font-size: 0.55rem;
+            font-family: Helvetica;
+            font-weight: normal;
+            color: #FFFFFF;
+            max-height: 100%;  
+            overflow: hidden;  
+            text-overflow: ellipsis;  
+            justify-content: center;
+            align-items: center;
+            text-align: center; 
+        }
+                
+        .custom-box p {
+            font-size: 1.1rem;
+            font-family: Helvetica;
+            font-weight: bold;
+            color: #FFFFFF;
+            max-height: 100%;  
+            max-width: 100%;
+            overflow: hidden;  
+            text-overflow: ellipsis;  
+            justify-content: center;
+            align-items: center;
+            text-align: center; 
+        }
+        
+        .custom-box-2 p {
+            font-size: 0.8rem;
+            font-family: Helvetica;
+            font-weight: bold;
+            color: #FFFFFF;
+            max-height: 100%;  
+            max-width: 100%;
+            overflow: hidden;  
+            text-overflow: ellipsis;  
+            justify-content: center;
+            align-items: center;
+            text-align: center; 
+        }
         </style>
         """, unsafe_allow_html=True)
 
-    # Connection
-    conn=mysql.connector.connect(
-        host = "localhost",
-        port = "3306",
-        user = "root",
-        passwd = "",
-        db = "myDb"
-    )
 
-    c=conn.cursor()
-
-    # -- START OF SO ADVISORIES HEADER --
-
-    # Load your Excel file
-    excel_file = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\SO_ADVISORIES.xlsx"
-    df = pd.read_excel(excel_file)
-
-    # Convert TIME_MESSAGE to datetime format (if it's not already)
-    df['TIME_MESSAGE'] = pd.to_datetime(df['TIME_MESSAGE'], errors='coerce')
-
-    # Drop rows where TIME_MESSAGE couldn't be converted to datetime (if needed)
-    df = df.dropna(subset=['TIME_MESSAGE'])
-
-    # Sort dataframe by TIME_MESSAGE in descending order
-    df = df.sort_values(by='TIME_MESSAGE', ascending=False)
-
-    # Prepare the initial data for scrolling
-    scrollable_content = []
-    latest_10_entries = fetch_latest_10_entries()
-    for index, row in latest_10_entries.iterrows():
-        time_message = row['TIME_MESSAGE'].strftime('%Y/%m/%d %H:%M:%S')
-        message = row['MESSAGE']
-        entry_text = f"{time_message}: {message}"
-        scrollable_content.append(entry_text)       
-
-    # -- END OF SO ADVISORIES HEADER --
-
-    # -- START OF MO ADVISORIES HEADER --
-
-    # Load your Excel file
-    excel_file = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MO_ADVISORIES.xlsx"
-    df = pd.read_excel(excel_file)
-
-    # Sort dataframe by TIMESTAMP in descending order
-    df = df.sort_values(by='TIMESTAMP', ascending=False)
-
-    # Prepare the initial data for scrolling
-    scrollable_content_2 = []
-    latest_entry = fetch_latest_entry()
-    for index, row in latest_entry.iterrows():
-        time_message_2 = row['TIMESTAMP']
-        message_2 = row['ADVISORY']
-        entry_text_2 = f"{time_message_2} - {message_2}"
-        scrollable_content_2.append(entry_text_2)
-
-    # -- END OF MO ADVISORIES HEADER --
-
-    # # HTML and CSS for the tickers
-    # html_code = f"""
-    # <style>
-    # * {{
-    #     box-sizing: border-box;
-    # }}
-    # @-webkit-keyframes ticker {{
-    #     0% {{
-    #         -webkit-transform: translate3d(100%, 0, 0);
-    #         transform: translate3d(100%, 0, 0);
-    #     }}
-    #     100% {{
-    #         -webkit-transform: translate3d(-100%, 0, 0);
-    #         transform: translate3d(-100%, 0, 0);
-    #     }}
-    # }}
-    # @keyframes ticker {{
-    #     0% {{
-    #         -webkit-transform: translate3d(100%, 0, 0);
-    #         transform: translate3d(100%, 0, 0);
-    #     }}
-    #     100% {{
-    #         -webkit-transform: translate3d(-100%, 0, 0);
-    #         transform: translate3d(-100%, 0, 0);
-    #     }}
-    # }}
-    # .ticker-wrap {{
-    #     position: fixed;
-    #     width: calc(100% - 2px);  /* Adjust width to account for border */
-    #     overflow: hidden;
-    #     height: 2rem;
-    #     background-color: #000000;
-    #     box-sizing: border-box;
-    #     border: 2px solid white;  /* White border around the entire box */
-    #     border-radius: 5px;  /* Optional: Add rounded corners */
-    #     padding: 0;  /* Remove padding to avoid clipping */
-    #     margin: 0;  /* Remove margin to avoid shifting */
-    # }}
-    # .ticker1 {{
-    #     display: inline-block;
-    #     height: 1.8rem;
-    #     line-height: 1.8rem;
-    #     white-space: nowrap;
-    #     box-sizing: content-box;
-    #     -webkit-animation-iteration-count: infinite;
-    #     animation-iteration-count: infinite;
-    #     -webkit-animation-timing-function: linear;
-    #     animation-timing-function: linear;
-    #     -webkit-animation-name: ticker;
-    #     animation-name: ticker;
-    #     -webkit-animation-duration: 200s;
-    #     animation-duration: 200s;
-    # }}
-    # .ticker2 {{
-    #     display: inline-block;
-    #     height: 1.8rem;
-    #     line-height: 1.8rem;
-    #     white-space: nowrap;
-    #     box-sizing: content-box;
-    #     -webkit-animation-iteration-count: infinite;
-    #     animation-iteration-count: infinite;
-    #     -webkit-animation-timing-function: linear;
-    #     animation-timing-function: linear;
-    #     -webkit-animation-name: ticker;
-    #     animation-name: ticker;
-    #     -webkit-animation-duration: 40s;
-    #     animation-duration: 40s;
-    # }}
-    # .ticker__item {{
-    #     display: inline-block;
-    #     padding: 0 2rem; /* Increased padding for more space between entries */
-    #     font-size: 0.8rem;
-    #     font-family: Helvetica;
-    #     font-weight: bold;
-    #     color: #FFFFFF;
-    # }}
-    # .ticker__item:first-child {{
-    #     margin-top: 0;
-    # }}
-    # body {{ margin: 0; padding-bottom: 0; }}
-    # h1, h2, p {{ padding: 0 5%; }}
-    # </style>
-
-    # <div class="ticker-wrap" style="bottom: 2.5rem;">  <!-- Bottom ticker -->
-    #     <div class="ticker ticker1">
-    # """
-
-    # for entry in scrollable_content:
-    #     html_code += f'<div class="ticker__item">{entry}</div>'
-
-    # html_code += """
-    #     </div>
-    # </div>
-
-    # <div class="ticker-wrap" style="bottom: 0;">  <!-- Top ticker -->
-    #     <div class="ticker ticker2">
-    # """
-
-    # for entry in scrollable_content_2:
-    #     html_code += f'<div class="ticker__item">{entry}</div>'
-
-    # html_code += """
-    #     </div>
-    # </div>
-    # """
-
-    # HTML and CSS for the tickers
-    html_code = f"""
-    <style>
-    * {{
-        box-sizing: border-box;
-    }}
-    @-webkit-keyframes ticker {{
-        0% {{
-            -webkit-transform: translate3d(100%, 0, 0);
-            transform: translate3d(100%, 0, 0);
-        }}
-        100% {{
-            -webkit-transform: translate3d(-100%, 0, 0);
-            transform: translate3d(-100%, 0, 0);
-        }}
-    }}
-    @keyframes ticker {{
-        0% {{
-            -webkit-transform: translate3d(100%, 0, 0);
-            transform: translate3d(100%, 0, 0);
-        }}
-        100% {{
-            -webkit-transform: translate3d(-100%, 0, 0);
-            transform: translate3d(-100%, 0, 0);
-        }}
-    }}
-    .ticker-wrap {{
-        position: fixed;
-        width: calc(100% - 2px);  /* Adjust width to account for border */
-        overflow: hidden;
-        height: 2rem;
-        background-color: #000000;
-        box-sizing: border-box;
-        border: 2px solid white;  /* White border around the entire box */
-        border-radius: 5px;  /* Optional: Add rounded corners */
-        padding: 0;  /* Remove padding to avoid clipping */
-        margin: 0;  /* Remove margin to avoid shifting */
-    }}
-    .ticker1 {{
-        display: inline-block;
-        height: 1.8rem;
-        line-height: 1.8rem;
-        white-space: nowrap;
-        box-sizing: content-box;
-        -webkit-animation-iteration-count: infinite;
-        animation-iteration-count: infinite;
-        -webkit-animation-timing-function: linear;
-        animation-timing-function: linear;
-        -webkit-animation-name: ticker;
-        animation-name: ticker;
-        -webkit-animation-duration: 280s;
-        animation-duration: 280s;
-        transform: translate3d(100%, 0, 0); /* Start position to ensure it's visible immediately */
-    }}
-    .ticker2 {{
-        display: inline-block;
-        height: 1.8rem;
-        line-height: 1.8rem;
-        white-space: nowrap;
-        box-sizing: content-box;
-        -webkit-animation-iteration-count: infinite;
-        animation-iteration-count: infinite;
-        -webkit-animation-timing-function: linear;
-        animation-timing-function: linear;
-        -webkit-animation-name: ticker;
-        animation-name: ticker;
-        -webkit-animation-duration: 40s;
-        animation-duration: 40s;
-    }}
-    .ticker__item {{
-        display: inline-block;
-        padding: 0 2rem; /* Increased padding for more space between entries */
-        font-size: 0.8rem;
-        font-family: Helvetica;
-        font-weight: bold;
-        color: #FFFFFF;
-    }}
-    .ticker__item:first-child {{
-        margin-top: 0;
-    }}
-    body {{ margin: 0; padding-bottom: 0; }}
-    h1, h2, p {{ padding: 0 5%; }}
-    </style>
-
-    <div class="ticker-wrap" style="bottom: 2.5rem;">  <!-- Bottom ticker -->
-        <div class="ticker ticker1">
-    """
-
-    for entry in scrollable_content:
-        html_code += f'<div class="ticker__item">{entry}</div>'
-
-    html_code += """
-        </div>
-    </div>
-
-    <div class="ticker-wrap" style="bottom: 0;">  <!-- Top ticker -->
-        <div class="ticker ticker2">
-    """
-
-    for entry in scrollable_content_2:
-        html_code += f'<div class="ticker__item">{entry}</div>'
-
-    html_code += """
-        </div>
-    </div>
-    """
-
-    # -- START OF CURRENT INTERVAL SUMMARY --
-
-    # Fetch Data
-    result = view_all_data()
-    result2 = view_all_data2()
-    result3 = view_all_data3()
-    result4 = view_all_data4()
-    result5 = view_all_data5()
-    result6 = view_all_data6()
-    result7 = view_all_data7()
-    result8 = view_all_data8()
-    result9 = view_all_data9()
-    result10 = view_all_data10()
-
-    df = pd.DataFrame(result,columns=["id", "time_interval", "timestamp"])
-    df2 = pd.DataFrame(result2, columns=["id", "net", "insert_time"])
-    df3 = pd.DataFrame(result3, columns=["id", "total_bcq", "insert_time"])
-    df4 = pd.DataFrame(result4, columns=["id", "substation_load", "insert_time"])
-    df5 = pd.DataFrame(result5, columns=["id", "cc", "insert_time"])
-    df6 = pd.DataFrame(result6, columns=["id", "actual_energy", "insert_time"])
-    df7 = pd.DataFrame(result7, columns=["id", "wesm_exposure", "insert_time"])
-    df8 = pd.DataFrame(result8, columns=["id", "final_total", "insert_time"])
-    df9 = pd.DataFrame(result9, columns=["id", "rate", "insert_time"])
-    df10 = pd.DataFrame(result10, columns=["id", "temp", "weather", "insert_time"])
-
-    last_interval= df['time_interval'].iloc[-1]
-    forecasted_energy = df2['net'].iloc[-1]
-    total_bcq = df3['total_bcq'].iloc[-1]
-    total_substation_load = df4['substation_load'].iloc[-1]
-    contestable_energy = df5['cc'].iloc[-1]
-    actual_energy= df6['actual_energy'].iloc[-1]
-    wesm_exposure = df7['wesm_exposure'].iloc[-1]
-    final_total = df8['final_total'].iloc[-1]
-    current_rate = df9['rate'].iloc[-1]
-    temperature = df10['temp'].iloc[-1]
-    weather_condition = df10['weather'].iloc[-1]
-
-    # Define the current date
-    c = datetime.now()
-    formatted_date = c.strftime("%Y-%m-%d")
-
-    # UPDATED
-    st.markdown("""
-    <style>
-    /* Styling for equal-sized boxes with minimal padding */
-    .custom-box, .custom-box-2 {
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        padding: 0;  
-        margin: 0;
-        background-color: #000000;
-        height: 13.5vh;  
-        max-width: 100%;  
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center; 
-    }
-    
-    @media (max-width: 768px) {
-        .custom-box, .custom-box-2 {
-            justify-content: center;
-            align-items: center;
-            text-align: center; 
-            height: 12vh;  
+        # Define your custom CSS
+        custom_css = """
+        <style>
+        .container-class {
+            min-height: 100%;
         }
-    }
+        </style>
+        """
 
-    @media (max-width: 480px) {
-        .custom-box, .custom-box-2 {
-            justify-content: center;
-            align-items: center;
-            text-align: center; 
-            height: 10vh;  
+        # Apply the custom CSS
+        st.markdown(custom_css, unsafe_allow_html=True)
+
+        with st.container():
+
+            # Set the image's width to the column width
+            st.image(image_path, use_column_width=True)
+
+            # Display the HTML and CSS in Streamlit
+            st.components.v1.html(html_code, height=80)
+
+            # Create columns with small gap
+            card1, card2, card3, card4, card5, card6, card7, card8, card9, card10 = st.columns(10, gap='small')
+
+            with card1:
+                st.markdown('<div class="custom-box"><h4>Current Date</h4><p>{}</p></div>'.format(formatted_date), unsafe_allow_html=True)
+
+            with card2:
+                #st.markdown('<div class="custom-box"><h4>Current Interval</h4><p>{}</p></div>'.format(last_interval), unsafe_allow_html=True)
+                st.markdown('<div class="custom-box-2"><h4>Current Interval</h4><p>{}</p></div>'.format(last_interval), unsafe_allow_html=True)
+            with card3:
+                st.markdown('<div class="custom-box"><h4>Temperature</h4><p>{}°C</p><h4>Weather Condition</h4><p>{}</p></div>'.format(temperature, weather_condition), unsafe_allow_html=True)
+        
+            with card4:
+                st.markdown('<div class="custom-box"><h4>Total Substation Load (kW)</h4><p>{}</p></div>'.format(total_substation_load), unsafe_allow_html=True)
+
+            with card5:
+                #st.markdown('<div class="custom-box"><h4>Actual Energy (kWh)</h4><p>{}</p><h4>Forecasted Energy (kWh)</h4><p>{}</p></div>'.format(actual_energy, forecasted_energy), unsafe_allow_html=True)
+                st.markdown('<div class="custom-box-2"><h4>Actual Energy (kWh)</h4><p>{}</p><h4>Forecasted Energy (kWh)</h4><p>{}</p></div>'.format(actual_energy, forecasted_energy), unsafe_allow_html=True)
+            with card6:
+                #st.markdown('<div class="custom-box"><h4>WESM Exposure (kWh)</h4><p>{}</p><h4>Contestable Energy (kWh)</h4><p>{}</p></div>'.format(wesm_exposure, contestable_energy), unsafe_allow_html=True)
+                st.markdown('<div class="custom-box-2"><h4>WESM Exposure (kWh)</h4><p>{}</p><h4>Contestable Energy (kWh)</h4><p>{}</p></div>'.format(wesm_exposure, contestable_energy), unsafe_allow_html=True)
+            with card7:
+                st.markdown('<div class="custom-box"><h4>Total BCQ Nomination (kW)</h4><p>{}</p></div>'.format(total_bcq), unsafe_allow_html=True)
+
+            with card8:
+                st.markdown('<div class="custom-box"><h4>MORE Trading Node (PhP/kWh)</h4><p>{}</p></div>'.format(final_total), unsafe_allow_html=True)
+
+            with card9:
+                st.markdown('<div class="custom-box"><h4>PEDC Trading Node (PhP/kWh)</h4><p>Pending</p></div>', unsafe_allow_html=True)
+
+            with card10:
+                st.markdown('<div class="custom-box"><h4>Current Rate (PhP/kWh)</h4><p>{}</p></div>'.format(current_rate), unsafe_allow_html=True)
+
+        st.markdown("""
+        <style>
+        .small-space {
+            margin-bottom: 0.1px;
         }
-    }
+        </style>
+        """, unsafe_allow_html=True)
 
-    /* Smaller font sizes with minimal padding and overflow control */
-    .custom-box h4, .custom-box p, .custom-box-2 h4, .custom-box-2 p {
-        margin: 0;
-        padding: 0;
-        font-size: 0.7rem;
-        font-family: Helvetica;
-        font-weight: normal;
-        color: #FFFFFF;
-        max-height: 100%;  
-        overflow: hidden;  
-        text-overflow: ellipsis;  
-        justify-content: center;
-        align-items: center;
-        text-align: center; 
-    }
-
-    .custom-box p, .custom-box-2 p {
-        font-size: 1rem;
-        font-family: Helvetica;
-        font-weight: bold;
-        color: #FFFFFF;
-        max-height: 100%;  
-        max-width: 100%;
-        overflow: hidden;  
-        text-overflow: ellipsis;  
-        justify-content: center;
-        align-items: center;
-        text-align: center; 
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-
-    # Define your custom CSS
-    custom_css = """
-    <style>
-    .container-class {
-        min-height: 100%;
-    }
-    </style>
-    """
-
-    # Apply the custom CSS
-    st.markdown(custom_css, unsafe_allow_html=True)
-
-    with st.container():
-
-        # Set the image's width to the column width
-        st.image(image_path, use_column_width=True)
-
-        # Display the HTML and CSS in Streamlit
-        st.components.v1.html(html_code, height=80)
-
-        # Create columns with small gap
-        card1, card2, card3, card4, card5, card6, card7, card8, card9, card10 = st.columns(10, gap='small')
-
-        with card1:
-            st.markdown('<div class="custom-box"><h4>Current Date</h4><p>{}</p></div>'.format(formatted_date), unsafe_allow_html=True)
-
-        with card2:
-            st.markdown('<div class="custom-box"><h4>Current Interval</h4><p>{}</p></div>'.format(last_interval), unsafe_allow_html=True)
-
-        with card3:
-            st.markdown('<div class="custom-box"><h4>Temperature</h4><p>{}°C</p><h4>Weather Condition</h4><p>{}</p></div>'.format(temperature, weather_condition), unsafe_allow_html=True)
-
-        with card4:
-            st.markdown('<div class="custom-box"><h4>Total Substation Load (kW)</h4><p>{}</p></div>'.format(total_substation_load), unsafe_allow_html=True)
-
-        with card5:
-            st.markdown('<div class="custom-box"><h4>Actual Energy (kWh)</h4><p>{}</p><h4>Forecasted Energy (kWh)</h4><p>{}</p></div>'.format(actual_energy, forecasted_energy), unsafe_allow_html=True)
-
-        with card6:
-            st.markdown('<div class="custom-box"><h4>WESM Exposure (kWh)</h4><p>{}</p><h4>Contestable Energy (kWh)</h4><p>{}</p></div>'.format(wesm_exposure, contestable_energy), unsafe_allow_html=True)
-
-        with card7:
-            st.markdown('<div class="custom-box"><h4>Total BCQ Nomination (kW)</h4><p>{}</p></div>'.format(total_bcq), unsafe_allow_html=True)
-
-        with card8:
-            st.markdown('<div class="custom-box"><h4>MORE Trading Node (PhP/kWh)</h4><p>{}</p></div>'.format(final_total), unsafe_allow_html=True)
-
-        with card9:
-            st.markdown('<div class="custom-box"><h4>PEDC Trading Node (PhP/kWh)</h4><p>Pending</p></div>', unsafe_allow_html=True)
-
-        with card10:
-            st.markdown('<div class="custom-box"><h4>Current Rate (PhP/kWh)</h4><p>{}</p></div>'.format(current_rate), unsafe_allow_html=True)
-
-    st.markdown("""
-    <style>
-    .small-space {
-        margin-bottom: 0.1px;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-    # Layout with smaller padding
-    col1, col2 = st.columns([1, 1.75])  
-    latest_chart_total_sub_load = None # Initialize latest chart
-    with col1:
-        try:
-            latest_chart_total_sub_load = sub_load_func()
-            st.plotly_chart(latest_chart_total_sub_load)
-        except:
-            if latest_chart_total_sub_load:
+        # Layout with smaller padding
+        col1, col2 = st.columns([1, 1.75])  
+        latest_chart_total_sub_load = None # Initialize latest chart
+        with col1:
+            try:
+                latest_chart_total_sub_load = sub_load_func()
                 st.plotly_chart(latest_chart_total_sub_load)
-    latest_chart_actual_vs_forecasted = None
-    with col2:
-        try:
-            latest_chart_actual_vs_forecasted = actual_vs_forecasted()
-            st.plotly_chart(latest_chart_actual_vs_forecasted)
-        except:
-            if latest_chart_actual_vs_forecasted:
+            except:
+                if latest_chart_total_sub_load:
+                    st.plotly_chart(latest_chart_total_sub_load)
+        latest_chart_actual_vs_forecasted = None
+        with col2:
+            try:
+                latest_chart_actual_vs_forecasted = actual_vs_forecasted()
                 st.plotly_chart(latest_chart_actual_vs_forecasted)
-            # time.sleep(1)
-            # st.rerun()
+            except:
+                if latest_chart_actual_vs_forecasted:
+                    st.plotly_chart(latest_chart_actual_vs_forecasted)
+                # time.sleep(1)
+                # st.rerun()
 
-    col4, col5, col6 = st.columns([1, 1, 0.65])
-    latest_chart_bcq = None
-    with col4:
-        try:
-            latest_chart_bcq = bcq_func()
-            st.plotly_chart(latest_chart_bcq)
-        except:
-            if latest_chart_bcq:
+        col4, col5, col6 = st.columns([1, 1, 0.65])
+        latest_chart_bcq = None
+        with col4:
+            try:
+                latest_chart_bcq = bcq_func()
                 st.plotly_chart(latest_chart_bcq)
-    latest_chart_tipc = None
-    with col5:
-        try:
-            latest_chart_tipc = tipc_func()
-            st.plotly_chart(latest_chart_tipc)
-        except:
-            if latest_chart_tipc:
+            except:
+                if latest_chart_bcq:
+                    st.plotly_chart(latest_chart_bcq)
+        latest_chart_tipc = None
+        with col5:
+            try:
+                latest_chart_tipc = tipc_func()
                 st.plotly_chart(latest_chart_tipc)
+            except:
+                if latest_chart_tipc:
+                    st.plotly_chart(latest_chart_tipc)
 
-    latest_chart_genmix = None
-    with col6:
-        try:
-            latest_chart_genmix = genmix_func()
-            st.plotly_chart(latest_chart_genmix)
-        except:
-            if latest_chart_genmix:
+        latest_chart_genmix = None
+        with col6:
+            try:
+                latest_chart_genmix = genmix_func()
                 st.plotly_chart(latest_chart_genmix)
+            except:
+                if latest_chart_genmix:
+                    st.plotly_chart(latest_chart_genmix)
 
-    # For rerunning the script every 900 seconds
-    time.sleep(REFRESH_INTERVAL)
-    st.rerun()
+        # For rerunning the script every 900 seconds (15 minutes)
+        time.sleep(REFRESH_INTERVAL)
+        st.rerun()

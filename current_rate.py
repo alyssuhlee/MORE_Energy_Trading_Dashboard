@@ -1,6 +1,7 @@
 # Necessary imports
 from datetime import datetime, timedelta
 from openpyxl import load_workbook
+import calendar
 import mysql.connector
 import openpyxl
 import os
@@ -366,7 +367,13 @@ def initial_function():
     # Example: Supplier Rates for the Month_August 2024
     srftm = "Supplier Rates for the Month_"
     date_currently = datetime.now()
-    month_var = date_currently.strftime("%B") # Example: "August"
+    day_today = date_currently.strftime("%d")
+    if day_today < '26':
+        month_var = date_currently.strftime("%B") # Example: "August"
+    else:
+        next_month_date = date_currently.replace(day=1) + timedelta(days=32)
+        month_var = calendar.month_name[next_month_date.month] # Example: "September"
+
     extension = ".xlsx"
     supplier_rates_folder = f"{srftm}{month_var} {current_year}{extension}"
     supplier_rates_path = os.path.join(folder_path_2, supplier_rates_folder)
