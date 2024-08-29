@@ -8,10 +8,12 @@ asttokens==2.4.1
 async-lru==2.0.4
 attrs==23.2.0
 Babel==2.15.0
+bcrypt==4.2.0
 beautifulsoup4==4.12.3
 bleach==6.1.0
 blinker==1.8.2
 cachetools==5.4.0
+captcha==0.6.0
 certifi==2024.7.4
 cffi==1.16.0
 chardet==5.2.0
@@ -28,6 +30,7 @@ Django==5.0.6
 entrypoints==0.4
 et-xmlfile==1.1.0
 executing==2.0.1
+extra-streamlit-components==0.1.71
 fastjsonschema==2.20.0
 Flask==3.0.3
 fonttools==4.53.0
@@ -99,6 +102,7 @@ packaging==24.1
 pandas==2.2.2
 pandocfilters==1.5.1
 parso==0.8.4
+pickle4==0.0.1
 pillow==10.4.0
 platformdirs==4.2.2
 plotly==5.22.0
@@ -115,6 +119,7 @@ pycparser==2.22
 pydeck==0.9.1
 PyGetWindow==0.0.9
 Pygments==2.18.0
+PyJWT==2.9.0
 Pympler==1.1
 PyMsgBox==1.0.9
 pyodbc==5.1.0
@@ -154,6 +159,7 @@ SQLAlchemy==2.0.31
 sqlparse==0.5.0
 stack-data==0.6.3
 streamlit==1.37.0
+streamlit-authenticator==0.3.3
 streamlit-autorefresh==1.0.1
 streamlit-option-menu==0.3.13
 tenacity==8.5.0

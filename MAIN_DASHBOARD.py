@@ -18,7 +18,6 @@ import pickle
 from pathlib import Path
 import streamlit_authenticator as stauth
 
-
 REFRESH_INTERVAL = 900 # Refresh Interval Value (900 SECONDS)
 
 # -- START OF FUNCTIONS --
@@ -2173,6 +2172,7 @@ def genmix_func():
         # -- END OF DISPLAYING THE GENERATION MIX DONUT CHART --
 
 # -- END OF FUNCTIONS --
+
 # Set the page layout to wide
 st.set_page_config(
     page_title="MEPC Energy Trading Dashboard",
@@ -2181,6 +2181,11 @@ st.set_page_config(
 )
 
 # -- USER AUTHENTICATION --
+
+# Insert MORE Power Logo
+login_page_logo = 'data/login_page_logo.png'
+st.image(login_page_logo, width=400)
+
 names = ["MORE Electric and Power Corporation", "Niel Parcon", "Roel Castro"]
 usernames = ["more", "nparcon", "rcastro"]
 
@@ -2203,9 +2208,8 @@ authenticator = stauth.Authenticate(
     credentials,
     "mepc_energy_trading_dashboard",
     "morepower",
-    cookie_expiry_days=0
+    cookie_expiry_days=0 # Change to 365 days (1 year)
 )
-
 
 name, authentication_status, username = authenticator.login("main")
 
@@ -2216,10 +2220,16 @@ if authentication_status is None:
     st.warning("Please enter your username and password.")
 
 if authentication_status == True:
-    while True: 
-        # Logout Button
-        authenticator.logout("Logout", "main")
+    # Initialize session state variables
+    if 'rerun_called' not in st.session_state:
+        st.session_state['rerun_called'] = False
 
+    # Check if rerun has been called
+    if not st.session_state['rerun_called']:
+        # Set the flag and trigger rerun
+        st.session_state['rerun_called'] = True
+        st.rerun()
+    while True: 
         # Add custom CSS
         st.markdown(
             """
@@ -2324,112 +2334,6 @@ if authentication_status == True:
 
         # -- END OF MO ADVISORIES HEADER --
 
-        # # HTML and CSS for the tickers
-        # html_code = f"""
-        # <style>
-        # * {{
-        #     box-sizing: border-box;
-        # }}
-        # @-webkit-keyframes ticker {{
-        #     0% {{
-        #         -webkit-transform: translate3d(100%, 0, 0);
-        #         transform: translate3d(100%, 0, 0);
-        #     }}
-        #     100% {{
-        #         -webkit-transform: translate3d(-100%, 0, 0);
-        #         transform: translate3d(-100%, 0, 0);
-        #     }}
-        # }}
-        # @keyframes ticker {{
-        #     0% {{
-        #         -webkit-transform: translate3d(100%, 0, 0);
-        #         transform: translate3d(100%, 0, 0);
-        #     }}
-        #     100% {{
-        #         -webkit-transform: translate3d(-100%, 0, 0);
-        #         transform: translate3d(-100%, 0, 0);
-        #     }}
-        # }}
-        # .ticker-wrap {{
-        #     position: fixed;
-        #     width: calc(100% - 2px);  /* Adjust width to account for border */
-        #     overflow: hidden;
-        #     height: 2rem;
-        #     background-color: #000000;
-        #     box-sizing: border-box;
-        #     border: 2px solid white;  /* White border around the entire box */
-        #     border-radius: 5px;  /* Optional: Add rounded corners */
-        #     padding: 0;  /* Remove padding to avoid clipping */
-        #     margin: 0;  /* Remove margin to avoid shifting */
-        # }}
-        # .ticker1 {{
-        #     display: inline-block;
-        #     height: 1.8rem;
-        #     line-height: 1.8rem;
-        #     white-space: nowrap;
-        #     box-sizing: content-box;
-        #     -webkit-animation-iteration-count: infinite;
-        #     animation-iteration-count: infinite;
-        #     -webkit-animation-timing-function: linear;
-        #     animation-timing-function: linear;
-        #     -webkit-animation-name: ticker;
-        #     animation-name: ticker;
-        #     -webkit-animation-duration: 200s;
-        #     animation-duration: 200s;
-        # }}
-        # .ticker2 {{
-        #     display: inline-block;
-        #     height: 1.8rem;
-        #     line-height: 1.8rem;
-        #     white-space: nowrap;
-        #     box-sizing: content-box;
-        #     -webkit-animation-iteration-count: infinite;
-        #     animation-iteration-count: infinite;
-        #     -webkit-animation-timing-function: linear;
-        #     animation-timing-function: linear;
-        #     -webkit-animation-name: ticker;
-        #     animation-name: ticker;
-        #     -webkit-animation-duration: 40s;
-        #     animation-duration: 40s;
-        # }}
-        # .ticker__item {{
-        #     display: inline-block;
-        #     padding: 0 2rem; /* Increased padding for more space between entries */
-        #     font-size: 0.8rem;
-        #     font-family: Helvetica;
-        #     font-weight: bold;
-        #     color: #FFFFFF;
-        # }}
-        # .ticker__item:first-child {{
-        #     margin-top: 0;
-        # }}
-        # body {{ margin: 0; padding-bottom: 0; }}
-        # h1, h2, p {{ padding: 0 5%; }}
-        # </style>
-
-        # <div class="ticker-wrap" style="bottom: 2.5rem;">  <!-- Bottom ticker -->
-        #     <div class="ticker ticker1">
-        # """
-
-        # for entry in scrollable_content:
-        #     html_code += f'<div class="ticker__item">{entry}</div>'
-
-        # html_code += """
-        #     </div>
-        # </div>
-
-        # <div class="ticker-wrap" style="bottom: 0;">  <!-- Top ticker -->
-        #     <div class="ticker ticker2">
-        # """
-
-        # for entry in scrollable_content_2:
-        #     html_code += f'<div class="ticker__item">{entry}</div>'
-
-        # html_code += """
-        #     </div>
-        # </div>
-        # """
-
         # HTML and CSS for the tickers
         html_code = f"""
         <style>
@@ -2480,8 +2384,8 @@ if authentication_status == True:
             animation-timing-function: linear;
             -webkit-animation-name: ticker;
             animation-name: ticker;
-            -webkit-animation-duration: 280s;
-            animation-duration: 280s;
+            -webkit-animation-duration: 350s;
+            animation-duration: 350s;
             transform: translate3d(100%, 0, 0); /* Start position to ensure it's visible immediately */
         }}
         .ticker2 {{
@@ -2651,7 +2555,7 @@ if authentication_status == True:
         .custom-box-2 h4, .custom-box-2 p {
             margin: 0;
             padding: 0;
-            font-size: 0.55rem;
+            font-size: 0.6rem;
             font-family: Helvetica;
             font-weight: normal;
             color: #FFFFFF;
@@ -2678,7 +2582,7 @@ if authentication_status == True:
         }
         
         .custom-box-2 p {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-family: Helvetica;
             font-weight: bold;
             color: #FFFFFF;
@@ -2711,30 +2615,31 @@ if authentication_status == True:
             # Set the image's width to the column width
             st.image(image_path, use_column_width=True)
 
+
             # Display the HTML and CSS in Streamlit
             st.components.v1.html(html_code, height=80)
 
             # Create columns with small gap
-            card1, card2, card3, card4, card5, card6, card7, card8, card9, card10 = st.columns(10, gap='small')
+            card1, card2, card3, card4, card5, card6, card7, card8, card9 = st.columns(9, gap='small')
 
             with card1:
                 st.markdown('<div class="custom-box"><h4>Current Date</h4><p>{}</p></div>'.format(formatted_date), unsafe_allow_html=True)
 
             with card2:
-                #st.markdown('<div class="custom-box"><h4>Current Interval</h4><p>{}</p></div>'.format(last_interval), unsafe_allow_html=True)
-                st.markdown('<div class="custom-box-2"><h4>Current Interval</h4><p>{}</p></div>'.format(last_interval), unsafe_allow_html=True)
+                st.markdown('<div class="custom-box"><h4>Current Interval</h4><p>{}</p></div>'.format(last_interval), unsafe_allow_html=True)
+            
             with card3:
                 st.markdown('<div class="custom-box"><h4>Temperature</h4><p>{}°C</p><h4>Weather Condition</h4><p>{}</p></div>'.format(temperature, weather_condition), unsafe_allow_html=True)
         
             with card4:
                 st.markdown('<div class="custom-box"><h4>Total Substation Load (kW)</h4><p>{}</p></div>'.format(total_substation_load), unsafe_allow_html=True)
 
-            with card5:
-                #st.markdown('<div class="custom-box"><h4>Actual Energy (kWh)</h4><p>{}</p><h4>Forecasted Energy (kWh)</h4><p>{}</p></div>'.format(actual_energy, forecasted_energy), unsafe_allow_html=True)
+            with card5:           
                 st.markdown('<div class="custom-box-2"><h4>Actual Energy (kWh)</h4><p>{}</p><h4>Forecasted Energy (kWh)</h4><p>{}</p></div>'.format(actual_energy, forecasted_energy), unsafe_allow_html=True)
+            
             with card6:
-                #st.markdown('<div class="custom-box"><h4>WESM Exposure (kWh)</h4><p>{}</p><h4>Contestable Energy (kWh)</h4><p>{}</p></div>'.format(wesm_exposure, contestable_energy), unsafe_allow_html=True)
                 st.markdown('<div class="custom-box-2"><h4>WESM Exposure (kWh)</h4><p>{}</p><h4>Contestable Energy (kWh)</h4><p>{}</p></div>'.format(wesm_exposure, contestable_energy), unsafe_allow_html=True)
+            
             with card7:
                 st.markdown('<div class="custom-box"><h4>Total BCQ Nomination (kW)</h4><p>{}</p></div>'.format(total_bcq), unsafe_allow_html=True)
 
@@ -2742,9 +2647,6 @@ if authentication_status == True:
                 st.markdown('<div class="custom-box"><h4>MORE Trading Node (PhP/kWh)</h4><p>{}</p></div>'.format(final_total), unsafe_allow_html=True)
 
             with card9:
-                st.markdown('<div class="custom-box"><h4>PEDC Trading Node (PhP/kWh)</h4><p>Pending</p></div>', unsafe_allow_html=True)
-
-            with card10:
                 st.markdown('<div class="custom-box"><h4>Current Rate (PhP/kWh)</h4><p>{}</p></div>'.format(current_rate), unsafe_allow_html=True)
 
         st.markdown("""
@@ -2802,6 +2704,8 @@ if authentication_status == True:
             except:
                 if latest_chart_genmix:
                     st.plotly_chart(latest_chart_genmix)
+        
+        authenticator.logout("Logout", "main") # Logout button
 
         # For rerunning the script every 900 seconds (15 minutes)
         time.sleep(REFRESH_INTERVAL)
