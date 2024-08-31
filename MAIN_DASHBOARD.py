@@ -1,9 +1,7 @@
-# -- NECESSARY IMPORTS -- 
+# NECESSARY IMPORTS
 from datetime import datetime
 from mysql.connector import Error
 from openpyxl import load_workbook
-from pandas.errors import EmptyDataError
-import altair as alt
 import mysql.connector
 import openpyxl
 import os
@@ -12,15 +10,22 @@ import plotly.express as px
 import plotly.graph_objs as go
 import streamlit as st
 import time
-
 # Authenticator Imports
 import pickle
 from pathlib import Path
 import streamlit_authenticator as stauth
 
-REFRESH_INTERVAL = 900 # Refresh Interval Value (900 SECONDS)
+# Refresh Interval Value (900 seconds/15 minutes)
+REFRESH_INTERVAL = 900 
 
-# -- START OF FUNCTIONS --
+# Initialize the latest charts to None outside the loop
+latest_chart_total_sub_load = None
+latest_chart_actual_vs_forecasted = None
+latest_chart_bcq = None
+latest_chart_tipc = None
+latest_chart_genmix = None
+
+# List of functions
 def view_all_data():
     c.execute('select * from timeintervals order by id asc')
     data=c.fetchall()
@@ -304,7 +309,12 @@ def sub_load_func():
 
         # Add padding by adjusting the layout
         fig_ss_load.update_layout(
-            title='Substation Load (kW)',
+            title={
+                'text':'Substation Load (kW)',
+                'font':{
+                    'color': 'white' # Set title color to white
+                }
+            },
             margin=dict(r=30, t=30, b=15),  # Increase margins further
             xaxis=dict(
                 title='kW',
@@ -413,7 +423,12 @@ def actual_vs_forecasted():
 
         # Update layout with x and y axis labels and custom y-axis formatting
         fig.update_layout(
-            title='Actual vs Forecasted Energy (kWh)',
+            title={
+                'text':'Actual vs Forecasted Energy (kWh)',
+                'font':{
+                    'color': 'white' # Set title color to white
+                }
+            },
             margin=dict(l=0, r=0, t=30, b=0),  # Adjust margins to fit small screens
             xaxis_title='Hour',
             yaxis_title='kWh',
@@ -1456,7 +1471,12 @@ def tipc_func():
         fig_tipc.update_traces(hovertemplate='%{customdata[0]}', customdata=df_long[['Hover']].values)
 
         fig_tipc.update_layout(
-            title='Trading Interval Price Calculation',
+            title={
+                'text':'Trading Interval Price Calculation',
+                'font':{
+                    'color': 'white' # Set title color to white
+                }
+            },
             margin=dict(r=30, t=30, b=30),
             plot_bgcolor='black',
             paper_bgcolor='black',
@@ -1528,7 +1548,12 @@ def bcq_func():
 
     # Update layout to match the Altair configuration
     fig_bcq.update_layout(
-        title='BCQ Nominations per Supplier',
+        title={
+                'text':'BCQ Nominations per Supplier',
+                'font':{
+                    'color': 'white' # Set title color to white
+                }
+            },
         margin=dict(r=30, t=30, b=30),
         plot_bgcolor='black',  # Set background color to black
         paper_bgcolor='black',  # Set paper background color to black
@@ -2161,7 +2186,12 @@ def genmix_func():
         )
 
         fig_genmix.update_layout(
-            title='Generation Mix',
+            title={
+                'text':'Generation Mix',
+                'font':{
+                    'color': 'white' # Set title color to white
+                }
+            },
             margin=dict(r=40, t=40, b=40),
             plot_bgcolor='black',
             paper_bgcolor='black'
@@ -2171,8 +2201,6 @@ def genmix_func():
 
         # -- END OF DISPLAYING THE GENERATION MIX DONUT CHART --
 
-# -- END OF FUNCTIONS --
-
 # Set the page layout to wide
 st.set_page_config(
     page_title="MEPC Energy Trading Dashboard",
@@ -2181,11 +2209,6 @@ st.set_page_config(
 )
 
 # -- USER AUTHENTICATION --
-
-# Insert MORE Power Logo
-login_page_logo = 'data/login_page_logo.png'
-st.image(login_page_logo, width=400)
-
 names = ["MORE Electric and Power Corporation", "Niel Parcon", "Roel Castro"]
 usernames = ["more", "nparcon", "rcastro"]
 
@@ -2208,18 +2231,104 @@ authenticator = stauth.Authenticate(
     credentials,
     "mepc_energy_trading_dashboard",
     "morepower",
-    cookie_expiry_days=0 # Change to 365 days (1 year)
+    cookie_expiry_days=365 # Ask for username and password again after 1 year
 )
+
+# Apply custom CSS
+st.markdown("""
+    <style>
+    /* Target the Streamlit main container */
+    .st-emotion-cache-1fmfajh {
+        width: 40%;
+        margin: 0 auto;
+        padding: 1rem;
+        background-color: #90EE90;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center; /* Center content inside the div */
+    }
+    .stButton button {
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 1rem;
+        color: white;
+        background-color: #007BFF; /* Button background color */
+        border: none; /* Remove button border */
+        border-radius: 0.5rem; /* Add button border-radius */
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+user_pass_css = """
+<style>
+input[aria-label="Username"] { 
+    color: white; 
+}
+input[aria-label="Password"] { 
+    color: white; 
+}
+</style>
+"""
+
+st.markdown(user_pass_css, unsafe_allow_html=True)
+
+# # Create a placeholder for the image
+# image_placeholder = st.empty()
 
 name, authentication_status, username = authenticator.login("main")
 
+# if authentication_status is None or authentication_status == False:
+#     image_placeholder.image(resized_image, use_column_width=True)
+
 if authentication_status == False:
-    st.error("Wrong username/password!")
+    st.markdown(
+        """
+        <style>
+        .custom-warning {
+            color: #8B0000; /* Custom warning color (orange) */
+            background-color: #FFF3CD; /* Background color */
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 16px;
+            border: 1px solid #FFCC00;
+            width: 40%;
+            margin: auto;
+        }
+        </style>
+        <div class="custom-warning">
+            ❌ Wrong username/password!
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 if authentication_status is None:
-    st.warning("Please enter your username and password.")
+    st.markdown(
+        """
+        <style>
+        .custom-warning {
+            color: #8B4000; /* Custom warning color (orange) */
+            background-color: #FFF3CD; /* Background color */
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 16px;
+            border: 1px solid #FFCC00;
+            width: 40%;
+            margin: auto;
+        }
+        </style>
+        <div class="custom-warning">
+            💡 Please enter your username and password.
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 if authentication_status == True:
+    # # Clear the image after successful login
+    # image_placeholder.empty()
+
     # Initialize session state variables
     if 'rerun_called' not in st.session_state:
         st.session_state['rerun_called'] = False
@@ -2342,8 +2451,9 @@ if authentication_status == True:
         }}
         @-webkit-keyframes ticker {{
             0% {{
-                -webkit-transform: translate3d(100%, 0, 0);
-                transform: translate3d(100%, 0, 0);
+                -webkit-transform: translate3d(0, 0, 0);
+                transform: translate3d(0, 0, 0);
+                visibility: visible;
             }}
             100% {{
                 -webkit-transform: translate3d(-100%, 0, 0);
@@ -2352,8 +2462,9 @@ if authentication_status == True:
         }}
         @keyframes ticker {{
             0% {{
-                -webkit-transform: translate3d(100%, 0, 0);
-                transform: translate3d(100%, 0, 0);
+                -webkit-transform: translate3d(0, 0, 0);
+                transform: translate3d(0, 0, 0);
+                visibility: visible;
             }}
             100% {{
                 -webkit-transform: translate3d(-100%, 0, 0);
@@ -2362,21 +2473,20 @@ if authentication_status == True:
         }}
         .ticker-wrap {{
             position: fixed;
-            width: calc(100% - 2px);  /* Adjust width to account for border */
+            width: calc(100% - 2px);
             overflow: hidden;
             height: 2rem;
             background-color: #000000;
             box-sizing: border-box;
             border: 2px solid white;  /* White border around the entire box */
             border-radius: 5px;  /* Optional: Add rounded corners */
-            padding: 0;  /* Remove padding to avoid clipping */
-            margin: 0;  /* Remove margin to avoid shifting */
         }}
         .ticker1 {{
             display: inline-block;
             height: 1.8rem;
             line-height: 1.8rem;
             white-space: nowrap;
+            padding-left: 100%;
             box-sizing: content-box;
             -webkit-animation-iteration-count: infinite;
             animation-iteration-count: infinite;
@@ -2384,15 +2494,15 @@ if authentication_status == True:
             animation-timing-function: linear;
             -webkit-animation-name: ticker;
             animation-name: ticker;
-            -webkit-animation-duration: 350s;
-            animation-duration: 350s;
-            transform: translate3d(100%, 0, 0); /* Start position to ensure it's visible immediately */
+            -webkit-animation-duration: 200s;
+            animation-duration: 200s;
         }}
         .ticker2 {{
             display: inline-block;
             height: 1.8rem;
             line-height: 1.8rem;
             white-space: nowrap;
+            padding-left: 100%;
             box-sizing: content-box;
             -webkit-animation-iteration-count: infinite;
             animation-iteration-count: infinite;
@@ -2403,7 +2513,7 @@ if authentication_status == True:
             -webkit-animation-duration: 40s;
             animation-duration: 40s;
         }}
-        .ticker__item {{
+        .ticker_item {{
             display: inline-block;
             padding: 0 2rem; /* Increased padding for more space between entries */
             font-size: 0.8rem;
@@ -2411,7 +2521,7 @@ if authentication_status == True:
             font-weight: bold;
             color: #FFFFFF;
         }}
-        .ticker__item:first-child {{
+        .ticker_item:first-child {{
             margin-top: 0;
         }}
         body {{ margin: 0; padding-bottom: 0; }}
@@ -2423,7 +2533,7 @@ if authentication_status == True:
         """
 
         for entry in scrollable_content:
-            html_code += f'<div class="ticker__item">{entry}</div>'
+            html_code += f'<div class="ticker_item">{entry}</div>'
 
         html_code += """
             </div>
@@ -2434,7 +2544,7 @@ if authentication_status == True:
         """
 
         for entry in scrollable_content_2:
-            html_code += f'<div class="ticker__item">{entry}</div>'
+            html_code += f'<div class="ticker_item">{entry}</div>'
 
         html_code += """
             </div>
@@ -2658,16 +2768,14 @@ if authentication_status == True:
         """, unsafe_allow_html=True)
 
         # Layout with smaller padding
-        col1, col2 = st.columns([1, 1.75])  
-        latest_chart_total_sub_load = None # Initialize latest chart
+        col1, col2 = st.columns([1, 1.75])   
         with col1:
             try:
                 latest_chart_total_sub_load = sub_load_func()
                 st.plotly_chart(latest_chart_total_sub_load)
             except:
                 if latest_chart_total_sub_load:
-                    st.plotly_chart(latest_chart_total_sub_load)
-        latest_chart_actual_vs_forecasted = None
+                    st.plotly_chart(latest_chart_total_sub_load) 
         with col2:
             try:
                 latest_chart_actual_vs_forecasted = actual_vs_forecasted()
@@ -2675,11 +2783,8 @@ if authentication_status == True:
             except:
                 if latest_chart_actual_vs_forecasted:
                     st.plotly_chart(latest_chart_actual_vs_forecasted)
-                # time.sleep(1)
-                # st.rerun()
 
         col4, col5, col6 = st.columns([1, 1, 0.65])
-        latest_chart_bcq = None
         with col4:
             try:
                 latest_chart_bcq = bcq_func()
@@ -2687,7 +2792,6 @@ if authentication_status == True:
             except:
                 if latest_chart_bcq:
                     st.plotly_chart(latest_chart_bcq)
-        latest_chart_tipc = None
         with col5:
             try:
                 latest_chart_tipc = tipc_func()
@@ -2695,8 +2799,6 @@ if authentication_status == True:
             except:
                 if latest_chart_tipc:
                     st.plotly_chart(latest_chart_tipc)
-
-        latest_chart_genmix = None
         with col6:
             try:
                 latest_chart_genmix = genmix_func()
@@ -2704,6 +2806,14 @@ if authentication_status == True:
             except:
                 if latest_chart_genmix:
                     st.plotly_chart(latest_chart_genmix)
+        
+        st.markdown("""
+        <style>
+        .small-space {
+            margin-bottom: 0.1px;
+        }
+        </style>
+        """, unsafe_allow_html=True)
         
         authenticator.logout("Logout", "main") # Logout button
 
