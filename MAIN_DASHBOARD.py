@@ -2494,8 +2494,8 @@ if authentication_status == True:
             animation-timing-function: linear;
             -webkit-animation-name: ticker;
             animation-name: ticker;
-            -webkit-animation-duration: 200s;
-            animation-duration: 200s;
+            -webkit-animation-duration: 300s;
+            animation-duration: 300s;
         }}
         .ticker2 {{
             display: inline-block;
