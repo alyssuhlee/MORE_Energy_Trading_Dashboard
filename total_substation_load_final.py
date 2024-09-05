@@ -123,7 +123,6 @@ def query_run():
         time.sleep(800)
 
 if __name__ == "__main__":
-
     query_thread = threading.Thread(target=query_run, daemon=True)
     query_thread.start()
 

@@ -110,6 +110,7 @@ def main():
     df_cleaned.to_excel(excel_file_path, index=False)
     print(f'CSV file "{cleaned_csv_file_path}" successfully converted to Excel file "{excel_file_path}"')
 
+# if __name__ == "__main__":
 while True:
     main()
-    time.sleep(3600) # Every 3600 seconds (1 hour)
+        #time.sleep(3600) # Every 3600 seconds (1 hour)

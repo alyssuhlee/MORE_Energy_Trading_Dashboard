@@ -69,6 +69,7 @@ def fetch_weather_data():
     # Write the updated DataFrame back to the Excel file
     updated_df.to_excel(file_path, index=False)
 
-while True:
-    fetch_weather_data()
-    time.sleep(600) # Every 600 seconds
+if __name__ == "__main__":
+    while True:
+        fetch_weather_data()
+        time.sleep(600) # Every 600 seconds

@@ -62,16 +62,17 @@ def insert_time_interval(time_interval):
         cursor.close()
         conn.close()
 
-# Main loop to update the database every minute
-while True:
-    # Get the current time
-    now = datetime.now()
-    
-    # Determine the time interval
-    time_interval = get_time_interval(now)
-    
-    # Insert the time interval into the database
-    insert_time_interval(time_interval)
-    
-    # Wait for 800 seconds before checking again
-    time.sleep(800)
+if __name__ == "__main__":
+    # Main loop to update the database every minute
+    while True:
+        # Get the current time
+        now = datetime.now()
+        
+        # Determine the time interval
+        time_interval = get_time_interval(now)
+        
+        # Insert the time interval into the database
+        insert_time_interval(time_interval)
+        
+        # Wait for 800 seconds before checking again
+        time.sleep(800)
