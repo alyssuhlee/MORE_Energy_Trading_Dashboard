@@ -137,6 +137,7 @@ def copy_values_fe(source_sheet, dest_sheet, source_range, dest_range):
 
 def forecasted_energy():
     base_directory = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections"
+    #base_directory = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\01_Energy Sourcing Files - Raphael Becodo Dorilag's files 1\03_Daily Reports\01_Day Ahead Projections"
     current_date = datetime.now()
     current_month_numeric = current_date.strftime("%m")
     current_month_name = current_date.strftime("%B")
@@ -185,7 +186,7 @@ def forecasted_energy():
 
     # File path for destination Excel file
     destination_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\forecasted_energy.xlsx'
-
+    #destination_file_path = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\forecasted_energy.xlsx'
     # Load source workbook
     source_wb = load_workbook(folder_path_3, data_only=True)  # Use data_only=True to get values instead of formulas
     # Sheet name of the source workbook
@@ -311,6 +312,7 @@ def copy_values_bcq(source_sheet, dest_sheet, source_range, dest_range):
 
 def total_bcq_nomination():
     base_directory = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections"
+    #base_directory = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\01_Energy Sourcing Files - Raphael Becodo Dorilag's files 1\03_Daily Reports\01_Day Ahead Projections"
     current_date = datetime.now()
     current_month_numeric = current_date.strftime("%m")
     current_month_name = current_date.strftime("%B")
@@ -363,7 +365,7 @@ def total_bcq_nomination():
 
     # File path for destination Excel file
     destination_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\total_bcq_nomination.xlsx'
-
+    #destination_file_path = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\total_bcq_nomination.xlsx'
     # Load source workbook
     source_wb = load_workbook(folder_path_3, data_only=True)  # Use data_only=True to get values instead of formulas
     # Sheet name of the source workbook
@@ -677,6 +679,7 @@ def copy_values_ce(source_sheet, dest_sheet, source_range, dest_range):
 
 def contestable_energy_ce():
     base_directory = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections"
+    #base_directory = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\01_Energy Sourcing Files - Raphael Becodo Dorilag's files 1\03_Daily Reports\01_Day Ahead Projections"
     current_date = datetime.now()
     current_month_numeric = current_date.strftime("%m")
     current_month_name = current_date.strftime("%B")
@@ -725,7 +728,7 @@ def contestable_energy_ce():
 
     # File path for destination Excel file
     destination_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\contestable_energy.xlsx'
-
+    #destination_file_path = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\contestable_energy.xlsx'
     # Load source workbook
     source_wb = load_workbook(folder_path_3, data_only=True)  # Use data_only=True to get values instead of formulas
     # Sheet name of the source workbook
@@ -836,6 +839,7 @@ FTP_USER = "MORE_01"
 FTP_PASSWD = "ar@pNkRW4v"
 FTP_DIRECTORY = "/LMP/DIPC/"
 LOCAL_DIRECTORY = "C:\\Users\\aslee\\OneDrive - MORE ELECTRIC AND POWER CORPORATION\\Desktop\\DASHBOARD_FINAL\\MORE Trading Node\\"
+#LOCAL_DIRECTORY = "E:\\OneDrive - MORE ELECTRIC AND POWER CORPORATION\\Desktop\\DASHBOARD_FINAL\\MORE Trading Node\\"
 CHECK_INTERVAL = 300  # In seconds
 
 # Function to connect to the FTP server
@@ -910,6 +914,7 @@ def more_trading_node_file():
 # ------ from more_trading_node_2nd_part.py file ------
 def find_total_mtn():
     directory = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MORE Trading Node'
+    #directory = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MORE Trading Node'
     now = datetime.now()
     # Example folder name: 20240711
     date_today = now.strftime("%Y%m%d")
@@ -10525,6 +10530,7 @@ def more_trading_node_2nd_part_file():
 # ------ from total_substation_load_final.py file ------
 # File locations
 file_loc = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\\'
+#file_loc = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\\'
 current_day = datetime.today()
 
 def query_substation_data():
@@ -10665,7 +10671,7 @@ def total_substation_load_final_file():
 # ------ from python actual_energy.py file ------
 # File path for destination Excel file
 destination_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\actual_energy.xlsx'
-
+#destination_file_path = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\actual_energy.xlsx'
 # Load source workbooks
 def load_source_workbooks():
     source_wb = load_workbook('station_load.xlsx')
@@ -10926,7 +10932,7 @@ def wesm_exposure_we():
 
     # File path for destination Excel file
     destination_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\wesm_exposure.xlsx'
-
+    #destination_file_path = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\wesm_exposure.xlsx'
     # Load source workbooks
     source_wb = load_workbook('actual_energy.xlsx')
     source_sheet = source_wb['Sheet']
@@ -10994,14 +11000,14 @@ def get_actual_energy_for_current_hour(excel_file, current_hour):
         print(f"Error retrieving actual energy value from Excel: {e}")
         return None
     
-def get_contestable_energy_for_current_hour(excel_file, current_hour):
-    try:
-        df = pd.read_excel(excel_file, header=None, names=['HOUR', 'ACTUAL_ENERGY', 'TOTAL_BCQ_NOMINATION', 'CONTESTABLE_ENERGY', 'WESM_EXPOSURE'], skiprows=1)
-        contestable_energy_value = df.loc[df['HOUR'] == current_hour, 'CONTESTABLE_ENERGY'].values[0]
-        return float(contestable_energy_value) if pd.notnull(contestable_energy_value) else None
-    except Exception as e:
-        print(f"Error retrieving contestable energy value from Excel: {e}")
-        return None
+# def get_contestable_energy_for_current_hour(excel_file, current_hour):
+#     try:
+#         df = pd.read_excel(excel_file, header=None, names=['HOUR', 'ACTUAL_ENERGY', 'TOTAL_BCQ_NOMINATION', 'CONTESTABLE_ENERGY', 'WESM_EXPOSURE'], skiprows=1)
+#         contestable_energy_value = df.loc[df['HOUR'] == current_hour, 'CONTESTABLE_ENERGY'].values[0]
+#         return float(contestable_energy_value) if pd.notnull(contestable_energy_value) else None
+#     except Exception as e:
+#         print(f"Error retrieving contestable energy value from Excel: {e}")
+#         return None
     
 def get_total_bcq_nomination_for_current_hour(excel_file, current_hour):
     try:
@@ -11015,10 +11021,9 @@ def get_total_bcq_nomination_for_current_hour(excel_file, current_hour):
 def get_wesm_exposure_for_current_hour(excel_file, current_hour):
     try:
         actual_energy_value = get_actual_energy_for_current_hour(excel_file, current_hour)
-        contestable_energy_value = get_contestable_energy_for_current_hour(excel_file, current_hour)
         total_bcq_nomination_value = get_total_bcq_nomination_for_current_hour(excel_file, current_hour)
 
-        wesm_exposure_value = actual_energy_value - contestable_energy_value - total_bcq_nomination_value if actual_energy_value is not None and contestable_energy_value is not None and total_bcq_nomination_value is not None else None
+        wesm_exposure_value = actual_energy_value - total_bcq_nomination_value if actual_energy_value is not None and total_bcq_nomination_value is not None else None
         return wesm_exposure_value
     except Exception as e:
         print(f"Error calculating wesm exposure value: {e}")
@@ -11056,7 +11061,7 @@ def main_we(excel_file, conn):
 def wesm_exposure_file():
     # while True:
     excel_file = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\wesm_exposure.xlsx'
-    
+    #excel_file = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\wesm_exposure.xlsx'
     conn = mysql.connector.connect(
         host='localhost',
         database='myDb',
@@ -11142,6 +11147,7 @@ def initial_function():
     # folder_path_2 = os.path.join(folder_path, folder_name_2)
 
     base_directory = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections"
+    #base_directory = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\01_Energy Sourcing Files - Raphael Becodo Dorilag's files 1\03_Daily Reports\01_Day Ahead Projections"
     current_date = datetime.now()
     current_month_numeric = current_date.strftime("%m")
     current_month_name = current_date.strftime("%B")
@@ -11212,7 +11218,7 @@ def initial_function():
 
     # File path for destination Excel file
     destination_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\current_rate.xlsx'
-
+    #destination_file_path = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\current_rate.xlsx'
     # Load source workbook
     source_wb = load_workbook(folder_path_3, data_only=True)  # Use data_only=True to get values instead of formulas
     # Sheet name of the source workbook
@@ -11451,7 +11457,7 @@ def initial_function():
 
     # File path for destination Excel file
     destination_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\current_rate.xlsx'
-
+    #destination_file_path = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\current_rate.xlsx'
     # Load source workbook
     source_wb_sup = load_workbook(supplier_rates_path, data_only=True)  # Use data_only=True to get values instead of formulas
     # Sheet name of the source workbook
@@ -11830,7 +11836,9 @@ def initial_function():
 def total_ss_load():
 
     total_ss_load_path = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load.xlsx"
+    #total_ss_load_path = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load.xlsx"
     destination_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\current_rate.xlsx'
+    #destination_file_path = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\current_rate.xlsx"
     dest_wb = load_workbook(destination_file_path)
     dest_sheet = dest_wb['Sheet']
 
@@ -11853,7 +11861,9 @@ def total_ss_load():
 # CONTESTABLE ENERGY
 def contestable_energy():
     CE_filepath = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\contestable_energy.xlsx'
+    #CE_filepath = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\contestable_energy.xlsx'
     destination_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\current_rate.xlsx'
+    #destination_file_path = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\current_rate.xlsx'
     dest_wb = load_workbook(destination_file_path)
     dest_sheet = dest_wb['Sheet']
 
@@ -11875,6 +11885,7 @@ def contestable_energy():
 
 def find_total_cr():
     directory = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MORE Trading Node'
+    #directory = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MORE Trading Node'
     now = datetime.now()
     # Example folder name: 20240711
     date_today = now.strftime("%Y%m%d")
@@ -21412,6 +21423,7 @@ def find_total_cr():
 # STORE WESM RATE IN THE EXCEL FILE
 def find_total_2():
     destination_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\current_rate.xlsx'
+    #destination_file_path = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\current_rate.xlsx'
     dest_wb = load_workbook(destination_file_path)
     dest_sheet = dest_wb['Sheet']
     
@@ -21541,6 +21553,7 @@ def find_total_2():
 # CALCULATE CURRENT RATE AND STORE IN THE EXCEL FILE
 def find_total_3():
     destination_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\current_rate.xlsx'
+    #destination_file_path = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\current_rate.xlsx'
     dest_wb = load_workbook(destination_file_path)
     dest_sheet = dest_wb['Sheet']
     c = datetime.now()
@@ -22545,64 +22558,136 @@ def remove_problematic_characters_so(text):
     # Replace the problematic character \x02 (hex) or  (unicode) with an empty string
     return text.replace('\x02', '').replace('', '')
 
+# def main_so():
+#     try:
+#         # Set up options for headless mode
+#         chrome_options = Options()
+#         chrome_options.add_argument("--headless")  # Enable headless mode
+#         chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration (optional)
+#         chrome_options.add_argument("--window-size=1920,1080")  # Set the window size (optional)
+
+#         # Initialize the WebDriver with the specified options
+#         driver = webdriver.Chrome(options=chrome_options)
+
+#         # driver = webdriver.Chrome()
+#         # URL of website
+#         url = 'https://embi.iemop.ph/t/tod/views/SYSTEM_ADVISORY/SOADVISORIES?%3AshowAppBanner=false&%3Adisplay_count=n&%3AshowVizHome=n&%3Aorigin=viz_share_link&%3AisGuestRedirectFromVizportal=y&%3Aembed=y'
+#         # Opening the website
+#         driver.get(url) 
+#         # Maximize window
+#         driver.maximize_window()
+#         time.sleep(3)
+#         # Click 'Download'
+#         driver.find_element(By.XPATH, "/html/body/div[2]/div[2]/div[2]/div[1]/div[2]/div[2]").click()
+#         time.sleep(10)
+#         # Click 'Crosstab'
+#         driver.find_element(By.XPATH, "/html/body/div[6]/div/div/div/div/div[2]/div/button[3]").click()
+#         time.sleep(10)
+#         # Click 'Download'
+#         driver.find_element(By.XPATH, '/html/body/div[7]/div/div/div/div/div[2]/div/div[2]/button').click()
+#         time.sleep(10)
+#         list_of_files = glob.glob(r'C:\Users\aslee\Downloads\*')
+#         #list_of_files = glob.glob(r'C:\Users\Corplan\Downloads\*')
+#         # Finds the most recently created file from a list of files
+#         csv_file_path = max(list_of_files, key=os.path.getctime)
+#         final_csv_file_path = r'C:\Users\aslee\Downloads\SO_ADV_crosstab.csv'
+#         #final_csv_file_path = r'C:\Users\Corplan\Downloads\SO_ADV_crosstab.csv'
+
+#         for i in range(1, 100000):
+#             if csv_file_path == rf'C:\Users\aslee\Downloads\SO_ADV_crosstab ({i}).csv':
+#             #if csv_file_path == rf'C:\Users\Corplan\Downloads\SO_ADV_crosstab ({i}).csv':
+#                 os.replace(csv_file_path, final_csv_file_path)
+#                 break 
+#         time.sleep(3)
+#         global header
+#         # Usage
+#         expected_columns, header = inspect_csv_so(final_csv_file_path, delimiter='\t')
+#         time.sleep(3)
+#         # Usage
+#         cleaned_csv_file_path = r'C:\Users\aslee\Downloads\cleaned_output_file.csv'
+#         #cleaned_csv_file_path = r'C:\Users\Corplan\Downloads\cleaned_output_file.csv'
+#         clean_csv_so(final_csv_file_path, cleaned_csv_file_path, encoding='utf-16', delimiter='\t', expected_columns=expected_columns)
+#         # Read the cleaned CSV file
+#         df = pd.read_csv(cleaned_csv_file_path, encoding='utf-16', delimiter='\t')
+#         time.sleep(3)
+#         # Clean each cell in the DataFrame
+#         df_cleaned = df.applymap(remove_problematic_characters_so)
+#         time.sleep(3)
+#         # Write the cleaned DataFrame to an Excel file
+#         excel_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\SO_ADVISORIES.xlsx'
+#         #excel_file_path = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\SO_ADVISORIES.xlsx'
+#         df_cleaned.to_excel(excel_file_path, index=False)
+#         print(f'CSV file "{cleaned_csv_file_path}" successfully converted to Excel file "{excel_file_path}"')
+#     except:
+#         time.sleep(1)
+#         st.rerun()
+
+# def so_advisories_file():
+#     threading.Thread(target=main_so, daemon=True).start()
+    #main_so()
+
 def main_so():
+    try:
+        # Set up options for headless mode
+        chrome_options = Options()
+        chrome_options.add_argument("--headless")  # Enable headless mode
+        chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration (optional)
+        chrome_options.add_argument("--window-size=1920,1080")  # Set the window size (optional)
 
-    # Set up options for headless mode
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")  # Enable headless mode
-    chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration (optional)
-    chrome_options.add_argument("--window-size=1920,1080")  # Set the window size (optional)
+        # Initialize the WebDriver with the specified options
+        driver = webdriver.Chrome(options=chrome_options)
 
-    # Initialize the WebDriver with the specified options
-    driver = webdriver.Chrome(options=chrome_options)
+        # URL of website
+        url = 'https://embi.iemop.ph/t/tod/views/SYSTEM_ADVISORY/SOADVISORIES?%3AshowAppBanner=false&%3Adisplay_count=n&%3AshowVizHome=n&%3Aorigin=viz_share_link&%3AisGuestRedirectFromVizportal=y&%3Aembed=y'
+        driver.get(url) 
+        driver.maximize_window()
+        time.sleep(3)
 
-    # driver = webdriver.Chrome()
-    # URL of website
-    url = 'https://embi.iemop.ph/t/tod/views/SYSTEM_ADVISORY/SOADVISORIES?%3AshowAppBanner=false&%3Adisplay_count=n&%3AshowVizHome=n&%3Aorigin=viz_share_link&%3AisGuestRedirectFromVizportal=y&%3Aembed=y'
-    # Opening the website
-    driver.get(url) 
-    # Maximize window
-    driver.maximize_window()
-    time.sleep(3)
-    # Click 'Download'
-    driver.find_element(By.XPATH, "/html/body/div[2]/div[2]/div[2]/div[1]/div[2]/div[2]").click()
-    time.sleep(10)
-    # Click 'Crosstab'
-    driver.find_element(By.XPATH, "/html/body/div[6]/div/div/div/div/div[2]/div/button[3]").click()
-    time.sleep(10)
-    # Click 'Download'
-    driver.find_element(By.XPATH, '/html/body/div[7]/div/div/div/div/div[2]/div/div[2]/button').click()
-    time.sleep(10)
-    list_of_files = glob.glob(r'C:\Users\aslee\Downloads\*')
-    # Finds the most recently created file from a list of files
-    csv_file_path = max(list_of_files, key=os.path.getctime)
-    final_csv_file_path = r'C:\Users\aslee\Downloads\SO_ADV_crosstab.csv'
+        # Click 'Download'
+        driver.find_element(By.XPATH, "/html/body/div[2]/div[2]/div[2]/div[1]/div[2]/div[2]").click()
+        time.sleep(10)
 
-    for i in range(1, 100000):
-        if csv_file_path == rf'C:\Users\aslee\Downloads\SO_ADV_crosstab ({i}).csv':
-            os.replace(csv_file_path, final_csv_file_path)
-            break 
-    time.sleep(3)
-    global header
-    # Usage
-    expected_columns, header = inspect_csv_so(final_csv_file_path, delimiter='\t')
-    time.sleep(3)
-    # Usage
-    cleaned_csv_file_path = r'C:\Users\aslee\Downloads\cleaned_output_file.csv'
-    clean_csv_so(final_csv_file_path, cleaned_csv_file_path, encoding='utf-16', delimiter='\t', expected_columns=expected_columns)
-    # Read the cleaned CSV file
-    df = pd.read_csv(cleaned_csv_file_path, encoding='utf-16', delimiter='\t')
-    time.sleep(3)
-    # Clean each cell in the DataFrame
-    df_cleaned = df.applymap(remove_problematic_characters_so)
-    time.sleep(3)
-    # Write the cleaned DataFrame to an Excel file
-    excel_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\SO_ADVISORIES.xlsx'
-    df_cleaned.to_excel(excel_file_path, index=False)
-    print(f'CSV file "{cleaned_csv_file_path}" successfully converted to Excel file "{excel_file_path}"')
+        # Click 'Crosstab'
+        driver.find_element(By.XPATH, "/html/body/div[6]/div/div/div/div/div[2]/div/button[3]").click()
+        time.sleep(10)
+
+        # Click 'Download'
+        driver.find_element(By.XPATH, '/html/body/div[7]/div/div/div/div/div[2]/div/div[2]/button').click()
+        time.sleep(10)
+
+        # Fetch latest downloaded file
+        list_of_files = glob.glob(r'C:\Users\aslee\Downloads\*')
+        csv_file_path = max(list_of_files, key=os.path.getctime)
+
+        # Rename the CSV file to a desired name
+        final_csv_file_path = r'C:\Users\aslee\Downloads\SO_ADV_crosstab.csv'
+        for i in range(1, 100000):
+            if csv_file_path == rf'C:\Users\aslee\Downloads\SO_ADV_crosstab ({i}).csv':
+                os.replace(csv_file_path, final_csv_file_path)
+                break 
+
+        time.sleep(3)
+
+        # Inspect and clean the CSV
+        expected_columns, header = inspect_csv_so(final_csv_file_path, delimiter='\t')
+        cleaned_csv_file_path = r'C:\Users\aslee\Downloads\cleaned_output_file.csv'
+        clean_csv_so(final_csv_file_path, cleaned_csv_file_path, encoding='utf-16', delimiter='\t', expected_columns=expected_columns)
+
+        # Read the cleaned CSV file and clean data cells
+        df = pd.read_csv(cleaned_csv_file_path, encoding='utf-16', delimiter='\t')
+        df_cleaned = df.applymap(remove_problematic_characters_so)
+
+        # Write cleaned data to an Excel file
+        excel_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\SO_ADVISORIES.xlsx'
+        df_cleaned.to_excel(excel_file_path, index=False)
+        print(f'CSV file "{cleaned_csv_file_path}" successfully converted to Excel file "{excel_file_path}"')
+
+    except Exception as e:
+        print(f"Error: {e}")  # It's better to log the actual error
+        st.rerun()
 
 def so_advisories_file():
-    main_so()
+    threading.Thread(target=main_so, daemon=True).start()
 
 # ------ from mo_advisories.py file ------
 # Check expected columns based on header
@@ -22652,63 +22737,75 @@ def remove_problematic_characters_mo(text):
     # Replace the problematic character \x02 (hex) or  (unicode) with an empty string
     return text.replace('\x02', '').replace('', '')
 
-def main_mo():
-    # Set up options for headless mode
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")  # Enable headless mode
-    chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration (optional)
-    chrome_options.add_argument("--window-size=1920,1080")  # Set the window size (optional)
+# def main_mo():
+#     try:
+#         # Set up options for headless mode
+#         chrome_options = Options()
+#         chrome_options.add_argument("--headless")  # Enable headless mode
+#         chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration (optional)
+#         chrome_options.add_argument("--window-size=1920,1080")  # Set the window size (optional)
 
-    # Initialize the WebDriver with the specified options
-    driver = webdriver.Chrome(options=chrome_options)
-    # driver = webdriver.Chrome()
-    # URL of website
-    url = 'https://embi.iemop.ph/t/tod/views/SYSTEM_ADVISORY/MARKETSYSTEMS?%3AshowAppBanner=false&%3Adisplay_count=n&%3AshowVizHome=n&%3Aorigin=viz_share_link&%3AisGuestRedirectFromVizportal=y&%3Aembed=y'
-    # Opening the website
-    driver.get(url) 
-    # Maximize window
-    driver.maximize_window()
-    time.sleep(3)
-    # Click 'Download'
-    driver.find_element(By.XPATH, "/html/body/div[2]/div[2]/div[2]/div[1]/div[2]/div[2]").click()
-    time.sleep(10)
-    # Click 'Crosstab'
-    driver.find_element(By.XPATH, "/html/body/div[6]/div/div/div/div/div[2]/div/button[3]").click()
-    time.sleep(10)
-    # Click 'Download'
-    driver.find_element(By.XPATH, "/html/body/div[7]/div/div/div/div/div[2]/div/div[2]/button").click()
-    time.sleep(10)
-    list_of_files = glob.glob(r'C:\Users\aslee\Downloads\*')
-    # Finds the most recently created file from a list of files
-    csv_file_path = max(list_of_files, key=os.path.getctime)
-    final_csv_file_path = r'C:\Users\aslee\Downloads\ADV_crosstab.csv'
+#         # Initialize the WebDriver with the specified options
+#         driver = webdriver.Chrome(options=chrome_options)
+#         # driver = webdriver.Chrome()
+#         # URL of website
+#         url = 'https://embi.iemop.ph/t/tod/views/SYSTEM_ADVISORY/MARKETSYSTEMS?%3AshowAppBanner=false&%3Adisplay_count=n&%3AshowVizHome=n&%3Aorigin=viz_share_link&%3AisGuestRedirectFromVizportal=y&%3Aembed=y'
+#         # Opening the website
+#         driver.get(url) 
+#         # Maximize window
+#         driver.maximize_window()
+#         time.sleep(3)
+#         # Click 'Download'
+#         driver.find_element(By.XPATH, "/html/body/div[2]/div[2]/div[2]/div[1]/div[2]/div[2]").click()
+#         time.sleep(10)
+#         # Click 'Crosstab'
+#         driver.find_element(By.XPATH, "/html/body/div[6]/div/div/div/div/div[2]/div/button[3]").click()
+#         time.sleep(10)
+#         # Click 'Download'
+#         driver.find_element(By.XPATH, "/html/body/div[7]/div/div/div/div/div[2]/div/div[2]/button").click()
+#         time.sleep(10)
+#         list_of_files = glob.glob(r'C:\Users\aslee\Downloads\*')
+#         #list_of_files = glob.glob(r'C:\Users\Corplan\Downloads\*')
+#         # Finds the most recently created file from a list of files
+#         csv_file_path = max(list_of_files, key=os.path.getctime)
+#         final_csv_file_path = r'C:\Users\aslee\Downloads\ADV_crosstab.csv'
+#         #final_csv_file_path = r'C:\Users\Corplan\Downloads\ADV_crosstab.csv'
 
-    for i in range(1, 100000):
-        if csv_file_path == rf'C:\Users\aslee\Downloads\ADV_crosstab ({i}).csv':
-            os.replace(csv_file_path, final_csv_file_path)
-            break
-    time.sleep(3)
-    global header
-    # Usage
-    expected_columns, header = inspect_csv_mo(final_csv_file_path, delimiter='\t')
-    time.sleep(3)
-    # Usage
-    cleaned_csv_file_path = r'C:\Users\aslee\Downloads\cleaned_mo_advisories_file.csv'
-    clean_csv_mo(final_csv_file_path, cleaned_csv_file_path, encoding='utf-16', delimiter='\t', expected_columns=expected_columns)
-    time.sleep(3)
-    # Read the cleaned CSV file
-    df = pd.read_csv(cleaned_csv_file_path, encoding='utf-16', delimiter='\t')
-    time.sleep(3)
-    # Clean each cell in the DataFrame
-    df_cleaned = df.applymap(remove_problematic_characters_mo)
-    time.sleep(3)
-    # Write the cleaned DataFrame to an Excel file
-    excel_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MO_ADVISORIES.xlsx'
-    df_cleaned.to_excel(excel_file_path, index=False)
-    print(f'CSV file "{cleaned_csv_file_path}" successfully converted to Excel file "{excel_file_path}"')
+#         for i in range(1, 100000):
+#             if csv_file_path == rf'C:\Users\aslee\Downloads\ADV_crosstab ({i}).csv':
+#             #if csv_file_path == rf'C:\Users\Corplan\Downloads\ADV_crosstab ({i}).csv':
+#                 os.replace(csv_file_path, final_csv_file_path)
+#                 break
+#         time.sleep(3)
+#         global header
+#         # Usage
+#         expected_columns, header = inspect_csv_mo(final_csv_file_path, delimiter='\t')
+#         time.sleep(3)
+#         # Usage
+#         cleaned_csv_file_path = r'C:\Users\aslee\Downloads\cleaned_mo_advisories_file.csv'
+#         #cleaned_csv_file_path = r'C:\Users\Corplan\Downloads\cleaned_mo_advisories_file.csv'
+#         clean_csv_mo(final_csv_file_path, cleaned_csv_file_path, encoding='utf-16', delimiter='\t', expected_columns=expected_columns)
+#         time.sleep(3)
+#         # Read the cleaned CSV file
+#         df = pd.read_csv(cleaned_csv_file_path, encoding='utf-16', delimiter='\t')
+#         time.sleep(3)
+#         # Clean each cell in the DataFrame
+#         df_cleaned = df.applymap(remove_problematic_characters_mo)
+#         time.sleep(3)
+#         # Write the cleaned DataFrame to an Excel file
+#         excel_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MO_ADVISORIES.xlsx'
+#         #excel_file_path = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MO_ADVISORIES.xlsx'
+#         df_cleaned.to_excel(excel_file_path, index=False)
+#         print(f'CSV file "{cleaned_csv_file_path}" successfully converted to Excel file "{excel_file_path}"')
+#     except:
+#         time.sleep(1)
+#         st.rerun()
 
-def mo_advisories_file():
-    main_mo()
+# def mo_advisories_file():
+#     #threading.Thread(target=main_mo, daemon=True).start()
+#     main_mo()
+
+
 
 def view_all_data():
     c.execute('select * from timeintervals order by id asc')
@@ -22814,8 +22911,9 @@ def load_data_from_excel():
 
     # File path for destination Excel file
     destination_file_path_slg = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load_graph.xlsx'
+    #destination_file_path_slg = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load_graph.xlsx'
     source_file_path_slg = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load.xlsx'
-
+    #source_file_path_slg = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load.xlsx'
     # Load source workbook
     source_wb_slg = load_workbook(source_file_path_slg)  
     # Sheet name of the source workbook
@@ -22840,6 +22938,7 @@ def load_data_from_excel():
 
     # Read the Excel file into a Pandas Dataframe
     file_path = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load_graph.xlsx"
+    #file_path = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load_graph.xlsx"
     df = pd.read_excel(file_path)
 
     # Connect to the MySQL Database
@@ -22896,6 +22995,7 @@ def load_data_from_excel():
 
     # Read the Excel file
     file_path = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load_graph.xlsx"
+    #file_path = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load_graph.xlsx"
     df = pd.read_excel(file_path, sheet_name='Sheet')
     return df
 
@@ -22981,7 +23081,8 @@ def sub_load_func():
         fig_ss_load = px.bar(chart_data, y='Substation', x='kW', text='kW', orientation='h')
 
         # Customize the bar colors
-        colors = ['orangered', 'green', 'cornflowerblue', 'darkblue', 'yellow', 'lightpink', 'mediumpurple', 'lime']
+        # Red, Green, Light Blue, Dark Blue, Yellow, Pink, Purple, Brown
+        colors = ['#cc3333', '#228B22', '#ADD8E6', '#4682B4', '#FFDB58', '#FFC0CB', '#C3B1E1', '#C19A6B']
         fig_ss_load.update_traces(marker_color=colors)
 
         # Customize the layout
@@ -23009,7 +23110,7 @@ def sub_load_func():
             ),
             uniformtext_minsize=8,
             uniformtext_mode='hide',
-            height=260  # Set the height of the bar chart
+            height=240  # Set the height of the bar chart
         )
 
         fig_ss_load.update_layout(
@@ -23026,10 +23127,13 @@ def actual_vs_forecasted():
 
         # File paths
         station_load_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load_graph.xlsx'
+        #station_load_destination_path = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\station_load_graph.xlsx'
         bcq_nomination_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\total_bcq_nomination.xlsx'
+        #bcq_nomination_destination_path = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\total_bcq_nomination.xlsx'
         forecasted_energy_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\forecasted_energy.xlsx'
+        #forecasted_energy_destination_path = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\forecasted_energy.xlsx'
         actual_energy_destination_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\actual_energy.xlsx'
-
+        #actual_energy_destination_path = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\actual_energy.xlsx'
         # Load Actual Energy data
         actual_energy_wb = openpyxl.load_workbook(actual_energy_destination_path)
         actual_energy_sheet = actual_energy_wb.active
@@ -23050,17 +23154,18 @@ def actual_vs_forecasted():
 
         # Initialize a dictionary to store the results
         data = {'Hour': list(range(1, 25))}
-
+        # # Orange, Green, Light Blue, Dark Blue, Yellow, Pink, Purple, Brown
+        # colors = ['#E3963E', '#228B22', '#ADD8E6', '#4682B4', '#FFDB58', '#FFC0CB', '#C3B1E1', '#C19A6B']
         # List of stations and their corresponding colors
         stations = {
-            'Lapaz': 'red',
-            'Jaro': 'orange',
-            'Mandurriao': 'yellow',
-            'Molo': 'lime',
-            'Diversion': 'green',
-            'Mobile SS 1': 'cornflowerblue',
-            'Mobile SS 2': 'darkblue',
-            'Megaworld': 'mediumpurple'
+            'Lapaz': '#cc3333',
+            'Jaro': '#228B22',
+            'Mandurriao': '#ADD8E6',
+            'Molo': '#4682B4',
+            'Diversion': '#FFDB58',
+            'Mobile SS 1': '#FFC0CB',
+            'Mobile SS 2': '#C3B1E1',
+            'Megaworld': '#C19A6B'
         }
 
         # Loop through each station and add their hourly values to the dictionary
@@ -23102,7 +23207,7 @@ def actual_vs_forecasted():
             y=df_3['TOTAL_BCQ'],
             mode='lines+markers',
             name='BCQ Nomination',
-            line=dict(color='silver')
+            line=dict(color='#76448a')
         ))
 
         # Update layout with x and y axis labels and custom y-axis formatting
@@ -23125,12 +23230,12 @@ def actual_vs_forecasted():
             plot_bgcolor='black',
             paper_bgcolor='black',
             barmode='stack',
-            height=260  # Maintain the height at 260
+            height=240  # Maintain the height at 260
         )
 
         # Add actual energy values as text annotations on top of the bars
         for i, hour in enumerate(result_df['Hour']):
-            if i < len(actual_energy_values) and hour <= current_hour:
+            if i%2 == 0 and i < len(actual_energy_values) and hour <= current_hour:
                 formatted_value = format_value(int(actual_energy_values[i]))
                 fig.add_trace(go.Scatter(
                     x=[hour],
@@ -23150,6 +23255,7 @@ def tipc_func():
             # -- START OF TRADING INTERVAL PRICE CALCULATION LINE CHART --
 
         directory = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MORE Trading Node'
+        #directory = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MORE Trading Node'
         now = datetime.now()
         date_today = now.strftime("%Y%m%d")
         contents = os.listdir(directory)
@@ -23699,13 +23805,13 @@ def tipc_func():
         if hour_value == "01":
             data = {
                 "HOUR": ["01"],
-                "03BOTOCA_G01": [average_botoca_g01[0]],
+               # "03BOTOCA_G01": [average_botoca_g01[0]],
                 "03CALACA_G01": [average_calaca_g01[0]],
                 "03CALACA_G02": [average_calaca_g02[0]],
-                "03KAL_G01": [average_kal_g01[0]], 
-                "03KAL_G02": [average_kal_g02[0]], 
-                "03KAL_G03": [average_kal_g03[0]],
-                "03KAL_G04": [average_kal_g04[0]],
+               # "03KAL_G01": [average_kal_g01[0]], 
+               # "03KAL_G02": [average_kal_g02[0]], 
+               # "03KAL_G03": [average_kal_g03[0]],
+               # "03KAL_G04": [average_kal_g04[0]],
                 "04LEYTE_A": [average_leyte_a[0]],
                 "05KSPC_G01": [average_kspc_g01[0]],
                 "05KSPC_G02": [average_kspc_g02[0]], 
@@ -23717,13 +23823,13 @@ def tipc_func():
         elif hour_value == "02":
             data = {
                 "HOUR": ["01", "02"],
-                "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1]],
+               # "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1]],
                 "03CALACA_G01": [average_calaca_g01[0], average_calaca_g01[1]],
                 "03CALACA_G02": [average_calaca_g02[0], average_calaca_g02[1]],
-                "03KAL_G01": [average_kal_g01[0], average_kal_g01[1]], 
-                "03KAL_G02": [average_kal_g02[0], average_kal_g02[1]], 
-                "03KAL_G03": [average_kal_g03[0], average_kal_g03[1]],
-                "03KAL_G04": [average_kal_g04[0], average_kal_g04[1]],
+               # "03KAL_G01": [average_kal_g01[0], average_kal_g01[1]], 
+               # "03KAL_G02": [average_kal_g02[0], average_kal_g02[1]], 
+               # "03KAL_G03": [average_kal_g03[0], average_kal_g03[1]],
+               # "03KAL_G04": [average_kal_g04[0], average_kal_g04[1]],
                 "04LEYTE_A": [average_leyte_a[0], average_leyte_a[1]],
                 "05KSPC_G01": [average_kspc_g01[0], average_kspc_g01[1]],
                 "05KSPC_G02": [average_kspc_g02[0], average_kspc_g02[1]], 
@@ -23735,13 +23841,13 @@ def tipc_func():
         elif hour_value == '03':
             data = {
                 "HOUR": ["01", "02", "03"],
-                "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2]],
+               # "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2]],
                 "03CALACA_G01": [average_calaca_g01[0], average_calaca_g01[1], average_calaca_g01[2]],
                 "03CALACA_G02": [average_calaca_g02[0], average_calaca_g02[1], average_calaca_g02[2]],
-                "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2]], 
-                "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2]], 
-                "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2]],
-                "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2]],
+              #  "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2]], 
+              #  "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2]], 
+               # "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2]],
+               # "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2]],
                 "04LEYTE_A": [average_leyte_a[0], average_leyte_a[1], average_leyte_a[2]],
                 "05KSPC_G01": [average_kspc_g01[0], average_kspc_g01[1], average_kspc_g01[2]],
                 "05KSPC_G02": [average_kspc_g02[0], average_kspc_g02[1], average_kspc_g02[2]], 
@@ -23753,13 +23859,13 @@ def tipc_func():
         elif hour_value == '04':
             data = {
                 "HOUR": ["01", "02", "03", "04"],
-                "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3]],
+              #  "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3]],
                 "03CALACA_G01": [average_calaca_g01[0], average_calaca_g01[1], average_calaca_g01[2], average_calaca_g01[3]],
                 "03CALACA_G02": [average_calaca_g02[0], average_calaca_g02[1], average_calaca_g02[2], average_calaca_g02[3]],
-                "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3]], 
-                "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3]], 
-                "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3]],
-                "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3]],
+              #  "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3]], 
+              #  "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3]], 
+               # "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3]],
+               # "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3]],
                 "04LEYTE_A": [average_leyte_a[0], average_leyte_a[1], average_leyte_a[2], average_leyte_a[3]],
                 "05KSPC_G01": [average_kspc_g01[0], average_kspc_g01[1], average_kspc_g01[2], average_kspc_g01[3]],
                 "05KSPC_G02": [average_kspc_g02[0], average_kspc_g02[1], average_kspc_g02[2], average_kspc_g02[3]], 
@@ -23771,13 +23877,13 @@ def tipc_func():
         elif hour_value == '05':
             data = {
                 "HOUR": ["01", "02", "03", "04", "05"],
-                "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4]],
+               # "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4]],
                 "03CALACA_G01": [average_calaca_g01[0], average_calaca_g01[1], average_calaca_g01[2], average_calaca_g01[3], average_calaca_g01[4]],
                 "03CALACA_G02": [average_calaca_g02[0], average_calaca_g02[1], average_calaca_g02[2], average_calaca_g02[3], average_calaca_g02[4]],
-                "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4]], 
-                "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4]], 
-                "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4]],
-                "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4]],
+              #  "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4]], 
+              #  "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4]], 
+               # "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4]],
+               # "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4]],
                 "04LEYTE_A": [average_leyte_a[0], average_leyte_a[1], average_leyte_a[2], average_leyte_a[3], average_leyte_a[4]],
                 "05KSPC_G01": [average_kspc_g01[0], average_kspc_g01[1], average_kspc_g01[2], average_kspc_g01[3], average_kspc_g01[4]],
                 "05KSPC_G02": [average_kspc_g02[0], average_kspc_g02[1], average_kspc_g02[2], average_kspc_g02[3], average_kspc_g02[4]], 
@@ -23789,13 +23895,13 @@ def tipc_func():
         elif hour_value == '06':
             data = {
                 "HOUR": ["01", "02", "03", "04", "05", "06"],
-                "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5]],
+                #"03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5]],
                 "03CALACA_G01": [average_calaca_g01[0], average_calaca_g01[1], average_calaca_g01[2], average_calaca_g01[3], average_calaca_g01[4], average_calaca_g01[5]],
                 "03CALACA_G02": [average_calaca_g02[0], average_calaca_g02[1], average_calaca_g02[2], average_calaca_g02[3], average_calaca_g02[4], average_calaca_g02[5]],
-                "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5]], 
-                "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5]], 
-                "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5]],
-                "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5]],
+              #  "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5]], 
+              #  "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5]], 
+              #  "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5]],
+              #  "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5]],
                 "04LEYTE_A": [average_leyte_a[0], average_leyte_a[1], average_leyte_a[2], average_leyte_a[3], average_leyte_a[4], average_leyte_a[5]],
                 "05KSPC_G01": [average_kspc_g01[0], average_kspc_g01[1], average_kspc_g01[2], average_kspc_g01[3], average_kspc_g01[4], average_kspc_g01[5]],
                 "05KSPC_G02": [average_kspc_g02[0], average_kspc_g02[1], average_kspc_g02[2], average_kspc_g02[3], average_kspc_g02[4], average_kspc_g02[5]], 
@@ -23807,13 +23913,13 @@ def tipc_func():
         elif hour_value == '07':
             data = {
                 "HOUR": ["01", "02", "03", "04", "05", "06", "07"],
-                "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6]],
+              #  "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6]],
                 "03CALACA_G01": [average_calaca_g01[0], average_calaca_g01[1], average_calaca_g01[2], average_calaca_g01[3], average_calaca_g01[4], average_calaca_g01[5], average_calaca_g01[6]],
                 "03CALACA_G02": [average_calaca_g02[0], average_calaca_g02[1], average_calaca_g02[2], average_calaca_g02[3], average_calaca_g02[4], average_calaca_g02[5], average_calaca_g02[6]],
-                "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6]], 
-                "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6]], 
-                "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6]],
-                "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6]],
+               # "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6]], 
+               # "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6]], 
+               # "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6]],
+               # "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6]],
                 "04LEYTE_A": [average_leyte_a[0], average_leyte_a[1], average_leyte_a[2], average_leyte_a[3], average_leyte_a[4], average_leyte_a[5], average_leyte_a[6]],
                 "05KSPC_G01": [average_kspc_g01[0], average_kspc_g01[1], average_kspc_g01[2], average_kspc_g01[3], average_kspc_g01[4], average_kspc_g01[5], average_kspc_g01[6]],
                 "05KSPC_G02": [average_kspc_g02[0], average_kspc_g02[1], average_kspc_g02[2], average_kspc_g02[3], average_kspc_g02[4], average_kspc_g02[5], average_kspc_g02[6]], 
@@ -23825,13 +23931,13 @@ def tipc_func():
         elif hour_value == '08':
             data = {
                 "HOUR": ["01", "02", "03", "04", "05", "06", "07", "08"],
-                "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7]],
+               # "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7]],
                 "03CALACA_G01": [average_calaca_g01[0], average_calaca_g01[1], average_calaca_g01[2], average_calaca_g01[3], average_calaca_g01[4], average_calaca_g01[5], average_calaca_g01[6], average_calaca_g01[7]],
                 "03CALACA_G02": [average_calaca_g02[0], average_calaca_g02[1], average_calaca_g02[2], average_calaca_g02[3], average_calaca_g02[4], average_calaca_g02[5], average_calaca_g02[6], average_calaca_g02[7]],
-                "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7]], 
-                "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7]], 
-                "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7]],
-                "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7]],
+               # "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7]], 
+                #"03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7]], 
+                #"03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7]],
+                #"03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7]],
                 "04LEYTE_A": [average_leyte_a[0], average_leyte_a[1], average_leyte_a[2], average_leyte_a[3], average_leyte_a[4], average_leyte_a[5], average_leyte_a[6], average_leyte_a[7]],
                 "05KSPC_G01": [average_kspc_g01[0], average_kspc_g01[1], average_kspc_g01[2], average_kspc_g01[3], average_kspc_g01[4], average_kspc_g01[5], average_kspc_g01[6], average_kspc_g01[7]],
                 "05KSPC_G02": [average_kspc_g02[0], average_kspc_g02[1], average_kspc_g02[2], average_kspc_g02[3], average_kspc_g02[4], average_kspc_g02[5], average_kspc_g02[6], average_kspc_g02[7]], 
@@ -23843,13 +23949,13 @@ def tipc_func():
         elif hour_value == "09":
             data = {
                 "HOUR": ["01", "02", "03", "04", "05", "06", "07", "08", "09"],
-                "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8]],
+                #"03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8]],
                 "03CALACA_G01": [average_calaca_g01[0], average_calaca_g01[1], average_calaca_g01[2], average_calaca_g01[3], average_calaca_g01[4], average_calaca_g01[5], average_calaca_g01[6], average_calaca_g01[7], average_calaca_g01[8]],
                 "03CALACA_G02": [average_calaca_g02[0], average_calaca_g02[1], average_calaca_g02[2], average_calaca_g02[3], average_calaca_g02[4], average_calaca_g02[5], average_calaca_g02[6], average_calaca_g02[7], average_calaca_g02[8]],
-                "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8]], 
-                "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8]], 
-                "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8]],
-                "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8]],
+               # "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8]], 
+               # "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8]], 
+                #"03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8]],
+                #"03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8]],
                 "04LEYTE_A": [average_leyte_a[0], average_leyte_a[1], average_leyte_a[2], average_leyte_a[3], average_leyte_a[4], average_leyte_a[5], average_leyte_a[6], average_leyte_a[7], average_leyte_a[8]],
                 "05KSPC_G01": [average_kspc_g01[0], average_kspc_g01[1], average_kspc_g01[2], average_kspc_g01[3], average_kspc_g01[4], average_kspc_g01[5], average_kspc_g01[6], average_kspc_g01[7], average_kspc_g01[8]],
                 "05KSPC_G02": [average_kspc_g02[0], average_kspc_g02[1], average_kspc_g02[2], average_kspc_g02[3], average_kspc_g02[4], average_kspc_g02[5], average_kspc_g02[6], average_kspc_g02[7], average_kspc_g02[8]], 
@@ -23861,13 +23967,13 @@ def tipc_func():
         elif hour_value == "10":
             data = {
                 "HOUR": ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10"],
-                "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9]],
+               # "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9]],
                 "03CALACA_G01": [average_calaca_g01[0], average_calaca_g01[1], average_calaca_g01[2], average_calaca_g01[3], average_calaca_g01[4], average_calaca_g01[5], average_calaca_g01[6], average_calaca_g01[7], average_calaca_g01[8], average_calaca_g01[9]],
                 "03CALACA_G02": [average_calaca_g02[0], average_calaca_g02[1], average_calaca_g02[2], average_calaca_g02[3], average_calaca_g02[4], average_calaca_g02[5], average_calaca_g02[6], average_calaca_g02[7], average_calaca_g02[8], average_calaca_g02[9]],
-                "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9]], 
-                "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9]], 
-                "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9]],
-                "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9]],
+               # "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9]], 
+               # "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9]], 
+               # "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9]],
+               ## "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9]],
                 "04LEYTE_A": [average_leyte_a[0], average_leyte_a[1], average_leyte_a[2], average_leyte_a[3], average_leyte_a[4], average_leyte_a[5], average_leyte_a[6], average_leyte_a[7], average_leyte_a[8], average_leyte_a[9]],
                 "05KSPC_G01": [average_kspc_g01[0], average_kspc_g01[1], average_kspc_g01[2], average_kspc_g01[3], average_kspc_g01[4], average_kspc_g01[5], average_kspc_g01[6], average_kspc_g01[7], average_kspc_g01[8], average_kspc_g01[9]],
                 "05KSPC_G02": [average_kspc_g02[0], average_kspc_g02[1], average_kspc_g02[2], average_kspc_g02[3], average_kspc_g02[4], average_kspc_g02[5], average_kspc_g02[6], average_kspc_g02[7], average_kspc_g02[8], average_kspc_g02[9]], 
@@ -23879,13 +23985,13 @@ def tipc_func():
         elif hour_value == "11":
             data = {
                 "HOUR": ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11"],
-                "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10]],
+                #"03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10]],
                 "03CALACA_G01": [average_calaca_g01[0], average_calaca_g01[1], average_calaca_g01[2], average_calaca_g01[3], average_calaca_g01[4], average_calaca_g01[5], average_calaca_g01[6], average_calaca_g01[7], average_calaca_g01[8], average_calaca_g01[9], average_calaca_g01[10]],
                 "03CALACA_G02": [average_calaca_g02[0], average_calaca_g02[1], average_calaca_g02[2], average_calaca_g02[3], average_calaca_g02[4], average_calaca_g02[5], average_calaca_g02[6], average_calaca_g02[7], average_calaca_g02[8], average_calaca_g02[9], average_calaca_g02[10]],
-                "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10]], 
-                "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10]], 
-                "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10]],
-                "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10]],
+               # "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10]], 
+               # "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10]], 
+                #"03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10]],
+               # "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10]],
                 "04LEYTE_A": [average_leyte_a[0], average_leyte_a[1], average_leyte_a[2], average_leyte_a[3], average_leyte_a[4], average_leyte_a[5], average_leyte_a[6], average_leyte_a[7], average_leyte_a[8], average_leyte_a[9], average_leyte_a[10]],
                 "05KSPC_G01": [average_kspc_g01[0], average_kspc_g01[1], average_kspc_g01[2], average_kspc_g01[3], average_kspc_g01[4], average_kspc_g01[5], average_kspc_g01[6], average_kspc_g01[7], average_kspc_g01[8], average_kspc_g01[9], average_kspc_g01[10]],
                 "05KSPC_G02": [average_kspc_g02[0], average_kspc_g02[1], average_kspc_g02[2], average_kspc_g02[3], average_kspc_g02[4], average_kspc_g02[5], average_kspc_g02[6], average_kspc_g02[7], average_kspc_g02[8], average_kspc_g02[9], average_kspc_g02[10]], 
@@ -23897,13 +24003,13 @@ def tipc_func():
         elif hour_value == "12":
             data = {
                 "HOUR": ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
-                "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10], average_botoca_g01[11]],
+              #  "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10], average_botoca_g01[11]],
                 "03CALACA_G01": [average_calaca_g01[0], average_calaca_g01[1], average_calaca_g01[2], average_calaca_g01[3], average_calaca_g01[4], average_calaca_g01[5], average_calaca_g01[6], average_calaca_g01[7], average_calaca_g01[8], average_calaca_g01[9], average_calaca_g01[10], average_calaca_g01[11]],
                 "03CALACA_G02": [average_calaca_g02[0], average_calaca_g02[1], average_calaca_g02[2], average_calaca_g02[3], average_calaca_g02[4], average_calaca_g02[5], average_calaca_g02[6], average_calaca_g02[7], average_calaca_g02[8], average_calaca_g02[9], average_calaca_g02[10], average_calaca_g02[11]],
-                "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10], average_kal_g01[11]], 
-                "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10], average_kal_g02[11]], 
-                "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10], average_kal_g03[11]],
-                "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10], average_kal_g04[11]],
+               # "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10], average_kal_g01[11]], 
+                #"03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10], average_kal_g02[11]], 
+                #"03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10], average_kal_g03[11]],
+               # "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10], average_kal_g04[11]],
                 "04LEYTE_A": [average_leyte_a[0], average_leyte_a[1], average_leyte_a[2], average_leyte_a[3], average_leyte_a[4], average_leyte_a[5], average_leyte_a[6], average_leyte_a[7], average_leyte_a[8], average_leyte_a[9], average_leyte_a[10], average_leyte_a[11]],
                 "05KSPC_G01": [average_kspc_g01[0], average_kspc_g01[1], average_kspc_g01[2], average_kspc_g01[3], average_kspc_g01[4], average_kspc_g01[5], average_kspc_g01[6], average_kspc_g01[7], average_kspc_g01[8], average_kspc_g01[9], average_kspc_g01[10], average_kspc_g01[11]],
                 "05KSPC_G02": [average_kspc_g02[0], average_kspc_g02[1], average_kspc_g02[2], average_kspc_g02[3], average_kspc_g02[4], average_kspc_g02[5], average_kspc_g02[6], average_kspc_g02[7], average_kspc_g02[8], average_kspc_g02[9], average_kspc_g02[10], average_kspc_g02[11]], 
@@ -23915,13 +24021,13 @@ def tipc_func():
         elif hour_value == "13":
             data = {
                 "HOUR": ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13"],
-                "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10], average_botoca_g01[11], average_botoca_g01[12]],
+                #"03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10], average_botoca_g01[11], average_botoca_g01[12]],
                 "03CALACA_G01": [average_calaca_g01[0], average_calaca_g01[1], average_calaca_g01[2], average_calaca_g01[3], average_calaca_g01[4], average_calaca_g01[5], average_calaca_g01[6], average_calaca_g01[7], average_calaca_g01[8], average_calaca_g01[9], average_calaca_g01[10], average_calaca_g01[11], average_calaca_g01[12]],
                 "03CALACA_G02": [average_calaca_g02[0], average_calaca_g02[1], average_calaca_g02[2], average_calaca_g02[3], average_calaca_g02[4], average_calaca_g02[5], average_calaca_g02[6], average_calaca_g02[7], average_calaca_g02[8], average_calaca_g02[9], average_calaca_g02[10], average_calaca_g02[11], average_calaca_g02[12]],
-                "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10], average_kal_g01[11], average_kal_g01[12]], 
-                "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10], average_kal_g02[11], average_kal_g02[12]], 
-                "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10], average_kal_g03[11], average_kal_g03[12]],
-                "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10], average_kal_g04[11], average_kal_g04[12]],
+                #"03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10], average_kal_g01[11], average_kal_g01[12]], 
+                #"03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10], average_kal_g02[11], average_kal_g02[12]], 
+                #"03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10], average_kal_g03[11], average_kal_g03[12]],
+                #"03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10], average_kal_g04[11], average_kal_g04[12]],
                 "04LEYTE_A": [average_leyte_a[0], average_leyte_a[1], average_leyte_a[2], average_leyte_a[3], average_leyte_a[4], average_leyte_a[5], average_leyte_a[6], average_leyte_a[7], average_leyte_a[8], average_leyte_a[9], average_leyte_a[10], average_leyte_a[11], average_leyte_a[12]],
                 "05KSPC_G01": [average_kspc_g01[0], average_kspc_g01[1], average_kspc_g01[2], average_kspc_g01[3], average_kspc_g01[4], average_kspc_g01[5], average_kspc_g01[6], average_kspc_g01[7], average_kspc_g01[8], average_kspc_g01[9], average_kspc_g01[10], average_kspc_g01[11], average_kspc_g01[12]],
                 "05KSPC_G02": [average_kspc_g02[0], average_kspc_g02[1], average_kspc_g02[2], average_kspc_g02[3], average_kspc_g02[4], average_kspc_g02[5], average_kspc_g02[6], average_kspc_g02[7], average_kspc_g02[8], average_kspc_g02[9], average_kspc_g02[10], average_kspc_g02[11], average_kspc_g02[12]], 
@@ -23933,13 +24039,13 @@ def tipc_func():
         elif hour_value == "14":
             data = {
                 "HOUR": ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14"],
-                "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10], average_botoca_g01[11], average_botoca_g01[12], average_botoca_g01[13]],
+               # "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10], average_botoca_g01[11], average_botoca_g01[12], average_botoca_g01[13]],
                 "03CALACA_G01": [average_calaca_g01[0], average_calaca_g01[1], average_calaca_g01[2], average_calaca_g01[3], average_calaca_g01[4], average_calaca_g01[5], average_calaca_g01[6], average_calaca_g01[7], average_calaca_g01[8], average_calaca_g01[9], average_calaca_g01[10], average_calaca_g01[11], average_calaca_g01[12], average_calaca_g01[13]],
                 "03CALACA_G02": [average_calaca_g02[0], average_calaca_g02[1], average_calaca_g02[2], average_calaca_g02[3], average_calaca_g02[4], average_calaca_g02[5], average_calaca_g02[6], average_calaca_g02[7], average_calaca_g02[8], average_calaca_g02[9], average_calaca_g02[10], average_calaca_g02[11], average_calaca_g02[12], average_calaca_g02[13]],
-                "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10], average_kal_g01[11], average_kal_g01[12], average_kal_g01[13]], 
-                "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10], average_kal_g02[11], average_kal_g02[12], average_kal_g02[13]], 
-                "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10], average_kal_g03[11], average_kal_g03[12], average_kal_g03[13]],
-                "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10], average_kal_g04[11], average_kal_g04[12], average_kal_g04[13]],
+                #"03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10], average_kal_g01[11], average_kal_g01[12], average_kal_g01[13]], 
+                #"03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10], average_kal_g02[11], average_kal_g02[12], average_kal_g02[13]], 
+                #"03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10], average_kal_g03[11], average_kal_g03[12], average_kal_g03[13]],
+                #"03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10], average_kal_g04[11], average_kal_g04[12], average_kal_g04[13]],
                 "04LEYTE_A": [average_leyte_a[0], average_leyte_a[1], average_leyte_a[2], average_leyte_a[3], average_leyte_a[4], average_leyte_a[5], average_leyte_a[6], average_leyte_a[7], average_leyte_a[8], average_leyte_a[9], average_leyte_a[10], average_leyte_a[11], average_leyte_a[12], average_leyte_a[13]],
                 "05KSPC_G01": [average_kspc_g01[0], average_kspc_g01[1], average_kspc_g01[2], average_kspc_g01[3], average_kspc_g01[4], average_kspc_g01[5], average_kspc_g01[6], average_kspc_g01[7], average_kspc_g01[8], average_kspc_g01[9], average_kspc_g01[10], average_kspc_g01[11], average_kspc_g01[12], average_kspc_g01[13]],
                 "05KSPC_G02": [average_kspc_g02[0], average_kspc_g02[1], average_kspc_g02[2], average_kspc_g02[3], average_kspc_g02[4], average_kspc_g02[5], average_kspc_g02[6], average_kspc_g02[7], average_kspc_g02[8], average_kspc_g02[9], average_kspc_g02[10], average_kspc_g02[11], average_kspc_g02[12], average_kspc_g02[13]], 
@@ -23952,13 +24058,13 @@ def tipc_func():
         elif hour_value == "15":
             data = {
                 "HOUR": ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15"],
-                "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10], average_botoca_g01[11], average_botoca_g01[12], average_botoca_g01[13], average_botoca_g01[14]],
+                #"03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10], average_botoca_g01[11], average_botoca_g01[12], average_botoca_g01[13], average_botoca_g01[14]],
                 "03CALACA_G01": [average_calaca_g01[0], average_calaca_g01[1], average_calaca_g01[2], average_calaca_g01[3], average_calaca_g01[4], average_calaca_g01[5], average_calaca_g01[6], average_calaca_g01[7], average_calaca_g01[8], average_calaca_g01[9], average_calaca_g01[10], average_calaca_g01[11], average_calaca_g01[12], average_calaca_g01[13], average_calaca_g01[14]],
                 "03CALACA_G02": [average_calaca_g02[0], average_calaca_g02[1], average_calaca_g02[2], average_calaca_g02[3], average_calaca_g02[4], average_calaca_g02[5], average_calaca_g02[6], average_calaca_g02[7], average_calaca_g02[8], average_calaca_g02[9], average_calaca_g02[10], average_calaca_g02[11], average_calaca_g02[12], average_calaca_g02[13], average_calaca_g02[14]],
-                "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10], average_kal_g01[11], average_kal_g01[12], average_kal_g01[13], average_kal_g01[14]], 
-                "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10], average_kal_g02[11], average_kal_g02[12], average_kal_g02[13], average_kal_g02[14]], 
-                "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10], average_kal_g03[11], average_kal_g03[12], average_kal_g03[13], average_kal_g03[14]],
-                "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10], average_kal_g04[11], average_kal_g04[12], average_kal_g04[13], average_kal_g04[14]],
+                # "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10], average_kal_g01[11], average_kal_g01[12], average_kal_g01[13], average_kal_g01[14]], 
+                # "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10], average_kal_g02[11], average_kal_g02[12], average_kal_g02[13], average_kal_g02[14]], 
+                # "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10], average_kal_g03[11], average_kal_g03[12], average_kal_g03[13], average_kal_g03[14]],
+                #"03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10], average_kal_g04[11], average_kal_g04[12], average_kal_g04[13], average_kal_g04[14]],
                 "04LEYTE_A": [average_leyte_a[0], average_leyte_a[1], average_leyte_a[2], average_leyte_a[3], average_leyte_a[4], average_leyte_a[5], average_leyte_a[6], average_leyte_a[7], average_leyte_a[8], average_leyte_a[9], average_leyte_a[10], average_leyte_a[11], average_leyte_a[12], average_leyte_a[13], average_leyte_a[14]],
                 "05KSPC_G01": [average_kspc_g01[0], average_kspc_g01[1], average_kspc_g01[2], average_kspc_g01[3], average_kspc_g01[4], average_kspc_g01[5], average_kspc_g01[6], average_kspc_g01[7], average_kspc_g01[8], average_kspc_g01[9], average_kspc_g01[10], average_kspc_g01[11], average_kspc_g01[12], average_kspc_g01[13], average_kspc_g01[14]],
                 "05KSPC_G02": [average_kspc_g02[0], average_kspc_g02[1], average_kspc_g02[2], average_kspc_g02[3], average_kspc_g02[4], average_kspc_g02[5], average_kspc_g02[6], average_kspc_g02[7], average_kspc_g02[8], average_kspc_g02[9], average_kspc_g02[10], average_kspc_g02[11], average_kspc_g02[12], average_kspc_g02[13], average_kspc_g02[14]], 
@@ -23971,13 +24077,13 @@ def tipc_func():
         elif hour_value == "16":
             data = {
                 "HOUR": ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16"],
-                "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10], average_botoca_g01[11], average_botoca_g01[12], average_botoca_g01[13], average_botoca_g01[14], average_botoca_g01[15]],
+                #"03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10], average_botoca_g01[11], average_botoca_g01[12], average_botoca_g01[13], average_botoca_g01[14], average_botoca_g01[15]],
                 "03CALACA_G01": [average_calaca_g01[0], average_calaca_g01[1], average_calaca_g01[2], average_calaca_g01[3], average_calaca_g01[4], average_calaca_g01[5], average_calaca_g01[6], average_calaca_g01[7], average_calaca_g01[8], average_calaca_g01[9], average_calaca_g01[10], average_calaca_g01[11], average_calaca_g01[12], average_calaca_g01[13], average_calaca_g01[14], average_calaca_g01[15]],
                 "03CALACA_G02": [average_calaca_g02[0], average_calaca_g02[1], average_calaca_g02[2], average_calaca_g02[3], average_calaca_g02[4], average_calaca_g02[5], average_calaca_g02[6], average_calaca_g02[7], average_calaca_g02[8], average_calaca_g02[9], average_calaca_g02[10], average_calaca_g02[11], average_calaca_g02[12], average_calaca_g02[13], average_calaca_g02[14], average_calaca_g02[15]],
-                "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10], average_kal_g01[11], average_kal_g01[12], average_kal_g01[13], average_kal_g01[14], average_kal_g01[15]], 
-                "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10], average_kal_g02[11], average_kal_g02[12], average_kal_g02[13], average_kal_g02[14], average_kal_g02[15]], 
-                "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10], average_kal_g03[11], average_kal_g03[12], average_kal_g03[13], average_kal_g03[14], average_kal_g03[15]],
-                "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10], average_kal_g04[11], average_kal_g04[12], average_kal_g04[13], average_kal_g04[14], average_kal_g04[15]],
+                # "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10], average_kal_g01[11], average_kal_g01[12], average_kal_g01[13], average_kal_g01[14], average_kal_g01[15]], 
+                # "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10], average_kal_g02[11], average_kal_g02[12], average_kal_g02[13], average_kal_g02[14], average_kal_g02[15]], 
+                # "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10], average_kal_g03[11], average_kal_g03[12], average_kal_g03[13], average_kal_g03[14], average_kal_g03[15]],
+                # "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10], average_kal_g04[11], average_kal_g04[12], average_kal_g04[13], average_kal_g04[14], average_kal_g04[15]],
                 "04LEYTE_A": [average_leyte_a[0], average_leyte_a[1], average_leyte_a[2], average_leyte_a[3], average_leyte_a[4], average_leyte_a[5], average_leyte_a[6], average_leyte_a[7], average_leyte_a[8], average_leyte_a[9], average_leyte_a[10], average_leyte_a[11], average_leyte_a[12], average_leyte_a[13], average_leyte_a[14], average_leyte_a[15]],
                 "05KSPC_G01": [average_kspc_g01[0], average_kspc_g01[1], average_kspc_g01[2], average_kspc_g01[3], average_kspc_g01[4], average_kspc_g01[5], average_kspc_g01[6], average_kspc_g01[7], average_kspc_g01[8], average_kspc_g01[9], average_kspc_g01[10], average_kspc_g01[11], average_kspc_g01[12], average_kspc_g01[13], average_kspc_g01[14], average_kspc_g01[15]],
                 "05KSPC_G02": [average_kspc_g02[0], average_kspc_g02[1], average_kspc_g02[2], average_kspc_g02[3], average_kspc_g02[4], average_kspc_g02[5], average_kspc_g02[6], average_kspc_g02[7], average_kspc_g02[8], average_kspc_g02[9], average_kspc_g02[10], average_kspc_g02[11], average_kspc_g02[12], average_kspc_g02[13], average_kspc_g02[14], average_kspc_g02[15]], 
@@ -23989,13 +24095,13 @@ def tipc_func():
         elif hour_value == "17":
             data = {
                 "HOUR": ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17"],
-                "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10], average_botoca_g01[11], average_botoca_g01[12], average_botoca_g01[13], average_botoca_g01[14], average_botoca_g01[15], average_botoca_g01[16]],
+                #"03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10], average_botoca_g01[11], average_botoca_g01[12], average_botoca_g01[13], average_botoca_g01[14], average_botoca_g01[15], average_botoca_g01[16]],
                 "03CALACA_G01": [average_calaca_g01[0], average_calaca_g01[1], average_calaca_g01[2], average_calaca_g01[3], average_calaca_g01[4], average_calaca_g01[5], average_calaca_g01[6], average_calaca_g01[7], average_calaca_g01[8], average_calaca_g01[9], average_calaca_g01[10], average_calaca_g01[11], average_calaca_g01[12], average_calaca_g01[13], average_calaca_g01[14], average_calaca_g01[15], average_calaca_g01[16]],
                 "03CALACA_G02": [average_calaca_g02[0], average_calaca_g02[1], average_calaca_g02[2], average_calaca_g02[3], average_calaca_g02[4], average_calaca_g02[5], average_calaca_g02[6], average_calaca_g02[7], average_calaca_g02[8], average_calaca_g02[9], average_calaca_g02[10], average_calaca_g02[11], average_calaca_g02[12], average_calaca_g02[13], average_calaca_g02[14], average_calaca_g02[15], average_calaca_g02[16]],
-                "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10], average_kal_g01[11], average_kal_g01[12], average_kal_g01[13], average_kal_g01[14], average_kal_g01[15], average_kal_g01[16]], 
-                "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10], average_kal_g02[11], average_kal_g02[12], average_kal_g02[13], average_kal_g02[14], average_kal_g02[15], average_kal_g02[16]], 
-                "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10], average_kal_g03[11], average_kal_g03[12], average_kal_g03[13], average_kal_g03[14], average_kal_g03[15], average_kal_g03[16]],
-                "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10], average_kal_g04[11], average_kal_g04[12], average_kal_g04[13], average_kal_g04[14], average_kal_g04[15], average_kal_g04[16]],
+                # "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10], average_kal_g01[11], average_kal_g01[12], average_kal_g01[13], average_kal_g01[14], average_kal_g01[15], average_kal_g01[16]], 
+                # "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10], average_kal_g02[11], average_kal_g02[12], average_kal_g02[13], average_kal_g02[14], average_kal_g02[15], average_kal_g02[16]], 
+                # "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10], average_kal_g03[11], average_kal_g03[12], average_kal_g03[13], average_kal_g03[14], average_kal_g03[15], average_kal_g03[16]],
+                # "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10], average_kal_g04[11], average_kal_g04[12], average_kal_g04[13], average_kal_g04[14], average_kal_g04[15], average_kal_g04[16]],
                 "04LEYTE_A": [average_leyte_a[0], average_leyte_a[1], average_leyte_a[2], average_leyte_a[3], average_leyte_a[4], average_leyte_a[5], average_leyte_a[6], average_leyte_a[7], average_leyte_a[8], average_leyte_a[9], average_leyte_a[10], average_leyte_a[11], average_leyte_a[12], average_leyte_a[13], average_leyte_a[14], average_leyte_a[15], average_leyte_a[16]],
                 "05KSPC_G01": [average_kspc_g01[0], average_kspc_g01[1], average_kspc_g01[2], average_kspc_g01[3], average_kspc_g01[4], average_kspc_g01[5], average_kspc_g01[6], average_kspc_g01[7], average_kspc_g01[8], average_kspc_g01[9], average_kspc_g01[10], average_kspc_g01[11], average_kspc_g01[12], average_kspc_g01[13], average_kspc_g01[14], average_kspc_g01[15], average_kspc_g01[16]],
                 "05KSPC_G02": [average_kspc_g02[0], average_kspc_g02[1], average_kspc_g02[2], average_kspc_g02[3], average_kspc_g02[4], average_kspc_g02[5], average_kspc_g02[6], average_kspc_g02[7], average_kspc_g02[8], average_kspc_g02[9], average_kspc_g02[10], average_kspc_g02[11], average_kspc_g02[12], average_kspc_g02[13], average_kspc_g02[14], average_kspc_g02[15], average_kspc_g02[16]], 
@@ -24007,13 +24113,13 @@ def tipc_func():
         elif hour_value == "18":
             data = {
                 "HOUR": ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18"],
-                "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10], average_botoca_g01[11], average_botoca_g01[12], average_botoca_g01[13], average_botoca_g01[14], average_botoca_g01[15], average_botoca_g01[16], average_botoca_g01[17]],
+                #"03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10], average_botoca_g01[11], average_botoca_g01[12], average_botoca_g01[13], average_botoca_g01[14], average_botoca_g01[15], average_botoca_g01[16], average_botoca_g01[17]],
                 "03CALACA_G01": [average_calaca_g01[0], average_calaca_g01[1], average_calaca_g01[2], average_calaca_g01[3], average_calaca_g01[4], average_calaca_g01[5], average_calaca_g01[6], average_calaca_g01[7], average_calaca_g01[8], average_calaca_g01[9], average_calaca_g01[10], average_calaca_g01[11], average_calaca_g01[12], average_calaca_g01[13], average_calaca_g01[14], average_calaca_g01[15], average_calaca_g01[16], average_calaca_g01[17]],
                 "03CALACA_G02": [average_calaca_g02[0], average_calaca_g02[1], average_calaca_g02[2], average_calaca_g02[3], average_calaca_g02[4], average_calaca_g02[5], average_calaca_g02[6], average_calaca_g02[7], average_calaca_g02[8], average_calaca_g02[9], average_calaca_g02[10], average_calaca_g02[11], average_calaca_g02[12], average_calaca_g02[13], average_calaca_g02[14], average_calaca_g02[15], average_calaca_g02[16], average_calaca_g02[17]],
-                "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10], average_kal_g01[11], average_kal_g01[12], average_kal_g01[13], average_kal_g01[14], average_kal_g01[15], average_kal_g01[16], average_kal_g01[17]], 
-                "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10], average_kal_g02[11], average_kal_g02[12], average_kal_g02[13], average_kal_g02[14], average_kal_g02[15], average_kal_g02[16], average_kal_g02[17]], 
-                "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10], average_kal_g03[11], average_kal_g03[12], average_kal_g03[13], average_kal_g03[14], average_kal_g03[15], average_kal_g03[16], average_kal_g03[17]],
-                "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10], average_kal_g04[11], average_kal_g04[12], average_kal_g04[13], average_kal_g04[14], average_kal_g04[15], average_kal_g04[16], average_kal_g04[17]],
+                # "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10], average_kal_g01[11], average_kal_g01[12], average_kal_g01[13], average_kal_g01[14], average_kal_g01[15], average_kal_g01[16], average_kal_g01[17]], 
+                # "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10], average_kal_g02[11], average_kal_g02[12], average_kal_g02[13], average_kal_g02[14], average_kal_g02[15], average_kal_g02[16], average_kal_g02[17]], 
+                # "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10], average_kal_g03[11], average_kal_g03[12], average_kal_g03[13], average_kal_g03[14], average_kal_g03[15], average_kal_g03[16], average_kal_g03[17]],
+                # "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10], average_kal_g04[11], average_kal_g04[12], average_kal_g04[13], average_kal_g04[14], average_kal_g04[15], average_kal_g04[16], average_kal_g04[17]],
                 "04LEYTE_A": [average_leyte_a[0], average_leyte_a[1], average_leyte_a[2], average_leyte_a[3], average_leyte_a[4], average_leyte_a[5], average_leyte_a[6], average_leyte_a[7], average_leyte_a[8], average_leyte_a[9], average_leyte_a[10], average_leyte_a[11], average_leyte_a[12], average_leyte_a[13], average_leyte_a[14], average_leyte_a[15], average_leyte_a[16], average_leyte_a[17]],
                 "05KSPC_G01": [average_kspc_g01[0], average_kspc_g01[1], average_kspc_g01[2], average_kspc_g01[3], average_kspc_g01[4], average_kspc_g01[5], average_kspc_g01[6], average_kspc_g01[7], average_kspc_g01[8], average_kspc_g01[9], average_kspc_g01[10], average_kspc_g01[11], average_kspc_g01[12], average_kspc_g01[13], average_kspc_g01[14], average_kspc_g01[15], average_kspc_g01[16], average_kspc_g01[17]],
                 "05KSPC_G02": [average_kspc_g02[0], average_kspc_g02[1], average_kspc_g02[2], average_kspc_g02[3], average_kspc_g02[4], average_kspc_g02[5], average_kspc_g02[6], average_kspc_g02[7], average_kspc_g02[8], average_kspc_g02[9], average_kspc_g02[10], average_kspc_g02[11], average_kspc_g02[12], average_kspc_g02[13], average_kspc_g02[14], average_kspc_g02[15], average_kspc_g02[16], average_kspc_g02[17]], 
@@ -24025,13 +24131,13 @@ def tipc_func():
         elif hour_value == "19":
             data = {
                 "HOUR": ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"],
-                "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10], average_botoca_g01[11], average_botoca_g01[12], average_botoca_g01[13], average_botoca_g01[14], average_botoca_g01[15], average_botoca_g01[16], average_botoca_g01[17], average_botoca_g01[18]],
+                # "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10], average_botoca_g01[11], average_botoca_g01[12], average_botoca_g01[13], average_botoca_g01[14], average_botoca_g01[15], average_botoca_g01[16], average_botoca_g01[17], average_botoca_g01[18]],
                 "03CALACA_G01": [average_calaca_g01[0], average_calaca_g01[1], average_calaca_g01[2], average_calaca_g01[3], average_calaca_g01[4], average_calaca_g01[5], average_calaca_g01[6], average_calaca_g01[7], average_calaca_g01[8], average_calaca_g01[9], average_calaca_g01[10], average_calaca_g01[11], average_calaca_g01[12], average_calaca_g01[13], average_calaca_g01[14], average_calaca_g01[15], average_calaca_g01[16], average_calaca_g01[17], average_calaca_g01[18]],
                 "03CALACA_G02": [average_calaca_g02[0], average_calaca_g02[1], average_calaca_g02[2], average_calaca_g02[3], average_calaca_g02[4], average_calaca_g02[5], average_calaca_g02[6], average_calaca_g02[7], average_calaca_g02[8], average_calaca_g02[9], average_calaca_g02[10], average_calaca_g02[11], average_calaca_g02[12], average_calaca_g02[13], average_calaca_g02[14], average_calaca_g02[15], average_calaca_g02[16], average_calaca_g02[17], average_calaca_g02[18]],
-                "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10], average_kal_g01[11], average_kal_g01[12], average_kal_g01[13], average_kal_g01[14], average_kal_g01[15], average_kal_g01[16], average_kal_g01[17], average_kal_g01[18]], 
-                "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10], average_kal_g02[11], average_kal_g02[12], average_kal_g02[13], average_kal_g02[14], average_kal_g02[15], average_kal_g02[16], average_kal_g02[17], average_kal_g02[18]], 
-                "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10], average_kal_g03[11], average_kal_g03[12], average_kal_g03[13], average_kal_g03[14], average_kal_g03[15], average_kal_g03[16], average_kal_g03[17], average_kal_g03[18]],
-                "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10], average_kal_g04[11], average_kal_g04[12], average_kal_g04[13], average_kal_g04[14], average_kal_g04[15], average_kal_g04[16], average_kal_g04[17], average_kal_g04[18]],
+                # "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10], average_kal_g01[11], average_kal_g01[12], average_kal_g01[13], average_kal_g01[14], average_kal_g01[15], average_kal_g01[16], average_kal_g01[17], average_kal_g01[18]], 
+                # "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10], average_kal_g02[11], average_kal_g02[12], average_kal_g02[13], average_kal_g02[14], average_kal_g02[15], average_kal_g02[16], average_kal_g02[17], average_kal_g02[18]], 
+                # "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10], average_kal_g03[11], average_kal_g03[12], average_kal_g03[13], average_kal_g03[14], average_kal_g03[15], average_kal_g03[16], average_kal_g03[17], average_kal_g03[18]],
+                # "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10], average_kal_g04[11], average_kal_g04[12], average_kal_g04[13], average_kal_g04[14], average_kal_g04[15], average_kal_g04[16], average_kal_g04[17], average_kal_g04[18]],
                 "04LEYTE_A": [average_leyte_a[0], average_leyte_a[1], average_leyte_a[2], average_leyte_a[3], average_leyte_a[4], average_leyte_a[5], average_leyte_a[6], average_leyte_a[7], average_leyte_a[8], average_leyte_a[9], average_leyte_a[10], average_leyte_a[11], average_leyte_a[12], average_leyte_a[13], average_leyte_a[14], average_leyte_a[15], average_leyte_a[16], average_leyte_a[17], average_leyte_a[18]],
                 "05KSPC_G01": [average_kspc_g01[0], average_kspc_g01[1], average_kspc_g01[2], average_kspc_g01[3], average_kspc_g01[4], average_kspc_g01[5], average_kspc_g01[6], average_kspc_g01[7], average_kspc_g01[8], average_kspc_g01[9], average_kspc_g01[10], average_kspc_g01[11], average_kspc_g01[12], average_kspc_g01[13], average_kspc_g01[14], average_kspc_g01[15], average_kspc_g01[16], average_kspc_g01[17], average_kspc_g01[18]],
                 "05KSPC_G02": [average_kspc_g02[0], average_kspc_g02[1], average_kspc_g02[2], average_kspc_g02[3], average_kspc_g02[4], average_kspc_g02[5], average_kspc_g02[6], average_kspc_g02[7], average_kspc_g02[8], average_kspc_g02[9], average_kspc_g02[10], average_kspc_g02[11], average_kspc_g02[12], average_kspc_g02[13], average_kspc_g02[14], average_kspc_g02[15], average_kspc_g02[16], average_kspc_g02[17], average_kspc_g02[18]], 
@@ -24043,13 +24149,13 @@ def tipc_func():
         elif hour_value == "20":
             data = {
                 "HOUR": ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"],
-                "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10], average_botoca_g01[11], average_botoca_g01[12], average_botoca_g01[13], average_botoca_g01[14], average_botoca_g01[15], average_botoca_g01[16], average_botoca_g01[17], average_botoca_g01[18], average_botoca_g01[19]],
+                # "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10], average_botoca_g01[11], average_botoca_g01[12], average_botoca_g01[13], average_botoca_g01[14], average_botoca_g01[15], average_botoca_g01[16], average_botoca_g01[17], average_botoca_g01[18], average_botoca_g01[19]],
                 "03CALACA_G01": [average_calaca_g01[0], average_calaca_g01[1], average_calaca_g01[2], average_calaca_g01[3], average_calaca_g01[4], average_calaca_g01[5], average_calaca_g01[6], average_calaca_g01[7], average_calaca_g01[8], average_calaca_g01[9], average_calaca_g01[10], average_calaca_g01[11], average_calaca_g01[12], average_calaca_g01[13], average_calaca_g01[14], average_calaca_g01[15], average_calaca_g01[16], average_calaca_g01[17], average_calaca_g01[18], average_calaca_g01[19]],
                 "03CALACA_G02": [average_calaca_g02[0], average_calaca_g02[1], average_calaca_g02[2], average_calaca_g02[3], average_calaca_g02[4], average_calaca_g02[5], average_calaca_g02[6], average_calaca_g02[7], average_calaca_g02[8], average_calaca_g02[9], average_calaca_g02[10], average_calaca_g02[11], average_calaca_g02[12], average_calaca_g02[13], average_calaca_g02[14], average_calaca_g02[15], average_calaca_g02[16], average_calaca_g02[17], average_calaca_g02[18], average_calaca_g02[19]],
-                "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10], average_kal_g01[11], average_kal_g01[12], average_kal_g01[13], average_kal_g01[14], average_kal_g01[15], average_kal_g01[16], average_kal_g01[17], average_kal_g01[18], average_kal_g01[19]], 
-                "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10], average_kal_g02[11], average_kal_g02[12], average_kal_g02[13], average_kal_g02[14], average_kal_g02[15], average_kal_g02[16], average_kal_g02[17], average_kal_g02[18], average_kal_g02[19]], 
-                "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10], average_kal_g03[11], average_kal_g03[12], average_kal_g03[13], average_kal_g03[14], average_kal_g03[15], average_kal_g03[16], average_kal_g03[17], average_kal_g03[18], average_kal_g03[19]],
-                "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10], average_kal_g04[11], average_kal_g04[12], average_kal_g04[13], average_kal_g04[14], average_kal_g04[15], average_kal_g04[16], average_kal_g04[17], average_kal_g04[18], average_kal_g04[19]],
+                # "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10], average_kal_g01[11], average_kal_g01[12], average_kal_g01[13], average_kal_g01[14], average_kal_g01[15], average_kal_g01[16], average_kal_g01[17], average_kal_g01[18], average_kal_g01[19]], 
+                # "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10], average_kal_g02[11], average_kal_g02[12], average_kal_g02[13], average_kal_g02[14], average_kal_g02[15], average_kal_g02[16], average_kal_g02[17], average_kal_g02[18], average_kal_g02[19]], 
+                # "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10], average_kal_g03[11], average_kal_g03[12], average_kal_g03[13], average_kal_g03[14], average_kal_g03[15], average_kal_g03[16], average_kal_g03[17], average_kal_g03[18], average_kal_g03[19]],
+                # "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10], average_kal_g04[11], average_kal_g04[12], average_kal_g04[13], average_kal_g04[14], average_kal_g04[15], average_kal_g04[16], average_kal_g04[17], average_kal_g04[18], average_kal_g04[19]],
                 "04LEYTE_A": [average_leyte_a[0], average_leyte_a[1], average_leyte_a[2], average_leyte_a[3], average_leyte_a[4], average_leyte_a[5], average_leyte_a[6], average_leyte_a[7], average_leyte_a[8], average_leyte_a[9], average_leyte_a[10], average_leyte_a[11], average_leyte_a[12], average_leyte_a[13], average_leyte_a[14], average_leyte_a[15], average_leyte_a[16], average_leyte_a[17], average_leyte_a[18], average_leyte_a[19]],
                 "05KSPC_G01": [average_kspc_g01[0], average_kspc_g01[1], average_kspc_g01[2], average_kspc_g01[3], average_kspc_g01[4], average_kspc_g01[5], average_kspc_g01[6], average_kspc_g01[7], average_kspc_g01[8], average_kspc_g01[9], average_kspc_g01[10], average_kspc_g01[11], average_kspc_g01[12], average_kspc_g01[13], average_kspc_g01[14], average_kspc_g01[15], average_kspc_g01[16], average_kspc_g01[17], average_kspc_g01[18], average_kspc_g01[19]],
                 "05KSPC_G02": [average_kspc_g02[0], average_kspc_g02[1], average_kspc_g02[2], average_kspc_g02[3], average_kspc_g02[4], average_kspc_g02[5], average_kspc_g02[6], average_kspc_g02[7], average_kspc_g02[8], average_kspc_g02[9], average_kspc_g02[10], average_kspc_g02[11], average_kspc_g02[12], average_kspc_g02[13], average_kspc_g02[14], average_kspc_g02[15], average_kspc_g02[16], average_kspc_g02[17], average_kspc_g02[18], average_kspc_g02[19]], 
@@ -24061,13 +24167,13 @@ def tipc_func():
         elif hour_value == "21":
             data = {
                 "HOUR": ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21"],
-                "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10], average_botoca_g01[11], average_botoca_g01[12], average_botoca_g01[13], average_botoca_g01[14], average_botoca_g01[15], average_botoca_g01[16], average_botoca_g01[17], average_botoca_g01[18], average_botoca_g01[19], average_botoca_g01[20]],
+                # "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10], average_botoca_g01[11], average_botoca_g01[12], average_botoca_g01[13], average_botoca_g01[14], average_botoca_g01[15], average_botoca_g01[16], average_botoca_g01[17], average_botoca_g01[18], average_botoca_g01[19], average_botoca_g01[20]],
                 "03CALACA_G01": [average_calaca_g01[0], average_calaca_g01[1], average_calaca_g01[2], average_calaca_g01[3], average_calaca_g01[4], average_calaca_g01[5], average_calaca_g01[6], average_calaca_g01[7], average_calaca_g01[8], average_calaca_g01[9], average_calaca_g01[10], average_calaca_g01[11], average_calaca_g01[12], average_calaca_g01[13], average_calaca_g01[14], average_calaca_g01[15], average_calaca_g01[16], average_calaca_g01[17], average_calaca_g01[18], average_calaca_g01[19], average_calaca_g01[20]],
                 "03CALACA_G02": [average_calaca_g02[0], average_calaca_g02[1], average_calaca_g02[2], average_calaca_g02[3], average_calaca_g02[4], average_calaca_g02[5], average_calaca_g02[6], average_calaca_g02[7], average_calaca_g02[8], average_calaca_g02[9], average_calaca_g02[10], average_calaca_g02[11], average_calaca_g02[12], average_calaca_g02[13], average_calaca_g02[14], average_calaca_g02[15], average_calaca_g02[16], average_calaca_g02[17], average_calaca_g02[18], average_calaca_g02[19], average_calaca_g02[20]],
-                "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10], average_kal_g01[11], average_kal_g01[12], average_kal_g01[13], average_kal_g01[14], average_kal_g01[15], average_kal_g01[16], average_kal_g01[17], average_kal_g01[18], average_kal_g01[19], average_kal_g01[20]], 
-                "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10], average_kal_g02[11], average_kal_g02[12], average_kal_g02[13], average_kal_g02[14], average_kal_g02[15], average_kal_g02[16], average_kal_g02[17], average_kal_g02[18], average_kal_g02[19], average_kal_g02[20]], 
-                "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10], average_kal_g03[11], average_kal_g03[12], average_kal_g03[13], average_kal_g03[14], average_kal_g03[15], average_kal_g03[16], average_kal_g03[17], average_kal_g03[18], average_kal_g03[19], average_kal_g03[20]],
-                "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10], average_kal_g04[11], average_kal_g04[12], average_kal_g04[13], average_kal_g04[14], average_kal_g04[15], average_kal_g04[16], average_kal_g04[17], average_kal_g04[18], average_kal_g04[19], average_kal_g04[20]],
+                # "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10], average_kal_g01[11], average_kal_g01[12], average_kal_g01[13], average_kal_g01[14], average_kal_g01[15], average_kal_g01[16], average_kal_g01[17], average_kal_g01[18], average_kal_g01[19], average_kal_g01[20]], 
+                # "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10], average_kal_g02[11], average_kal_g02[12], average_kal_g02[13], average_kal_g02[14], average_kal_g02[15], average_kal_g02[16], average_kal_g02[17], average_kal_g02[18], average_kal_g02[19], average_kal_g02[20]], 
+                # "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10], average_kal_g03[11], average_kal_g03[12], average_kal_g03[13], average_kal_g03[14], average_kal_g03[15], average_kal_g03[16], average_kal_g03[17], average_kal_g03[18], average_kal_g03[19], average_kal_g03[20]],
+                # "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10], average_kal_g04[11], average_kal_g04[12], average_kal_g04[13], average_kal_g04[14], average_kal_g04[15], average_kal_g04[16], average_kal_g04[17], average_kal_g04[18], average_kal_g04[19], average_kal_g04[20]],
                 "04LEYTE_A": [average_leyte_a[0], average_leyte_a[1], average_leyte_a[2], average_leyte_a[3], average_leyte_a[4], average_leyte_a[5], average_leyte_a[6], average_leyte_a[7], average_leyte_a[8], average_leyte_a[9], average_leyte_a[10], average_leyte_a[11], average_leyte_a[12], average_leyte_a[13], average_leyte_a[14], average_leyte_a[15], average_leyte_a[16], average_leyte_a[17], average_leyte_a[18], average_leyte_a[19], average_leyte_a[20]],
                 "05KSPC_G01": [average_kspc_g01[0], average_kspc_g01[1], average_kspc_g01[2], average_kspc_g01[3], average_kspc_g01[4], average_kspc_g01[5], average_kspc_g01[6], average_kspc_g01[7], average_kspc_g01[8], average_kspc_g01[9], average_kspc_g01[10], average_kspc_g01[11], average_kspc_g01[12], average_kspc_g01[13], average_kspc_g01[14], average_kspc_g01[15], average_kspc_g01[16], average_kspc_g01[17], average_kspc_g01[18], average_kspc_g01[19], average_kspc_g01[20]],
                 "05KSPC_G02": [average_kspc_g02[0], average_kspc_g02[1], average_kspc_g02[2], average_kspc_g02[3], average_kspc_g02[4], average_kspc_g02[5], average_kspc_g02[6], average_kspc_g02[7], average_kspc_g02[8], average_kspc_g02[9], average_kspc_g02[10], average_kspc_g02[11], average_kspc_g02[12], average_kspc_g02[13], average_kspc_g02[14], average_kspc_g02[15], average_kspc_g02[16], average_kspc_g02[17], average_kspc_g02[18], average_kspc_g02[19], average_kspc_g02[20]], 
@@ -24079,13 +24185,13 @@ def tipc_func():
         elif hour_value == "22":
             data = {
                 "HOUR": ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"],
-                "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10], average_botoca_g01[11], average_botoca_g01[12], average_botoca_g01[13], average_botoca_g01[14], average_botoca_g01[15], average_botoca_g01[16], average_botoca_g01[17], average_botoca_g01[18], average_botoca_g01[19], average_botoca_g01[20], average_botoca_g01[21]],
+                # "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10], average_botoca_g01[11], average_botoca_g01[12], average_botoca_g01[13], average_botoca_g01[14], average_botoca_g01[15], average_botoca_g01[16], average_botoca_g01[17], average_botoca_g01[18], average_botoca_g01[19], average_botoca_g01[20], average_botoca_g01[21]],
                 "03CALACA_G01": [average_calaca_g01[0], average_calaca_g01[1], average_calaca_g01[2], average_calaca_g01[3], average_calaca_g01[4], average_calaca_g01[5], average_calaca_g01[6], average_calaca_g01[7], average_calaca_g01[8], average_calaca_g01[9], average_calaca_g01[10], average_calaca_g01[11], average_calaca_g01[12], average_calaca_g01[13], average_calaca_g01[14], average_calaca_g01[15], average_calaca_g01[16], average_calaca_g01[17], average_calaca_g01[18], average_calaca_g01[19], average_calaca_g01[20], average_calaca_g01[21]],
                 "03CALACA_G02": [average_calaca_g02[0], average_calaca_g02[1], average_calaca_g02[2], average_calaca_g02[3], average_calaca_g02[4], average_calaca_g02[5], average_calaca_g02[6], average_calaca_g02[7], average_calaca_g02[8], average_calaca_g02[9], average_calaca_g02[10], average_calaca_g02[11], average_calaca_g02[12], average_calaca_g02[13], average_calaca_g02[14], average_calaca_g02[15], average_calaca_g02[16], average_calaca_g02[17], average_calaca_g02[18], average_calaca_g02[19], average_calaca_g02[20], average_calaca_g02[21]],
-                "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10], average_kal_g01[11], average_kal_g01[12], average_kal_g01[13], average_kal_g01[14], average_kal_g01[15], average_kal_g01[16], average_kal_g01[17], average_kal_g01[18], average_kal_g01[19], average_kal_g01[20], average_kal_g01[21]], 
-                "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10], average_kal_g02[11], average_kal_g02[12], average_kal_g02[13], average_kal_g02[14], average_kal_g02[15], average_kal_g02[16], average_kal_g02[17], average_kal_g02[18], average_kal_g02[19], average_kal_g02[20], average_kal_g02[21]], 
-                "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10], average_kal_g03[11], average_kal_g03[12], average_kal_g03[13], average_kal_g03[14], average_kal_g03[15], average_kal_g03[16], average_kal_g03[17], average_kal_g03[18], average_kal_g03[19], average_kal_g03[20], average_kal_g03[21]],
-                "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10], average_kal_g04[11], average_kal_g04[12], average_kal_g04[13], average_kal_g04[14], average_kal_g04[15], average_kal_g04[16], average_kal_g04[17], average_kal_g04[18], average_kal_g04[19], average_kal_g04[20], average_kal_g04[21]],
+                # "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10], average_kal_g01[11], average_kal_g01[12], average_kal_g01[13], average_kal_g01[14], average_kal_g01[15], average_kal_g01[16], average_kal_g01[17], average_kal_g01[18], average_kal_g01[19], average_kal_g01[20], average_kal_g01[21]], 
+                # "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10], average_kal_g02[11], average_kal_g02[12], average_kal_g02[13], average_kal_g02[14], average_kal_g02[15], average_kal_g02[16], average_kal_g02[17], average_kal_g02[18], average_kal_g02[19], average_kal_g02[20], average_kal_g02[21]], 
+                # "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10], average_kal_g03[11], average_kal_g03[12], average_kal_g03[13], average_kal_g03[14], average_kal_g03[15], average_kal_g03[16], average_kal_g03[17], average_kal_g03[18], average_kal_g03[19], average_kal_g03[20], average_kal_g03[21]],
+                # "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10], average_kal_g04[11], average_kal_g04[12], average_kal_g04[13], average_kal_g04[14], average_kal_g04[15], average_kal_g04[16], average_kal_g04[17], average_kal_g04[18], average_kal_g04[19], average_kal_g04[20], average_kal_g04[21]],
                 "04LEYTE_A": [average_leyte_a[0], average_leyte_a[1], average_leyte_a[2], average_leyte_a[3], average_leyte_a[4], average_leyte_a[5], average_leyte_a[6], average_leyte_a[7], average_leyte_a[8], average_leyte_a[9], average_leyte_a[10], average_leyte_a[11], average_leyte_a[12], average_leyte_a[13], average_leyte_a[14], average_leyte_a[15], average_leyte_a[16], average_leyte_a[17], average_leyte_a[18], average_leyte_a[19], average_leyte_a[20], average_leyte_a[21]],
                 "05KSPC_G01": [average_kspc_g01[0], average_kspc_g01[1], average_kspc_g01[2], average_kspc_g01[3], average_kspc_g01[4], average_kspc_g01[5], average_kspc_g01[6], average_kspc_g01[7], average_kspc_g01[8], average_kspc_g01[9], average_kspc_g01[10], average_kspc_g01[11], average_kspc_g01[12], average_kspc_g01[13], average_kspc_g01[14], average_kspc_g01[15], average_kspc_g01[16], average_kspc_g01[17], average_kspc_g01[18], average_kspc_g01[19], average_kspc_g01[20], average_kspc_g01[21]],
                 "05KSPC_G02": [average_kspc_g02[0], average_kspc_g02[1], average_kspc_g02[2], average_kspc_g02[3], average_kspc_g02[4], average_kspc_g02[5], average_kspc_g02[6], average_kspc_g02[7], average_kspc_g02[8], average_kspc_g02[9], average_kspc_g02[10], average_kspc_g02[11], average_kspc_g02[12], average_kspc_g02[13], average_kspc_g02[14], average_kspc_g02[15], average_kspc_g02[16], average_kspc_g02[17], average_kspc_g02[18], average_kspc_g02[19], average_kspc_g02[20], average_kspc_g02[21]], 
@@ -24097,13 +24203,13 @@ def tipc_func():
         elif hour_value == "23":
             data = {
                 "HOUR": ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"],
-                "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10], average_botoca_g01[11], average_botoca_g01[12], average_botoca_g01[13], average_botoca_g01[14], average_botoca_g01[15], average_botoca_g01[16], average_botoca_g01[17], average_botoca_g01[18], average_botoca_g01[19], average_botoca_g01[20], average_botoca_g01[21], average_botoca_g01[22]],
+                # "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10], average_botoca_g01[11], average_botoca_g01[12], average_botoca_g01[13], average_botoca_g01[14], average_botoca_g01[15], average_botoca_g01[16], average_botoca_g01[17], average_botoca_g01[18], average_botoca_g01[19], average_botoca_g01[20], average_botoca_g01[21], average_botoca_g01[22]],
                 "03CALACA_G01": [average_calaca_g01[0], average_calaca_g01[1], average_calaca_g01[2], average_calaca_g01[3], average_calaca_g01[4], average_calaca_g01[5], average_calaca_g01[6], average_calaca_g01[7], average_calaca_g01[8], average_calaca_g01[9], average_calaca_g01[10], average_calaca_g01[11], average_calaca_g01[12], average_calaca_g01[13], average_calaca_g01[14], average_calaca_g01[15], average_calaca_g01[16], average_calaca_g01[17], average_calaca_g01[18], average_calaca_g01[19], average_calaca_g01[20], average_calaca_g01[21], average_calaca_g01[22]],
                 "03CALACA_G02": [average_calaca_g02[0], average_calaca_g02[1], average_calaca_g02[2], average_calaca_g02[3], average_calaca_g02[4], average_calaca_g02[5], average_calaca_g02[6], average_calaca_g02[7], average_calaca_g02[8], average_calaca_g02[9], average_calaca_g02[10], average_calaca_g02[11], average_calaca_g02[12], average_calaca_g02[13], average_calaca_g02[14], average_calaca_g02[15], average_calaca_g02[16], average_calaca_g02[17], average_calaca_g02[18], average_calaca_g02[19], average_calaca_g02[20], average_calaca_g02[21], average_calaca_g02[22]],
-                "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10], average_kal_g01[11], average_kal_g01[12], average_kal_g01[13], average_kal_g01[14], average_kal_g01[15], average_kal_g01[16], average_kal_g01[17], average_kal_g01[18], average_kal_g01[19], average_kal_g01[20], average_kal_g01[21], average_kal_g01[22]], 
-                "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10], average_kal_g02[11], average_kal_g02[12], average_kal_g02[13], average_kal_g02[14], average_kal_g02[15], average_kal_g02[16], average_kal_g02[17], average_kal_g02[18], average_kal_g02[19], average_kal_g02[20], average_kal_g02[21], average_kal_g02[22]], 
-                "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10], average_kal_g03[11], average_kal_g03[12], average_kal_g03[13], average_kal_g03[14], average_kal_g03[15], average_kal_g03[16], average_kal_g03[17], average_kal_g03[18], average_kal_g03[19], average_kal_g03[20], average_kal_g03[21], average_kal_g03[22]],
-                "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10], average_kal_g04[11], average_kal_g04[12], average_kal_g04[13], average_kal_g04[14], average_kal_g04[15], average_kal_g04[16], average_kal_g04[17], average_kal_g04[18], average_kal_g04[19], average_kal_g04[20], average_kal_g04[21], average_kal_g04[22]],
+                # "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10], average_kal_g01[11], average_kal_g01[12], average_kal_g01[13], average_kal_g01[14], average_kal_g01[15], average_kal_g01[16], average_kal_g01[17], average_kal_g01[18], average_kal_g01[19], average_kal_g01[20], average_kal_g01[21], average_kal_g01[22]], 
+                # "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10], average_kal_g02[11], average_kal_g02[12], average_kal_g02[13], average_kal_g02[14], average_kal_g02[15], average_kal_g02[16], average_kal_g02[17], average_kal_g02[18], average_kal_g02[19], average_kal_g02[20], average_kal_g02[21], average_kal_g02[22]], 
+                # "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10], average_kal_g03[11], average_kal_g03[12], average_kal_g03[13], average_kal_g03[14], average_kal_g03[15], average_kal_g03[16], average_kal_g03[17], average_kal_g03[18], average_kal_g03[19], average_kal_g03[20], average_kal_g03[21], average_kal_g03[22]],
+                # "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10], average_kal_g04[11], average_kal_g04[12], average_kal_g04[13], average_kal_g04[14], average_kal_g04[15], average_kal_g04[16], average_kal_g04[17], average_kal_g04[18], average_kal_g04[19], average_kal_g04[20], average_kal_g04[21], average_kal_g04[22]],
                 "04LEYTE_A": [average_leyte_a[0], average_leyte_a[1], average_leyte_a[2], average_leyte_a[3], average_leyte_a[4], average_leyte_a[5], average_leyte_a[6], average_leyte_a[7], average_leyte_a[8], average_leyte_a[9], average_leyte_a[10], average_leyte_a[11], average_leyte_a[12], average_leyte_a[13], average_leyte_a[14], average_leyte_a[15], average_leyte_a[16], average_leyte_a[17], average_leyte_a[18], average_leyte_a[19], average_leyte_a[20], average_leyte_a[21], average_leyte_a[22]],
                 "05KSPC_G01": [average_kspc_g01[0], average_kspc_g01[1], average_kspc_g01[2], average_kspc_g01[3], average_kspc_g01[4], average_kspc_g01[5], average_kspc_g01[6], average_kspc_g01[7], average_kspc_g01[8], average_kspc_g01[9], average_kspc_g01[10], average_kspc_g01[11], average_kspc_g01[12], average_kspc_g01[13], average_kspc_g01[14], average_kspc_g01[15], average_kspc_g01[16], average_kspc_g01[17], average_kspc_g01[18], average_kspc_g01[19], average_kspc_g01[20], average_kspc_g01[21], average_kspc_g01[22]],
                 "05KSPC_G02": [average_kspc_g02[0], average_kspc_g02[1], average_kspc_g02[2], average_kspc_g02[3], average_kspc_g02[4], average_kspc_g02[5], average_kspc_g02[6], average_kspc_g02[7], average_kspc_g02[8], average_kspc_g02[9], average_kspc_g02[10], average_kspc_g02[11], average_kspc_g02[12], average_kspc_g02[13], average_kspc_g02[14], average_kspc_g02[15], average_kspc_g02[16], average_kspc_g02[17], average_kspc_g02[18], average_kspc_g02[19], average_kspc_g02[20], average_kspc_g02[21], average_kspc_g02[22]], 
@@ -24116,13 +24222,13 @@ def tipc_func():
         else:
             data = {
                 "HOUR": ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"],
-                "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10], average_botoca_g01[11], average_botoca_g01[12], average_botoca_g01[13], average_botoca_g01[14], average_botoca_g01[15], average_botoca_g01[16], average_botoca_g01[17], average_botoca_g01[18], average_botoca_g01[19], average_botoca_g01[20], average_botoca_g01[21], average_botoca_g01[22], average_botoca_g01[23]],
+                # "03BOTOCA_G01": [average_botoca_g01[0], average_botoca_g01[1], average_botoca_g01[2], average_botoca_g01[3], average_botoca_g01[4], average_botoca_g01[5], average_botoca_g01[6], average_botoca_g01[7], average_botoca_g01[8], average_botoca_g01[9], average_botoca_g01[10], average_botoca_g01[11], average_botoca_g01[12], average_botoca_g01[13], average_botoca_g01[14], average_botoca_g01[15], average_botoca_g01[16], average_botoca_g01[17], average_botoca_g01[18], average_botoca_g01[19], average_botoca_g01[20], average_botoca_g01[21], average_botoca_g01[22], average_botoca_g01[23]],
                 "03CALACA_G01": [average_calaca_g01[0], average_calaca_g01[1], average_calaca_g01[2], average_calaca_g01[3], average_calaca_g01[4], average_calaca_g01[5], average_calaca_g01[6], average_calaca_g01[7], average_calaca_g01[8], average_calaca_g01[9], average_calaca_g01[10], average_calaca_g01[11], average_calaca_g01[12], average_calaca_g01[13], average_calaca_g01[14], average_calaca_g01[15], average_calaca_g01[16], average_calaca_g01[17], average_calaca_g01[18], average_calaca_g01[19], average_calaca_g01[20], average_calaca_g01[21], average_calaca_g01[22], average_calaca_g01[23]],
                 "03CALACA_G02": [average_calaca_g02[0], average_calaca_g02[1], average_calaca_g02[2], average_calaca_g02[3], average_calaca_g02[4], average_calaca_g02[5], average_calaca_g02[6], average_calaca_g02[7], average_calaca_g02[8], average_calaca_g02[9], average_calaca_g02[10], average_calaca_g02[11], average_calaca_g02[12], average_calaca_g02[13], average_calaca_g02[14], average_calaca_g02[15], average_calaca_g02[16], average_calaca_g02[17], average_calaca_g02[18], average_calaca_g02[19], average_calaca_g02[20], average_calaca_g02[21], average_calaca_g02[22], average_calaca_g02[23]],
-                "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10], average_kal_g01[11], average_kal_g01[12], average_kal_g01[13], average_kal_g01[14], average_kal_g01[15], average_kal_g01[16], average_kal_g01[17], average_kal_g01[18], average_kal_g01[19], average_kal_g01[20], average_kal_g01[21], average_kal_g01[22], average_kal_g01[23]], 
-                "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10], average_kal_g02[11], average_kal_g02[12], average_kal_g02[13], average_kal_g02[14], average_kal_g02[15], average_kal_g02[16], average_kal_g02[17], average_kal_g02[18], average_kal_g02[19], average_kal_g02[20], average_kal_g02[21], average_kal_g02[22], average_kal_g02[23]], 
-                "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10], average_kal_g03[11], average_kal_g03[12], average_kal_g03[13], average_kal_g03[14], average_kal_g03[15], average_kal_g03[16], average_kal_g03[17], average_kal_g03[18], average_kal_g03[19], average_kal_g03[20], average_kal_g03[21], average_kal_g03[22], average_kal_g03[23]],
-                "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10], average_kal_g04[11], average_kal_g04[12], average_kal_g04[13], average_kal_g04[14], average_kal_g04[15], average_kal_g04[16], average_kal_g04[17], average_kal_g04[18], average_kal_g04[19], average_kal_g04[20], average_kal_g04[21], average_kal_g04[22], average_kal_g04[23]],
+                # "03KAL_G01": [average_kal_g01[0], average_kal_g01[1], average_kal_g01[2], average_kal_g01[3], average_kal_g01[4], average_kal_g01[5], average_kal_g01[6], average_kal_g01[7], average_kal_g01[8], average_kal_g01[9], average_kal_g01[10], average_kal_g01[11], average_kal_g01[12], average_kal_g01[13], average_kal_g01[14], average_kal_g01[15], average_kal_g01[16], average_kal_g01[17], average_kal_g01[18], average_kal_g01[19], average_kal_g01[20], average_kal_g01[21], average_kal_g01[22], average_kal_g01[23]], 
+                # "03KAL_G02": [average_kal_g02[0], average_kal_g02[1], average_kal_g02[2], average_kal_g02[3], average_kal_g02[4], average_kal_g02[5], average_kal_g02[6], average_kal_g02[7], average_kal_g02[8], average_kal_g02[9], average_kal_g02[10], average_kal_g02[11], average_kal_g02[12], average_kal_g02[13], average_kal_g02[14], average_kal_g02[15], average_kal_g02[16], average_kal_g02[17], average_kal_g02[18], average_kal_g02[19], average_kal_g02[20], average_kal_g02[21], average_kal_g02[22], average_kal_g02[23]], 
+                # "03KAL_G03": [average_kal_g03[0], average_kal_g03[1], average_kal_g03[2], average_kal_g03[3], average_kal_g03[4], average_kal_g03[5], average_kal_g03[6], average_kal_g03[7], average_kal_g03[8], average_kal_g03[9], average_kal_g03[10], average_kal_g03[11], average_kal_g03[12], average_kal_g03[13], average_kal_g03[14], average_kal_g03[15], average_kal_g03[16], average_kal_g03[17], average_kal_g03[18], average_kal_g03[19], average_kal_g03[20], average_kal_g03[21], average_kal_g03[22], average_kal_g03[23]],
+                # "03KAL_G04": [average_kal_g04[0], average_kal_g04[1], average_kal_g04[2], average_kal_g04[3], average_kal_g04[4], average_kal_g04[5], average_kal_g04[6], average_kal_g04[7], average_kal_g04[8], average_kal_g04[9], average_kal_g04[10], average_kal_g04[11], average_kal_g04[12], average_kal_g04[13], average_kal_g04[14], average_kal_g04[15], average_kal_g04[16], average_kal_g04[17], average_kal_g04[18], average_kal_g04[19], average_kal_g04[20], average_kal_g04[21], average_kal_g04[22], average_kal_g04[23]],
                 "04LEYTE_A": [average_leyte_a[0], average_leyte_a[1], average_leyte_a[2], average_leyte_a[3], average_leyte_a[4], average_leyte_a[5], average_leyte_a[6], average_leyte_a[7], average_leyte_a[8], average_leyte_a[9], average_leyte_a[10], average_leyte_a[11], average_leyte_a[12], average_leyte_a[13], average_leyte_a[14], average_leyte_a[15], average_leyte_a[16], average_leyte_a[17], average_leyte_a[18], average_leyte_a[19], average_leyte_a[20], average_leyte_a[21], average_leyte_a[22], average_leyte_a[23]],
                 "05KSPC_G01": [average_kspc_g01[0], average_kspc_g01[1], average_kspc_g01[2], average_kspc_g01[3], average_kspc_g01[4], average_kspc_g01[5], average_kspc_g01[6], average_kspc_g01[7], average_kspc_g01[8], average_kspc_g01[9], average_kspc_g01[10], average_kspc_g01[11], average_kspc_g01[12], average_kspc_g01[13], average_kspc_g01[14], average_kspc_g01[15], average_kspc_g01[16], average_kspc_g01[17], average_kspc_g01[18], average_kspc_g01[19], average_kspc_g01[20], average_kspc_g01[21], average_kspc_g01[22], average_kspc_g01[23]],
                 "05KSPC_G02": [average_kspc_g02[0], average_kspc_g02[1], average_kspc_g02[2], average_kspc_g02[3], average_kspc_g02[4], average_kspc_g02[5], average_kspc_g02[6], average_kspc_g02[7], average_kspc_g02[8], average_kspc_g02[9], average_kspc_g02[10], average_kspc_g02[11], average_kspc_g02[12], average_kspc_g02[13], average_kspc_g02[14], average_kspc_g02[15], average_kspc_g02[16], average_kspc_g02[17], average_kspc_g02[18], average_kspc_g02[19], average_kspc_g02[20], average_kspc_g02[21], average_kspc_g02[22], average_kspc_g02[23]], 
@@ -24149,7 +24255,7 @@ def tipc_func():
         df_long['Hover'] = df_long['HOUR'].map(hover_info)
 
         # Create the interactive line chart with Plotly
-        fig_tipc = px.line(df_long, x='HOUR', y='Value', color='Resource', height=200)
+        fig_tipc = px.line(df_long, x='HOUR', y='Value', color='Resource', height=180)
 
         # Customize hover information
         fig_tipc.update_traces(hovertemplate='%{customdata[0]}', customdata=df_long[['Hover']].values)
@@ -24167,8 +24273,22 @@ def tipc_func():
             xaxis=dict(
                 tickmode='array',
                 tickvals=list(range(1, 25)),
-                ticktext=[str(i) for i in range(1, 25)]
+                ticktext=[str(i) for i in range(1, 25)],
+                title={
+                    'text':'INTERVAL', #x-axis label
+                    'font':{
+                        'color':'white'
+                    }
+                }
             ),
+            yaxis=dict(
+                title={
+                    'text': 'PRICE, P/MWh',
+                    'font':{
+                        'color':'white'
+                    }
+                }
+            )
         )
         return fig_tipc
 
@@ -24177,6 +24297,7 @@ def tipc_func():
 def bcq_func():
     # Load the workbook and select the active sheet
     filepath_bcq = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\total_bcq_nomination.xlsx"
+    #filepath_bcq = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\total_bcq_nomination.xlsx"
     wb_bcq = openpyxl.load_workbook(filepath_bcq)
     sheet_bcq = wb_bcq.active
 
@@ -24216,19 +24337,22 @@ def bcq_func():
 
     # Melt the DataFrame for Plotly
     df_bcq_melted = df_bcq.melt('Hour', var_name='Contracted Supplier', value_name='BCQ')
-
+  # # Orange, Green, Light Blue, Dark Blue, Yellow, Pink, Purple, Brown
+        # colors = ['#E3963E', '#228B22', '#ADD8E6', '#4682B4', '#FFDB58', '#FFC0CB', '#C3B1E1', '#C19A6B']
+        #  # Red, Green, Light Blue, Dark Blue, Yellow, Pink, Purple, Brown
+        # colors = ['#cc3333', '#228B22', '#ADD8E6', '#4682B4', '#FFDB58', '#FFC0CB', '#C3B1E1', '#C19A6B']
     # Define the color map
     color_map = {
-        'SEMCAL': 'orange', 
-        'KSPC1': 'red', 
-        'KSPC2': 'darkblue', 
-        'EDC': 'green'
+        'SEMCAL': '#cc3333', 
+        'KSPC1': '#FFC0CB', 
+        'KSPC2': '#4682B4', 
+        'EDC': '#228B22'
     }
 
     # Create a Plotly area chart
     fig_bcq = px.area(df_bcq_melted, x='Hour', y='BCQ', color='Contracted Supplier', 
                 labels={'Hour': 'Hour', 'BCQ': 'BCQ'}, color_discrete_map=color_map, # Apply the color map
-                height=200)
+                height=180)
 
     # Update layout to match the Altair configuration
     fig_bcq.update_layout(
@@ -24257,9 +24381,11 @@ def genmix_func():
     # -- START OF DISPLAYING THE GENERATION MIX DONUT CHART --
         
         actual_energy_excel = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\actual_energy.xlsx"
+        #actual_energy_excel = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\actual_energy.xlsx"
         total_bcq_nomination_excel = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\total_bcq_nomination.xlsx"
+        #total_bcq_nomination_excel = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\total_bcq_nomination.xlsx"
         wesm_exposure_excel = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\wesm_exposure.xlsx"
-
+        #wesm_exposure_excel = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\wesm_exposure.xlsx"
         # Generation Mix Excel file
         workbook = openpyxl.Workbook()
         sheet = workbook.active
@@ -24304,6 +24430,7 @@ def genmix_func():
         source_sheet_genmix_1 = source_wb_genmix_1['Sheet']
         
         genmix_filepath = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\generation_mix.xlsx"
+        #genmix_filepath = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\generation_mix.xlsx"
         dest_wb_genmix = load_workbook(genmix_filepath)
 
         dest_sheet_genmix = dest_wb_genmix['Sheet']
@@ -24861,12 +24988,12 @@ def genmix_func():
             textinfo='label+percent', # Shows both the label and percentage inside the slices
             insidetextorientation='horizontal',  # Keeps text horizontal inside the slices
             marker=dict(
-                colors=['orangered', 'red', 'darkblue', 'green', 'yellow']
+                colors=['#cc3333', '#FFC0CB', '#4682B4', '#228B22', '#FFDB58']
             )
         )
 
         fig_genmix.update_layout(
-            height=200
+            height=180
         )
 
         fig_genmix.update_layout(
@@ -25024,17 +25151,16 @@ if authentication_status == True:
         st.rerun()
 
     while True: 
-
-        current_interval_file()
-        forecasted_energy_file()
-        total_bcq_nomination_file()
-        contestable_energy_file()
-        more_trading_node_file()
-        more_trading_node_2nd_part_file()
-        total_substation_load_final_file()
-        actual_energy_file()
-        wesm_exposure_file()
-        current_rate_file()
+        # current_interval_file()
+        # forecasted_energy_file()
+        # total_bcq_nomination_file()
+        # contestable_energy_file()
+        # more_trading_node_file()
+        # more_trading_node_2nd_part_file()
+        # total_substation_load_final_file()
+        # actual_energy_file()
+        # wesm_exposure_file()
+        # current_rate_file()
         get_temp_weather_data_file()
         store_temp_weather_db_file()
         so_advisories_file()
@@ -25102,6 +25228,7 @@ if authentication_status == True:
 
         # Load your Excel file
         excel_file = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\SO_ADVISORIES.xlsx"
+        #excel_file = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\SO_ADVISORIES.xlsx"
         df = pd.read_excel(excel_file)
 
         # Convert TIME_MESSAGE to datetime format (if it's not already)
@@ -25128,6 +25255,7 @@ if authentication_status == True:
 
         # Load your Excel file
         excel_file = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MO_ADVISORIES.xlsx"
+        #excel_file = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MO_ADVISORIES.xlsx"
         df = pd.read_excel(excel_file)
 
         # Sort dataframe by TIMESTAMP in descending order
@@ -25179,7 +25307,7 @@ if authentication_status == True:
             height: 2rem;
             background-color: #000000;
             box-sizing: border-box;
-            border: 2px solid white;  /* White border around the entire box */
+            /* border: 2px solid white; White border around the entire box */
             border-radius: 5px;  /* Optional: Add rounded corners */
         }}
         .ticker1 {{
@@ -25253,6 +25381,16 @@ if authentication_status == True:
         """
 
         # -- START OF CURRENT INTERVAL SUMMARY --
+        current_interval_file()
+        forecasted_energy_file()
+        total_bcq_nomination_file()
+        contestable_energy_file()
+        more_trading_node_file()
+        more_trading_node_2nd_part_file()
+        total_substation_load_final_file()
+        actual_energy_file()
+        wesm_exposure_file()
+        current_rate_file()
 
         # Fetch Data
         result = view_all_data()
@@ -25298,8 +25436,8 @@ if authentication_status == True:
         <style>
         /* Styling for equal-sized boxes with minimal padding */
         .custom-box {
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            /* border: 1px solid #ddd; */
+            border-radius: 5px; 
             padding: 0;  
             margin: 0;
             background-color: #000000;
@@ -25314,8 +25452,8 @@ if authentication_status == True:
         }
                     
         .custom-box-2 {
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            /* border: 1px solid #ddd; */
+            border-radius: 5px; 
             padding: 0;  
             margin: 0;
             background-color: #000000;
@@ -25366,16 +25504,16 @@ if authentication_status == True:
         .custom-box-2 h4, .custom-box-2 p {
             margin: 0;
             padding: 0;
-            font-size: 0.6rem;
+            font-size: 0.5rem;
             font-family: Helvetica;
             font-weight: normal;
             color: #FFFFFF;
             max-height: 100%;  
             overflow: hidden;  
             text-overflow: ellipsis;  
-            justify-content: center;
-            align-items: center;
-            text-align: center; 
+            justify-content: left;
+            align-items: left;
+            text-align: left; 
         }
                 
         .custom-box p {
@@ -25485,7 +25623,7 @@ if authentication_status == True:
                 if latest_chart_actual_vs_forecasted:
                     st.plotly_chart(latest_chart_actual_vs_forecasted)
 
-        col4, col5, col6 = st.columns([1, 1, 0.65])
+        col4, col5, col6 = st.columns([1, 1, 0.75])
         with col4:
             try:
                 latest_chart_bcq = bcq_func()
