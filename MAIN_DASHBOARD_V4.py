@@ -19,6 +19,7 @@ import os
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objs as go
+import plotly.io as pio
 import streamlit as st
 import threading
 import time
@@ -35,7 +36,7 @@ REFRESH_INTERVAL = 900
 latest_chart_total_sub_load = None
 latest_chart_actual_vs_forecasted = None
 latest_chart_bcq = None
-latest_chart_tipc = None
+# latest_chart_tipc = None
 latest_chart_genmix = None
 
 # List of functions
@@ -48,6 +49,17 @@ db_config = {
     'host': 'localhost',
     'database': 'myDb'
 }
+
+# Function to save chart as JSON
+def save_chart(chart, file_path):
+    chart_json = pio.to_json(chart)
+    with open(file_path, 'w') as f:
+        f.write(chart_json)
+
+# Function to load saved chart from JSON
+def load_chart(file_path):
+    with open(file_path, 'r') as f:
+        return f.read()
 
 # Function to determine the time interval
 def get_time_interval(current_time):
@@ -22621,6 +22633,13 @@ def main_so():
         sheet = workbook.active
         # Save the workbook to a file
         workbook.save('SO_ADVISORIES.xlsx')
+
+        # # Specify the file path
+        # so_adv_filepath = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL/SO_ADVISORIES.csv'
+        # # Create a blank CSV file
+        # with open(so_adv_filepath, 'w') as file:
+        #     pass  # This creates the file if it doesn't exist; otherwise, it overwrites it
+
         # Usage
         cleaned_csv_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\SO_ADVISORIES.xlsx'
         #cleaned_csv_file_path = r'C:\Users\Corplan\Downloads\cleaned_output_file.csv'
@@ -22639,10 +22658,6 @@ def main_so():
     except:
         time.sleep(1)
         st.rerun()
-
-def so_advisories_file():
-    so_thread = threading.Thread(target=main_so, daemon=False)
-    so_thread.start()
 
 # ------ from mo_advisories.py file ------
 # Check expected columns based on header
@@ -22754,6 +22769,13 @@ def main_mo():
         sheet = workbook.active
         # Save the workbook to a file
         workbook.save('MO_ADVISORIES.xlsx')
+
+        # # Specify the file path
+        # mo_adv_filepath = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL/MO_ADVISORIES.csv'
+        # # Create a blank CSV file
+        # with open(mo_adv_filepath, 'w') as file:
+        #     pass  # This creates the file if it doesn't exist; otherwise, it overwrites it
+
         # Usage
         cleaned_csv_file_path_mo = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MO_ADVISORIES.xlsx'
         #cleaned_csv_file_path = r'C:\Users\Corplan\Downloads\cleaned_mo_advisories_file.csv'
@@ -22774,8 +22796,10 @@ def main_mo():
         time.sleep(1)
         st.rerun()
 
-def mo_advisories_file():
+def advisories_file():
+    so_thread = threading.Thread(target=main_so, daemon=False)
     mo_thread = threading.Thread(target=main_mo, daemon=False)
+    so_thread.start()
     mo_thread.start()
 
 def view_all_data():
@@ -23011,8 +23035,207 @@ def format_value_2(value):
     # Format the value to always show two decimal places
     return f'{value:,.2f}'  
 
+
+
+# NEWEST
+# def sub_load_func():
+#     # -- START OF DISPLAYING THE SUBSTATION LOAD (KW) BAR CHART -- 
+
+#     # Load data
+#     df_excel = load_data_from_excel()
+
+#     # For getting the current hour
+#     now = datetime.now()
+#     now_hour = now.hour
+#     if now_hour == 0:
+#         now_hour = 24
+
+#     # Find the row where the hour matches the current hour
+#     matching_row = df_excel[df_excel['Hour'] == now_hour]
+
+#     # Check if there's no matching data for the current hour
+#     if matching_row.empty:
+#         # If no data for the current hour, get the latest available data
+#         matching_row = df_excel.iloc[-1]  # Get the last row in the DataFrame
+#     else:
+#         matching_row = matching_row.iloc[0]  # Get the first row matching the current hour
+
+#     # Extract the values
+#     hour_value = matching_row['Hour']
+#     lapaz_value = matching_row['Lapaz']
+#     jaro_value = matching_row['Jaro']
+#     mandurriao_value = matching_row['Mandurriao']
+#     molo_value = matching_row['Molo']
+#     diversion_value = matching_row['Diversion']
+#     mobile_ss1_value = matching_row['Mobile SS 1']
+#     mobile_ss2_value = matching_row['Mobile SS 2']
+#     megaworld_value = matching_row['Megaworld']
+
+#     # Prepare data for the bar chart
+#     chart_data = pd.DataFrame({
+#         'Substation': ['Lapaz', 'Jaro', 'Mandurriao', 'Molo', 'Diversion', 'Mobile SS 1', 'Mobile SS 2', 'Megaworld'],
+#         'kW': [lapaz_value, jaro_value, mandurriao_value, molo_value, diversion_value, mobile_ss1_value, mobile_ss2_value, megaworld_value]
+#     })
+
+#     # Sort data by 'kW' values in ascending order
+#     chart_data = chart_data.sort_values(by='kW', ascending=True)
+
+#     # Create the horizontal bar chart with Plotly
+#     fig_ss_load = px.bar(chart_data, y='Substation', x='kW', text='kW', orientation='h',
+#                          color='Substation',
+#                          color_discrete_map={
+#                              'Lapaz': '#cc3333',         # Red
+#                              'Jaro': '#228B22',          # Green
+#                              'Mandurriao': '#ADD8E6',    # Light Blue
+#                              'Molo': '#4682B4',          # Dark Blue
+#                              'Diversion': '#FFDB58',     # Yellow
+#                              'Mobile SS 1': '#FFC0CB',   # Pink
+#                              'Mobile SS 2': '#C3B1E1',   # Purple
+#                              'Megaworld': '#C19A6B'      # Brown
+#                          })
+
+#     # Customize the layout
+#     fig_ss_load.update_traces(
+#         texttemplate='%{x:,.0f}',  # Format numbers with thousands separators and no decimal places
+#         textposition='outside',
+#         textfont_size=12  # Reduce text size if needed
+#     )
+
+#     # Add padding by adjusting the layout
+#     fig_ss_load.update_layout(
+#         title={
+#             'text': 'Substation Load (kW)',
+#             'font': {
+#                 'color': 'white'  # Set title color to white
+#             }
+#         },
+#         margin=dict(r=30, t=30, b=15),  # Increase margins further
+#         xaxis=dict(
+#             title='kW',
+#             tickformat=',',  # Format axis ticks with commas as thousands separators
+#             showgrid=False,
+#             zeroline=False,
+#             range=[0, max(chart_data['kW']) * 1.2]  # Extend the x-axis range further
+#         ),
+#         uniformtext_minsize=8,
+#         uniformtext_mode='hide',
+#         height=240  # Set the height of the bar chart
+#     )
+
+#     fig_ss_load.update_layout(
+#         plot_bgcolor='black',
+#         paper_bgcolor='black'
+#     )
+
+#     return fig_ss_load
+
+# MOST NEWEST
+# def sub_load_func():
+#     # -- START OF DISPLAYING THE SUBSTATION LOAD (KW) BAR CHART --
+
+#     # Load data
+#     df_excel = load_data_from_excel()
+
+#     # For getting the current hour
+#     now = datetime.now()
+#     now_hour = now.hour
+#     if now_hour == 0:
+#         now_hour = 24
+
+#     # Find the row where the hour matches the current hour
+#     matching_row = df_excel[df_excel['Hour'] == now_hour]
+
+#     # Check if there's no matching data for the current hour
+#     if matching_row.empty:
+#         # If no data for the current hour, get the latest available data
+#         matching_row = df_excel.iloc[-1]  # Get the last row in the DataFrame
+#     else:
+#         matching_row = matching_row.iloc[0]  # Get the first row matching the current hour
+
+#     # Extract the values
+#     hour_value = matching_row['Hour']
+#     lapaz_value = matching_row['Lapaz']
+#     jaro_value = matching_row['Jaro']
+#     mandurriao_value = matching_row['Mandurriao']
+#     molo_value = matching_row['Molo']
+#     diversion_value = matching_row['Diversion']
+#     mobile_ss1_value = matching_row['Mobile SS 1']
+#     mobile_ss2_value = matching_row['Mobile SS 2']
+#     megaworld_value = matching_row['Megaworld']
+
+#     # Prepare data for the bar chart
+#     chart_data = pd.DataFrame({
+#         'Substation': ['Lapaz', 'Jaro', 'Mandurriao', 'Molo', 'Diversion', 'Mobile SS 1', 'Mobile SS 2', 'Megaworld'],
+#         'kW': [lapaz_value, jaro_value, mandurriao_value, molo_value, diversion_value, mobile_ss1_value, mobile_ss2_value, megaworld_value]
+#     })
+
+#     # Sort data by 'kW' values in ascending order
+#     chart_data = chart_data.sort_values(by='kW', ascending=True)
+
+#     # Create a custom function to format the text
+#     def format_text(value):
+#         if value == 0:
+#             return ''  # Return an empty string for 0 values
+#         else:
+#             return f'{value:,.0f}'  # Format number with commas
+
+#     # Apply the custom formatting to the 'kW' column
+#     chart_data['formatted_kW'] = chart_data['kW'].apply(format_text)
+
+#     # Create the horizontal bar chart with Plotly
+#     fig_ss_load = px.bar(chart_data, y='Substation', x='kW', text='formatted_kW', orientation='h',
+#                          color='Substation',
+#                          color_discrete_map={
+#                              'Lapaz': '#cc3333',         # Red
+#                              'Jaro': '#228B22',          # Green
+#                              'Mandurriao': '#ADD8E6',    # Light Blue
+#                              'Molo': '#4682B4',          # Dark Blue
+#                              'Diversion': '#FFDB58',     # Yellow
+#                              'Mobile SS 1': '#FFC0CB',   # Pink
+#                              'Mobile SS 2': '#C3B1E1',   # Purple
+#                              'Megaworld': '#C19A6B'      # Brown
+#                          })
+
+#     # Customize the layout and handle 0 values
+#     fig_ss_load.update_traces(
+#         texttemplate='%{text}',  # Use the custom formatted text
+#         textposition='outside',
+#         textfont_size=12  # Reduce text size if needed
+#     )
+
+#     # Add padding by adjusting the layout
+#     fig_ss_load.update_layout(
+#         title={
+#             'text': 'Substation Load (kW)',
+#             'font': {
+#                 'color': 'white'  # Set title color to white
+#             }
+#         },
+#         margin=dict(r=30, t=30, b=15),  # Increase margins further
+#         xaxis=dict(
+#             title='kW',
+#             tickformat=',',  # Format axis ticks with commas as thousands separators
+#             showgrid=False,
+#             zeroline=False,
+#             range=[0, max(chart_data['kW']) * 1.2]  # Extend the x-axis range further
+#         ),
+#         uniformtext_minsize=8,
+#         uniformtext_mode='hide',
+#         height=240  # Set the height of the bar chart
+#     )
+
+#     fig_ss_load.update_layout(
+#         plot_bgcolor='black',
+#         paper_bgcolor='black',
+#         showlegend=False,
+#     )
+
+#     return fig_ss_load
+
+        # -- END OF DISPLAYING THE SUBSTATION LOAD (KW) BAR CHART -- 
+
 def sub_load_func():
-    # -- START OF DISPLAYING THE SUBSTATION LOAD (KW) BAR CHART -- 
+    # -- START OF DISPLAYING THE SUBSTATION LOAD (KW) BAR CHART --
 
     # Load data
     df_excel = load_data_from_excel()
@@ -23034,7 +23257,6 @@ def sub_load_func():
         matching_row = matching_row.iloc[0]  # Get the first row matching the current hour
 
     # Extract the values
-    hour_value = matching_row['Hour']
     lapaz_value = matching_row['Lapaz']
     jaro_value = matching_row['Jaro']
     mandurriao_value = matching_row['Mandurriao']
@@ -23050,25 +23272,38 @@ def sub_load_func():
         'kW': [lapaz_value, jaro_value, mandurriao_value, molo_value, diversion_value, mobile_ss1_value, mobile_ss2_value, megaworld_value]
     })
 
+    # Modify the labels for Molo and Mobile SS 1
+    chart_data['Label'] = chart_data.apply(lambda row: (
+        'Under Rehab' if row['Substation'] == 'Molo' else
+        'Borrowed by NEPC' if row['Substation'] == 'Mobile SS 1' else
+        f"{row['kW']:,.0f}" if row['kW'] != 0 else ''
+    ), axis=1)
+
     # Sort data by 'kW' values in ascending order
     chart_data = chart_data.sort_values(by='kW', ascending=True)
 
     # Create the horizontal bar chart with Plotly
-    fig_ss_load = px.bar(chart_data, y='Substation', x='kW', text='kW', orientation='h')
-
-    # Customize the bar colors
-    # Red, Green, Light Blue, Dark Blue, Yellow, Pink, Purple, Brown
-    colors = ['#cc3333', '#228B22', '#ADD8E6', '#4682B4', '#FFDB58', '#FFC0CB', '#C3B1E1', '#C19A6B']
-    fig_ss_load.update_traces(marker_color=colors)
+    fig_ss_load = px.bar(chart_data, y='Substation', x='kW', text='Label', orientation='h',
+                         color='Substation',
+                         color_discrete_map={
+                             'Lapaz': '#cc3333',         # Red
+                             'Jaro': '#228B22',          # Green
+                             'Mandurriao': '#ADD8E6',    # Light Blue
+                             'Molo': '#4682B4',          # Dark Blue
+                             'Diversion': '#FFDB58',     # Yellow
+                             'Mobile SS 1': '#FFC0CB',   # Pink
+                             'Mobile SS 2': '#C3B1E1',   # Purple
+                             'Megaworld': '#C19A6B'      # Brown
+                         })
 
     # Customize the layout
     fig_ss_load.update_traces(
-        texttemplate='%{x:,.0f}',  # Format numbers with thousands separators and no decimal places
+        texttemplate='%{text}',  # Use the custom formatted text
         textposition='outside',
-        textfont_size=12  # Reduce text size if needed
+        textfont_size=12  # Adjust text size if needed
     )
 
-    # Add padding by adjusting the layout
+    # Add padding by adjusting the layout and hide the legend
     fig_ss_load.update_layout(
         title={
             'text': 'Substation Load (kW)',
@@ -23084,6 +23319,7 @@ def sub_load_func():
             zeroline=False,
             range=[0, max(chart_data['kW']) * 1.2]  # Extend the x-axis range further
         ),
+        showlegend=False,  # Hide the legend
         uniformtext_minsize=8,
         uniformtext_mode='hide',
         height=240  # Set the height of the bar chart
@@ -23095,90 +23331,6 @@ def sub_load_func():
     )
 
     return fig_ss_load
-
-# def sub_load_func():
-#     # -- START OF DISPLAYING THE SUBSTATION LOAD (KW) BAR CHART -- 
-
-#         # Load data
-#         df_excel = load_data_from_excel()
-
-#         # For getting the current hour
-#         now = datetime.now()
-#         now_hour = now.hour
-#         if now_hour == 0:
-#             now_hour = 24
-
-#         # Find the row where the hour matches the current hour
-#         matching_row = df_excel[df_excel['Hour'] == now_hour]
-
-#         # Check if there's no matching data for the current hour
-#         if matching_row.empty:
-#             # If no data for the current hour, get the latest available data
-#             matching_row = df_excel.iloc[-1]  # Get the last row in the DataFrame
-#         else:
-#             matching_row = matching_row.iloc[0]  # Get the first row matching the current hour
-
-#         # Extract the values
-#         hour_value = matching_row['Hour']
-#         lapaz_value = matching_row['Lapaz']
-#         jaro_value = matching_row['Jaro']
-#         mandurriao_value = matching_row['Mandurriao']
-#         molo_value = matching_row['Molo']
-#         diversion_value = matching_row['Diversion']
-#         mobile_ss1_value = matching_row['Mobile SS 1']
-#         mobile_ss2_value = matching_row['Mobile SS 2']
-#         megaworld_value = matching_row['Megaworld']
-
-#         # Prepare data for the bar chart
-#         chart_data = pd.DataFrame({
-#             'Substation': ['Lapaz', 'Jaro', 'Mandurriao', 'Molo', 'Diversion', 'Mobile SS 1', 'Mobile SS 2', 'Megaworld'],
-#             'kW': [lapaz_value, jaro_value, mandurriao_value, molo_value, diversion_value, mobile_ss1_value, mobile_ss2_value, megaworld_value]
-#         })
-
-#         # Create the horizontal bar chart with Plotly
-#         fig_ss_load = px.bar(chart_data, y='Substation', x='kW', text='kW', orientation='h')
-
-#         # Customize the bar colors
-#         # Red, Green, Light Blue, Dark Blue, Yellow, Pink, Purple, Brown
-#         colors = ['#cc3333', '#228B22', '#ADD8E6', '#4682B4', '#FFDB58', '#FFC0CB', '#C3B1E1', '#C19A6B']
-#         fig_ss_load.update_traces(marker_color=colors)
-
-#         # Customize the layout
-#         fig_ss_load.update_traces(
-#             texttemplate='%{x:,.0f}',  # Format numbers with thousands separators and no decimal places
-#             textposition='outside',
-#             textfont_size=12  # Reduce text size if needed
-#         )
-
-#         # Add padding by adjusting the layout
-#         fig_ss_load.update_layout(
-#             title={
-#                 'text':'Substation Load (kW)',
-#                 'font':{
-#                     'color': 'white' # Set title color to white
-#                 }
-#             },
-#             margin=dict(r=30, t=30, b=15),  # Increase margins further
-#             xaxis=dict(
-#                 title='kW',
-#                 tickformat=',',  # Format axis ticks with commas as thousands separators
-#                 showgrid=False,
-#                 zeroline=False,
-#                 range=[0, max(chart_data['kW']) * 1.2]  # Extend the x-axis range further
-#             ),
-#             uniformtext_minsize=8,
-#             uniformtext_mode='hide',
-#             height=240  # Set the height of the bar chart
-#         )
-
-#         fig_ss_load.update_layout(
-#             plot_bgcolor='black',
-#             paper_bgcolor='black'
-#         )
-
-#         return fig_ss_load
-
-        # -- END OF DISPLAYING THE SUBSTATION LOAD (KW) BAR CHART -- 
 
 def actual_vs_forecasted():
     # -- START OF DISPLAYING THE ACTUAL VS FORECASTED ENERGY CHART --
@@ -25240,8 +25392,8 @@ if authentication_status == True:
         # current_rate_file()
         get_temp_weather_data_file()
         store_temp_weather_db_file()
-        so_advisories_file()
-        mo_advisories_file()
+        # so_advisories_file()
+        advisories_file()
 
         # Add custom CSS
         st.markdown(
@@ -25419,6 +25571,7 @@ if authentication_status == True:
             animation-name: ticker;
             -webkit-animation-duration: 40s;
             animation-duration: 40s;
+
         }}
         .ticker_item {{
             display: inline-block;
@@ -25431,6 +25584,8 @@ if authentication_status == True:
         .ticker_item:first-child {{
             margin-top: 0;
         }}
+
+
         body {{ margin: 0; padding-bottom: 0; }}
         h1, h2, p {{ padding: 0 5%; }}
         </style>
@@ -25562,7 +25717,7 @@ if authentication_status == True:
                 height: 21.67vh;  
             }
         }
-
+                    
         /* Smaller font sizes with minimal padding and overflow control */
         .custom-box h4, .custom-box p {
             margin: 0;
@@ -25572,6 +25727,7 @@ if authentication_status == True:
             font-weight: normal;
             color: #FFFFFF;
             max-height: 100%;  
+            max-width: 100%;
             overflow: hidden;  
             text-overflow: ellipsis;  
             justify-content: center;
@@ -25582,11 +25738,12 @@ if authentication_status == True:
         .custom-box-2 h4, .custom-box-2 p {
             margin: 0;
             padding: 0;
-            font-size: 0.5rem;
+            font-size: 0.6rem;
             font-family: Helvetica;
             font-weight: normal;
             color: #FFFFFF;
             max-height: 100%;  
+            max-width: 100%;
             overflow: hidden;  
             text-overflow: ellipsis;  
             justify-content: left;
@@ -25710,12 +25867,17 @@ if authentication_status == True:
                 if latest_chart_bcq:
                     st.plotly_chart(latest_chart_bcq)
         with col5:
+            file_path_tipc_chart = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\latest_tipc_chart.json"
+    
             try:
-                latest_chart_tipc = tipc_func()
+                latest_chart_tipc = tipc_func()  # Assuming tipc_func() returns a Plotly chart
                 st.plotly_chart(latest_chart_tipc)
+                save_chart(latest_chart_tipc, file_path_tipc_chart)
             except:
-                if latest_chart_tipc:
-                    st.plotly_chart(latest_chart_tipc)
+                chart_json_tipc = load_chart(file_path_tipc_chart)
+                latest_chart_tipc = pio.from_json(chart_json_tipc)
+                st.plotly_chart(latest_chart_tipc)
+                
         with col6:
             try:
                 latest_chart_genmix = genmix_func()

@@ -1,0 +1,13 @@
+    # Create the horizontal bar chart with Plotly
+    fig_ss_load = px.bar(chart_data, y='Substation', x='kW', text='kW', orientation='h',
+                         color='Substation',
+                         color_discrete_map={
+                             'Lapaz': '#cc3333',         # Red
+                             'Jaro': '#228B22',          # Green
+                             'Mandurriao': '#ADD8E6',    # Light Blue
+                             'Molo': '#4682B4',          # Dark Blue
+                             'Diversion': '#FFDB58',     # Yellow
+                             'Mobile SS 1': '#FFC0CB',   # Pink
+                             'Mobile SS 2': '#C3B1E1',   # Purple
+                             'Megaworld': '#C19A6B'      # Brown
+                         })

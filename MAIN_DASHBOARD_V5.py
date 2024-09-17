@@ -18,6 +18,7 @@ import openpyxl
 import os
 import pandas as pd
 import plotly.express as px
+import plotly.io as pio
 import plotly.graph_objs as go
 import streamlit as st
 import threading
@@ -28,15 +29,15 @@ from pathlib import Path
 import streamlit_authenticator as stauth
 
 # Refresh Interval Value (900 seconds/15 minutes)
-#REFRESH_INTERVAL = 900 
 REFRESH_INTERVAL = 900
 
-# Initialize the latest charts to None outside the loop
-latest_chart_total_sub_load = None
-latest_chart_actual_vs_forecasted = None
-latest_chart_bcq = None
-latest_chart_tipc = None
-latest_chart_genmix = None
+# # # Initialize the latest charts to None outside the loop
+# latest_chart_total_sub_load = None
+# latest_chart_actual_vs_forecasted = None
+# latest_chart_bcq = None
+# # latest_chart_tipc = None
+# latest_chart_genmix = None
+
 
 # List of functions
 
@@ -48,6 +49,38 @@ db_config = {
     'host': 'localhost',
     'database': 'myDb'
 }
+
+# Function to save chart as JSON
+def save_chart(chart, file_path):
+    chart_json = pio.to_json(chart)
+
+    with open(file_path, 'w') as f:
+        f.write(chart_json)
+
+# Function to load saved chart from JSON
+def load_chart(file_path):
+    with open(file_path, 'r') as f:
+        return f.read()
+
+def delete_old_files(prefix, folder_path):
+    # Get all files with the current prefix in the folder
+    files_to_consider = glob.glob(os.path.join(folder_path, f'{prefix}*'))
+    
+    # If there are multiple files with this prefix, find the most recent one
+    if files_to_consider:
+        most_recent_file = max(files_to_consider, key=os.path.getctime)
+    
+        # Delete all files except the most recent one
+        for file_path in files_to_consider:
+            if file_path != most_recent_file:
+                try:
+                    os.remove(file_path)  # Delete the file
+                    print(f"Deleted file: {file_path}")
+                except OSError as e:
+                    print(f"Error deleting file {file_path}: {e}")
+        print(f"Retained file: {most_recent_file}")
+    else:
+        print(f"No files found with prefix '{prefix}'.")
 
 # Function to determine the time interval
 def get_time_interval(current_time):
@@ -10494,11 +10527,11 @@ def retrieve_and_insert_last_value_mtn(conn):
 
 def run_continuously(conn):
     # while True:
-    # try:
-    float_final_total = find_total_mtn()
-    insert_into_mysql_mtn(conn, float_final_total)
-    # except pd.errors.EmptyDataError:
-    #     retrieve_and_insert_last_value_mtn(conn)
+    try:
+        float_final_total = find_total_mtn()
+        insert_into_mysql_mtn(conn, float_final_total)
+    except pd.errors.EmptyDataError:
+        retrieve_and_insert_last_value_mtn(conn)
     # except Exception as e:
     #     print(f"Unexpected error: {e}")
         #time.sleep(800) # Wait for 800 seconds before next update
@@ -10554,13 +10587,13 @@ def query_substation_data():
         substation_load_df['MOLO SUBSTATION'] = 0
         substation_load_df = substation_load_df[
             ['LAPAZ SUBSTATION', 'JARO SUBSTATION', 'MANDURRIAO SUBSTATION', 'MOLO SUBSTATION',
-             'DIVERSION SUBSTATION', '10 MVA Mobile SS - MS1', '36 MVA Mobile SS - MS2', '36 MVA Megaworld SS - MGW']]
+             'DIVERSION SUBSTATION', '10 MVA Mobile SS - MS1', '36 MVA Megaworld SS - MGW']]
         substation_load_df = substation_load_df.reset_index()
-        substation_load_df.columns = ['Date', 'Hour', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8']
+        substation_load_df.columns = ['Date', 'Hour', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7']
         substation_load_df.fillna(0, inplace=True)
         substation_load_df['Total'] = substation_load_df['S1'] + substation_load_df['S2'] + substation_load_df['S3'] + \
                                       substation_load_df['S4'] + substation_load_df['S5'] + substation_load_df['S6'] + \
-                                      substation_load_df['S7'] + substation_load_df['S8']
+                                      substation_load_df['S7']
         substation_load_df['eS1'] = substation_load_df['S1'] * 1.0001
         substation_load_df['eS2'] = substation_load_df['S2'] * 1.0001
         substation_load_df['eS3'] = substation_load_df['S3'] * 1.0001
@@ -10568,12 +10601,12 @@ def query_substation_data():
         substation_load_df['eS5'] = substation_load_df['S5'] * 1.0001
         substation_load_df['eS6'] = substation_load_df['S6'] * 1.0001
         substation_load_df['eS7'] = substation_load_df['S7'] * 1.0001
-        substation_load_df['eS8'] = substation_load_df['S8'] * 1.0001
+        # substation_load_df['eS8'] = substation_load_df['S8'] * 1.0001
         substation_load_df = substation_load_df[substation_load_df['Hour'] != 0]
         substation_load_df = substation_load_df.fillna(0)
         substation_load_df['eTotal'] = substation_load_df['eS1'] + substation_load_df['eS2'] + substation_load_df[
             'eS3'] + substation_load_df['eS4'] + substation_load_df['eS5'] + substation_load_df['eS6'] + \
-                                       substation_load_df['eS7'] + substation_load_df['eS8']
+                                       substation_load_df['eS7'] 
 
         substation_load_df.to_csv(file_loc + 'station_load.csv', index=False)
         print("Substation data queried and saved to CSV.")
@@ -10591,7 +10624,7 @@ def get_current_hour_tsl():
 
 def get_total_for_current_hour(excel_file, current_hour):
     try:
-        df = pd.read_excel(excel_file, header=None, names=['Date', 'Hour', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'Total', 'eS1', 'eS2', 'eS3', 'eS4', 'eS5', 'eS6', 'eS7', 'eS8', 'eTotal'], skiprows=1)
+        df = pd.read_excel(excel_file, header=None, names=['Date', 'Hour', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'Total', 'eS1', 'eS2', 'eS3', 'eS4', 'eS5', 'eS6', 'eS7', 'eTotal'], skiprows=1)
         
         if df.empty:
             print("Excel file is empty.")
@@ -10802,7 +10835,7 @@ def main_ae(excel_file, conn):
     dest_wb, dest_sheet = load_destination_workbook()
 
     # Define ranges and copy data
-    source_ranges = [('K2', 'K25')]
+    source_ranges = [('J2', 'J25')]
     dest_ranges = [('B2', 'B25')]
     source_ranges2 = [('A2', 'A25'), ('B2', 'B25')]
     dest_ranges2 = [('A2', 'A25'), ('C2', 'C25')]
@@ -10924,7 +10957,7 @@ def wesm_exposure_we():
     sheet = workbook.active
     sheet['A1'] = 'HOUR'
     sheet['B1'] = 'ACTUAL_ENERGY'
-    sheet['C1'] = 'CONTESTABLE_ENERGY'
+    # sheet['C1'] = 'CONTESTABLE_ENERGY'
     sheet['D1'] = 'TOTAL_BCQ_NOMINATION'
     sheet['E1'] = 'WESM_EXPOSURE'  
     workbook.save('wesm_exposure.xlsx')
@@ -10937,8 +10970,8 @@ def wesm_exposure_we():
     # Load source workbooks
     source_wb = load_workbook('actual_energy.xlsx')
     source_sheet = source_wb['Sheet']
-    source_wb3 = load_workbook('contestable_energy.xlsx')
-    source_sheet3 = source_wb3['Sheet']
+    # source_wb3 = load_workbook('contestable_energy.xlsx')
+    # source_sheet3 = source_wb3['Sheet']
     source_wb2 = load_workbook('total_bcq_nomination.xlsx')
     source_sheet2 = source_wb2['Sheet']
 
@@ -10951,12 +10984,12 @@ def wesm_exposure_we():
     # Hour and Actual Energy
     source_ranges = [('A2', 'A25'), ('D2', 'D25')]
     dest_ranges = [('A2', 'A25'), ('B2', 'B25')]
-    # Contestable Energy
-    source_ranges3 = [('B2', 'B25')]
-    dest_ranges3 = [('C2', 'C25')]
+    # # Contestable Energy
+    # source_ranges3 = [('B2', 'B25')]
+    # dest_ranges3 = [('C2', 'C25')]
     # Total BCQ Nomination
     source_ranges2 = [('E2', 'E25')]
-    dest_ranges2 = [('D2', 'D25')]
+    dest_ranges2 = [('C2', 'C25')]
 
     # Copy data from source to destination based on specified ranges
     for i in range(len(source_ranges)):
@@ -10965,14 +10998,14 @@ def wesm_exposure_we():
     for i in range(len(source_ranges2)):
         copy_values2_we(source_sheet2, dest_sheet, source_ranges2[i], dest_ranges2[i])
 
-    for i in range(len(source_ranges3)):
-        copy_values3_we(source_sheet3, dest_sheet, source_ranges3[i], dest_ranges3[i])
+    # for i in range(len(source_ranges3)):
+    #     copy_values3_we(source_sheet3, dest_sheet, source_ranges3[i], dest_ranges3[i])
 
     for row in dest_sheet.iter_rows(min_row=2, max_row=25, min_col=2, max_col=4):
         actual_energy = row[0].value
-        contestable_energy = row[1].value
-        total_bcq_nomination = row[2].value
-        wesm_exposure = actual_energy - contestable_energy - total_bcq_nomination if actual_energy and contestable_energy and total_bcq_nomination else None
+        # contestable_energy = row[1].value
+        total_bcq_nomination = row[1].value
+        wesm_exposure = actual_energy - total_bcq_nomination if actual_energy and total_bcq_nomination else None
         dest_sheet.cell(row=row[0].row, column=5).value = wesm_exposure
 
     # Save the destination workbook
@@ -10980,7 +11013,7 @@ def wesm_exposure_we():
     # Close workbooks
     source_wb.close()
     dest_wb.close()
-    source_wb3.close()
+    # source_wb3.close()
     source_wb2.close()
     print("Data transfer completed.")
 
@@ -11849,7 +11882,7 @@ def total_ss_load():
     source_sheet_2 = source_wb_2['Sheet1']
 
     # Define source and destination ranges
-    source_ranges_2 = [('K2', 'K25')]
+    source_ranges_2 = [('J2', 'J25')]
     dest_ranges_2 = [('S2', 'S25')]
 
     # Copy data from source to destination based on specified ranges
@@ -22587,6 +22620,13 @@ def main_so():
         # Click 'Download'
         driver.find_element(By.XPATH, '/html/body/div[7]/div/div/div/div/div[2]/div/div[2]/button').click()
         time.sleep(20)
+
+        # Specify the folder path and prefixes
+        downloads_folder_so = r'C:\Users\Corplan\Downloads'
+        prefix_to_delete_so = 'SO_ADV'
+        # Delete old files but retain the most recent one for each prefix
+        delete_old_files(prefix_to_delete_so, downloads_folder_so)
+
         #list_of_files_so = glob.glob(r'C:\Users\aslee\Downloads\*') # Downloads Path 
         list_of_files_so = glob.glob(r'C:\Users\Corplan\Downloads\*')
         prefix_so = 'SO_ADV'
@@ -22615,12 +22655,12 @@ def main_so():
         # Usage
         expected_columns, header = inspect_csv_so(most_recent_file_so, delimiter='\t')
         time.sleep(20)
-        # Create a new Excel workbook
-        workbook = openpyxl.Workbook()
-        # Select the default sheet (usually named 'Sheet')
-        sheet = workbook.active
-        # Save the workbook to a file
-        workbook.save('SO_ADVISORIES.xlsx')
+        # # Create a new Excel workbook
+        # workbook = openpyxl.Workbook()
+        # # Select the default sheet (usually named 'Sheet')
+        # sheet = workbook.active
+        # # Save the workbook to a file
+        # workbook.save('SO_ADVISORIES.xlsx')
         # Usage
         #cleaned_csv_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\SO_ADVISORIES.xlsx'
         cleaned_csv_file_path = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\SO_ADVISORIES.xlsx'
@@ -22641,9 +22681,9 @@ def main_so():
         time.sleep(1)
         st.rerun()
 
-def so_advisories_file():
-    so_thread = threading.Thread(target=main_so, daemon=False)
-    so_thread.start()
+# def so_advisories_file():
+#     so_thread = threading.Thread(target=main_so, daemon=False)
+#     so_thread.start()
 
 # ------ from mo_advisories.py file ------
 # Check expected columns based on header
@@ -22719,6 +22759,14 @@ def main_mo():
         # Click 'Download'
         driver.find_element(By.XPATH, "/html/body/div[7]/div/div/div/div/div[2]/div/div[2]/button").click()
         time.sleep(20)
+
+
+        # Specify the folder path and prefixes
+        downloads_folder_mo = r'C:\Users\Corplan\Downloads'
+        prefix_to_delete_mo = 'ADV'
+        # Delete old files but retain the most recent one for each prefix
+        delete_old_files(prefix_to_delete_mo, downloads_folder_mo)
+        
         list_of_files_mo = glob.glob(r'C:\Users\Corplan\Downloads\*')
         #list_of_files_mo = glob.glob(r'C:\Users\aslee\Downloads\*')
         # Define the prefix to filter files
@@ -22750,12 +22798,12 @@ def main_mo():
         # Usage
         expected_columns_mo, header_mo = inspect_csv_mo(most_recent_file_mo, delimiter='\t')
         time.sleep(20)
-        # Create a new Excel workbook
-        workbook = openpyxl.Workbook()
-        # Select the default sheet (usually named 'Sheet')
-        sheet = workbook.active
-        # Save the workbook to a file
-        workbook.save('MO_ADVISORIES.xlsx')
+        # # Create a new Excel workbook
+        # workbook = openpyxl.Workbook()
+        # # Select the default sheet (usually named 'Sheet')
+        # sheet = workbook.active
+        # # Save the workbook to a file
+        # workbook.save('MO_ADVISORIES.xlsx')
         # Usage
         #cleaned_csv_file_path_mo = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MO_ADVISORIES.xlsx'
         cleaned_csv_file_path_mo = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MO_ADVISORIES.xlsx'
@@ -22776,8 +22824,14 @@ def main_mo():
         time.sleep(1)
         st.rerun()
 
-def mo_advisories_file():
+# def mo_advisories_file():
+#     mo_thread = threading.Thread(target=main_mo, daemon=False)
+#     mo_thread.start()
+
+def advisories_file():
+    so_thread = threading.Thread(target=main_so, daemon=False)
     mo_thread = threading.Thread(target=main_mo, daemon=False)
+    so_thread.start()
     mo_thread.start()
 
 def view_all_data():
@@ -22874,8 +22928,8 @@ def load_data_from_excel():
     sheet['E1'] = 'Molo'
     sheet['F1'] = 'Diversion'
     sheet['G1'] = 'Mobile SS 1'
-    sheet['H1'] = 'Mobile SS 2'
-    sheet['I1'] = 'Megaworld'
+    # sheet['H1'] = 'Mobile SS 2'
+    sheet['H1'] = 'Megaworld'
     workbook.save('station_load_graph.xlsx')
     workbook.close()
     print("Excel file 'station_load_graph.xlsx' created successfully.")
@@ -22897,8 +22951,8 @@ def load_data_from_excel():
     dest_sheet_slg = dest_wb_slg['Sheet']
 
     # Define source and destination ranges
-    source_ranges_slg = [('B2', 'B25'), ('C2', 'C25'), ('D2', 'D25'), ('E2', 'E25'), ('F2', 'F25'), ('G2', 'G25'), ('H2', 'H25'), ('I2', 'I25'), ('J2', 'J25')]
-    dest_ranges_slg = [('A2', 'A25'), ('B2', 'B25'), ('C2', 'C25'), ('D2', 'D25'), ('E2', 'E25'), ('F2', 'F25'), ('G2', 'G25'), ('H2', 'H25'), ('I2', 'I25')]
+    source_ranges_slg = [('B2', 'B25'), ('C2', 'C25'), ('D2', 'D25'), ('E2', 'E25'), ('F2', 'F25'), ('G2', 'G25'), ('H2', 'H25'), ('I2', 'I25')]
+    dest_ranges_slg = [('A2', 'A25'), ('B2', 'B25'), ('C2', 'C25'), ('D2', 'D25'), ('E2', 'E25'), ('F2', 'F25'), ('G2', 'G25'), ('H2', 'H25')]
     
     # Copy data from source to destination based on specified ranges
     for i in range(len(source_ranges_slg)):
@@ -22937,7 +22991,6 @@ def load_data_from_excel():
                 Molo INT(11) NOT NULL,
                 Diversion INT(11) NOT NULL,
                 `Mobile SS 1` INT(11) NOT NULL,
-                `Mobile SS 2` INT(11) NOT NULL,
                 Megaworld INT(11) NOT NULL
             )
             """
@@ -22947,7 +23000,7 @@ def load_data_from_excel():
 
             # Insert data from dataframe into the MySQL table
             for i, row in df.iterrows():
-                sql = f"INSERT INTO {table_name} (Hour, Lapaz, Jaro, Mandurriao, Molo, Diversion, `Mobile SS 1`, `Mobile SS 2`, Megaworld) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                sql = f"INSERT INTO {table_name} (Hour, Lapaz, Jaro, Mandurriao, Molo, Diversion, `Mobile SS 1`, Megaworld) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
                 cursor.execute(sql, tuple(row))
                 print(f"Inserted row {i + 1}")
 
@@ -23013,90 +23066,6 @@ def format_value_2(value):
     # Format the value to always show two decimal places
     return f'{value:,.2f}'  
 
-# def sub_load_func():
-#     # -- START OF DISPLAYING THE SUBSTATION LOAD (KW) BAR CHART -- 
-
-#         # Load data
-#         df_excel = load_data_from_excel()
-
-#         # For getting the current hour
-#         now = datetime.now()
-#         now_hour = now.hour
-#         if now_hour == 0:
-#             now_hour = 24
-
-#         # Find the row where the hour matches the current hour
-#         matching_row = df_excel[df_excel['Hour'] == now_hour]
-
-#         # Check if there's no matching data for the current hour
-#         if matching_row.empty:
-#             # If no data for the current hour, get the latest available data
-#             matching_row = df_excel.iloc[-1]  # Get the last row in the DataFrame
-#         else:
-#             matching_row = matching_row.iloc[0]  # Get the first row matching the current hour
-
-#         # Extract the values
-#         hour_value = matching_row['Hour']
-#         lapaz_value = matching_row['Lapaz']
-#         jaro_value = matching_row['Jaro']
-#         mandurriao_value = matching_row['Mandurriao']
-#         molo_value = matching_row['Molo']
-#         diversion_value = matching_row['Diversion']
-#         mobile_ss1_value = matching_row['Mobile SS 1']
-#         mobile_ss2_value = matching_row['Mobile SS 2']
-#         megaworld_value = matching_row['Megaworld']
-
-#         # Prepare data for the bar chart
-#         chart_data = pd.DataFrame({
-#             'Substation': ['Lapaz', 'Jaro', 'Mandurriao', 'Molo', 'Diversion', 'Mobile SS 1', 'Mobile SS 2', 'Megaworld'],
-#             'kW': [lapaz_value, jaro_value, mandurriao_value, molo_value, diversion_value, mobile_ss1_value, mobile_ss2_value, megaworld_value]
-#         })
-
-#         # Create the horizontal bar chart with Plotly
-#         fig_ss_load = px.bar(chart_data, y='Substation', x='kW', text='kW', orientation='h')
-
-#         # Customize the bar colors
-#         # Red, Green, Light Blue, Dark Blue, Yellow, Pink, Purple, Brown
-#         colors = ['#cc3333', '#228B22', '#ADD8E6', '#4682B4', '#FFDB58', '#FFC0CB', '#C3B1E1', '#C19A6B']
-#         fig_ss_load.update_traces(marker_color=colors)
-
-#         # Customize the layout
-#         fig_ss_load.update_traces(
-#             texttemplate='%{x:,.0f}',  # Format numbers with thousands separators and no decimal places
-#             textposition='outside',
-#             textfont_size=12  # Reduce text size if needed
-#         )
-
-#         # Add padding by adjusting the layout
-#         fig_ss_load.update_layout(
-#             title={
-#                 'text':'Substation Load (kW)',
-#                 'font':{
-#                     'color': 'white' # Set title color to white
-#                 }
-#             },
-#             margin=dict(r=30, t=30, b=15),  # Increase margins further
-#             xaxis=dict(
-#                 title='kW',
-#                 tickformat=',',  # Format axis ticks with commas as thousands separators
-#                 showgrid=False,
-#                 zeroline=False,
-#                 range=[0, max(chart_data['kW']) * 1.2]  # Extend the x-axis range further
-#             ),
-#             uniformtext_minsize=8,
-#             uniformtext_mode='hide',
-#             height=240  # Set the height of the bar chart
-#         )
-
-#         fig_ss_load.update_layout(
-#             plot_bgcolor='black',
-#             paper_bgcolor='black'
-#         )
-
-#         return fig_ss_load
-
-#         # -- END OF DISPLAYING THE SUBSTATION LOAD (KW) BAR CHART -- 
-
 def sub_load_func():
     # -- START OF DISPLAYING THE SUBSTATION LOAD (KW) BAR CHART -- 
 
@@ -23127,29 +23096,44 @@ def sub_load_func():
     molo_value = matching_row['Molo']
     diversion_value = matching_row['Diversion']
     mobile_ss1_value = matching_row['Mobile SS 1']
-    mobile_ss2_value = matching_row['Mobile SS 2']
+    # mobile_ss2_value = matching_row['Mobile SS 2']
     megaworld_value = matching_row['Megaworld']
 
     # Prepare data for the bar chart
     chart_data = pd.DataFrame({
-        'Substation': ['Lapaz', 'Jaro', 'Mandurriao', 'Molo', 'Diversion', 'Mobile SS 1', 'Mobile SS 2', 'Megaworld'],
-        'kW': [lapaz_value, jaro_value, mandurriao_value, molo_value, diversion_value, mobile_ss1_value, mobile_ss2_value, megaworld_value]
+        'Substation': ['Lapaz', 'Jaro', 'Mandurriao', 'Molo', 'Diversion', 'Mobile SS 1', 'Megaworld'],
+        'kW': [lapaz_value, jaro_value, mandurriao_value, molo_value, diversion_value, mobile_ss1_value, megaworld_value]
     })
 
-    # Sort data by 'kW' values in ascending order
-    chart_data = chart_data.sort_values(by='kW', ascending=True)
+    # Modify the labels for Molo and Mobile SS 1
+    chart_data['Label'] = chart_data.apply(lambda row: (
+        'Under Rehab' if row['Substation'] == 'Molo' else
+        'Borrowed by NEPC' if row['Substation'] == 'Mobile SS 1' else
+        f"{row['kW']:,.0f}" if row['kW'] != 0 else ''
+    ), axis=1)
+
+    # Add priority column to control the order of Molo and Mobile SS 1
+    chart_data['Priority'] = chart_data['Substation'].apply(lambda x: 1 if x == 'Molo' else (2 if x == 'Mobile SS 1' else 3))
+
+    # Sort data by 'Priority' and 'kW' values (Molo and Mobile SS 1 first, then by kW)
+    chart_data = chart_data.sort_values(by=['Priority', 'kW'], ascending=[True, True])
 
     # Create the horizontal bar chart with Plotly
-    fig_ss_load = px.bar(chart_data, y='Substation', x='kW', text='kW', orientation='h')
-
-    # Customize the bar colors
-    # Red, Green, Light Blue, Dark Blue, Yellow, Pink, Purple, Brown
-    colors = ['#cc3333', '#228B22', '#ADD8E6', '#4682B4', '#FFDB58', '#FFC0CB', '#C3B1E1', '#C19A6B']
-    fig_ss_load.update_traces(marker_color=colors)
+    fig_ss_load = px.bar(chart_data, y='Substation', x='kW', text='Label', orientation='h',
+                         color='Substation',
+                         color_discrete_map={
+                             'Lapaz': '#cc3333',         # Red
+                             'Jaro': '#228B22',          # Green
+                             'Mandurriao': '#ADD8E6',    # Light Blue
+                             'Molo': '#4682B4',          # Dark Blue
+                             'Diversion': '#FFDB58',     # Yellow
+                             'Mobile SS 1': '#FFC0CB',   # Pink
+                             'Megaworld': '#C19A6B'      # Brown
+                         })
 
     # Customize the layout
     fig_ss_load.update_traces(
-        texttemplate='%{x:,.0f}',  # Format numbers with thousands separators and no decimal places
+        texttemplate='%{text}',  # Format numbers with thousands separators and no decimal places
         textposition='outside',
         textfont_size=12  # Reduce text size if needed
     )
@@ -23170,6 +23154,7 @@ def sub_load_func():
             zeroline=False,
             range=[0, max(chart_data['kW']) * 1.2]  # Extend the x-axis range further
         ),
+        showlegend=False,
         uniformtext_minsize=8,
         uniformtext_mode='hide',
         height=240  # Set the height of the bar chart
@@ -23224,7 +23209,6 @@ def actual_vs_forecasted():
             'Molo': '#4682B4',
             'Diversion': '#FFDB58',
             'Mobile SS 1': '#FFC0CB',
-            'Mobile SS 2': '#C3B1E1',
             'Megaworld': '#C19A6B'
         }
 
@@ -23279,7 +23263,7 @@ def actual_vs_forecasted():
                 }
             },
             margin=dict(l=0, r=0, t=30, b=0),  # Adjust margins to fit small screens
-            xaxis_title='Hour',
+            xaxis_title='Interval',
             yaxis_title='kWh',
             xaxis=dict(
                 tickmode='array',
@@ -25242,8 +25226,9 @@ if authentication_status == True:
         # current_rate_file()
         get_temp_weather_data_file()
         store_temp_weather_db_file()
-        so_advisories_file()
-        mo_advisories_file()
+        # so_advisories_file()
+        # mo_advisories_file()
+        advisories_file()
 
         # Add custom CSS
         st.markdown(
@@ -25574,6 +25559,7 @@ if authentication_status == True:
             font-weight: normal;
             color: #FFFFFF;
             max-height: 100%;  
+            max-width: 100%;
             overflow: hidden;  
             text-overflow: ellipsis;  
             justify-content: center;
@@ -25584,11 +25570,12 @@ if authentication_status == True:
         .custom-box-2 h4, .custom-box-2 p {
             margin: 0;
             padding: 0;
-            font-size: 0.5rem;
+            font-size: 0.6rem;
             font-family: Helvetica;
             font-weight: normal;
             color: #FFFFFF;
             max-height: 100%;  
+            max-width: 100%;
             overflow: hidden;  
             text-overflow: ellipsis;  
             justify-content: left;
@@ -25673,7 +25660,7 @@ if authentication_status == True:
                 st.markdown('<div class="custom-box"><h4>Total BCQ Nomination (kW)</h4><p>{}</p></div>'.format(total_bcq), unsafe_allow_html=True)
 
             with card8:
-                st.markdown('<div class="custom-box"><h4>MORE Trading Node (PhP/kWh)</h4><p>{}</p></div>'.format(final_total), unsafe_allow_html=True)
+                st.markdown('<div class="custom-box"><h4>MORE Trading Node (PhP/MWh)</h4><p>{}</p></div>'.format(final_total), unsafe_allow_html=True)
 
             with card9:
                 st.markdown('<div class="custom-box"><h4>Current Rate (PhP/kWh)</h4><p>{}</p></div>'.format(current_rate), unsafe_allow_html=True)
@@ -25689,42 +25676,70 @@ if authentication_status == True:
         # Layout with smaller padding
         col1, col2 = st.columns([1, 1.75])   
         with col1:
+            file_path_subload_chart = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\latest_subload_chart.json"
             try:
+                # latest_chart_total_sub_load = sub_load_func()
+                # st.plotly_chart(latest_chart_total_sub_load)
                 latest_chart_total_sub_load = sub_load_func()
                 st.plotly_chart(latest_chart_total_sub_load)
+                save_chart(latest_chart_total_sub_load, file_path_subload_chart)
             except:
-                if latest_chart_total_sub_load:
-                    st.plotly_chart(latest_chart_total_sub_load) 
+                # if latest_chart_total_sub_load:
+                #     st.plotly_chart(latest_chart_total_sub_load) 
+                chart_json_subload = load_chart(file_path_subload_chart)
+                latest_chart_total_sub_load = pio.from_json(chart_json_subload)
+                st.plotly_chart(latest_chart_total_sub_load)
         with col2:
+            file_path_avf_chart = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\latest_avf_chart.json"
             try:
+                # latest_chart_actual_vs_forecasted = actual_vs_forecasted()
+                # st.plotly_chart(latest_chart_actual_vs_forecasted)
                 latest_chart_actual_vs_forecasted = actual_vs_forecasted()
                 st.plotly_chart(latest_chart_actual_vs_forecasted)
+                save_chart(latest_chart_actual_vs_forecasted, file_path_avf_chart)
             except:
-                if latest_chart_actual_vs_forecasted:
-                    st.plotly_chart(latest_chart_actual_vs_forecasted)
+                # if latest_chart_actual_vs_forecasted:
+                #     st.plotly_chart(latest_chart_actual_vs_forecasted)
+                chart_json_avf = load_chart(file_path_avf_chart)
+                latest_chart_actual_vs_forecasted = pio.from_json(chart_json_avf)
+                st.plotly_chart(latest_chart_actual_vs_forecasted)
 
-        col4, col5, col6 = st.columns([1, 1, 0.75])
-        with col4:
+        col3, col4, col5 = st.columns([1, 1, 0.75])
+        with col3:
+            file_path_bcq_chart = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\latest_bcq_chart.json"
             try:
+                # latest_chart_bcq = bcq_func()
+                # st.plotly_chart(latest_chart_bcq)
                 latest_chart_bcq = bcq_func()
                 st.plotly_chart(latest_chart_bcq)
+                save_chart(latest_chart_bcq, file_path_bcq_chart)
             except:
-                if latest_chart_bcq:
-                    st.plotly_chart(latest_chart_bcq)
-        with col5:
+                # if latest_chart_bcq:
+                #     st.plotly_chart(latest_chart_bcq)
+                chart_json_bcq = load_chart(file_path_bcq_chart)
+                latest_chart_bcq = pio.from_json(chart_json_bcq)
+                st.plotly_chart(latest_chart_bcq)
+        with col4:
+            file_path_tipc_chart = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\latest_tipc_chart.json"
+
             try:
                 latest_chart_tipc = tipc_func()
                 st.plotly_chart(latest_chart_tipc)
+                save_chart(latest_chart_tipc, file_path_tipc_chart)
             except:
-                if latest_chart_tipc:
-                    st.plotly_chart(latest_chart_tipc)
-        with col6:
+                chart_json_tipc = load_chart(file_path_tipc_chart)
+                latest_chart_tipc = pio.from_json(chart_json_tipc)
+                st.plotly_chart(latest_chart_tipc)
+        with col5:
+            file_path_genmix_chart = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\latest_genmix_chart.json"
             try:
                 latest_chart_genmix = genmix_func()
                 st.plotly_chart(latest_chart_genmix)
+                save_chart(latest_chart_genmix, file_path_genmix_chart)
             except:
-                if latest_chart_genmix:
-                    st.plotly_chart(latest_chart_genmix)
+                chart_json_genmix = load_chart(file_path_genmix_chart)
+                latest_chart_genmix = pio.from_json(chart_json_genmix)
+                st.plotly_chart(latest_chart_genmix)
         
         st.markdown("""
         <style>
