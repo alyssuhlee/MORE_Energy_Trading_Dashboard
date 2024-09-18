@@ -23154,11 +23154,24 @@ def sub_load_func():
         'kW': [lapaz_value, jaro_value, mandurriao_value, molo_value, diversion_value, mobile_ss1_value, mobile_ss2_value, megaworld_value]
     })
 
-    # Sort data by 'kW' values in ascending order
-    chart_data = chart_data.sort_values(by='kW', ascending=True)
+    # # Sort data by 'kW' values in ascending order
+    # chart_data = chart_data.sort_values(by='kW', ascending=True)
 
-        # Create the horizontal bar chart with Plotly
-    fig_ss_load = px.bar(chart_data, y='Substation', x='kW', text='kW', orientation='h',
+    # Modify the labels for Molo and Mobile SS 1
+    chart_data['Label'] = chart_data.apply(lambda row: (
+        'Under Rehab' if row['Substation'] == 'Molo' else
+        'Loaned to NEPC' if row['Substation'] == 'Mobile SS 1' else
+        f"{row['kW']:,.0f}" if row['kW'] != 0 else ''
+    ), axis=1)
+
+    # Add priority column to control the order of Molo and Mobile SS 1
+    chart_data['Priority'] = chart_data['Substation'].apply(lambda x: 1 if x == 'Molo' else (2 if x == 'Mobile SS 1' else 3))
+
+    # Sort data by 'Priority' and 'kW' values (Molo and Mobile SS 1 first, then by kW)
+    chart_data = chart_data.sort_values(by=['Priority', 'kW'], ascending=[True, True])
+
+    # Create the horizontal bar chart with Plotly
+    fig_ss_load = px.bar(chart_data, y='Substation', x='kW', text='Label', orientation='h',
                          color='Substation',
                          color_discrete_map={
                              'Lapaz': '#cc3333',         # Red
@@ -23173,7 +23186,7 @@ def sub_load_func():
 
     # Customize the layout
     fig_ss_load.update_traces(
-        texttemplate='%{x:,.0f}',  # Format numbers with thousands separators and no decimal places
+        texttemplate='%{text}',  # Format numbers with thousands separators and no decimal places
         textposition='outside',
         textfont_size=12  # Reduce text size if needed
     )
@@ -23194,6 +23207,7 @@ def sub_load_func():
             zeroline=False,
             range=[0, max(chart_data['kW']) * 1.2]  # Extend the x-axis range further
         ),
+        showlegend=False,
         uniformtext_minsize=8,
         uniformtext_mode='hide',
         height=240  # Set the height of the bar chart
@@ -23201,8 +23215,7 @@ def sub_load_func():
 
     fig_ss_load.update_layout(
         plot_bgcolor='black',
-        paper_bgcolor='black',
-        showlegend=False
+        paper_bgcolor='black'
     )
 
     return fig_ss_load
@@ -23273,7 +23286,7 @@ def actual_vs_forecasted():
                 y=[value * 0.9 for value in result_df[station]],  # Lower the bar heights slightly
                 name=station,
                 marker_color=color
-            ))
+        ))
 
         # Add total as a scatter trace with a straight line
         df_2 = pd.read_excel(forecasted_energy_destination_path)
@@ -23304,7 +23317,7 @@ def actual_vs_forecasted():
                 }
             },
             margin=dict(l=0, r=0, t=30, b=0),  # Adjust margins to fit small screens
-            xaxis_title='Hour',
+            xaxis_title='Interval',
             yaxis_title='kWh',
             xaxis=dict(
                 tickmode='array',
@@ -25672,28 +25685,11 @@ if authentication_status == True:
             # Set the image's width to the column width
             st.image(image_path, use_column_width=True)
 
-            # Custom CSS to reduce the gap between HTML and the columns using inline styles
-            st.markdown("""
-                <style>
-                .custom-html {
-                    margin-bottom: 0px;  /* Adjust this value to reduce space between HTML and columns */
-                }
-                .column-section {
-                    margin-top: 0px;     /* Adjust this value to reduce space above the columns */
-                }
-                </style>
-                """, unsafe_allow_html=True)
-
             # Display the HTML and CSS in Streamlit
             st.components.v1.html(html_code, height=80)
 
             # Create columns with small gap
-            # card1, card2, card3, card4, card5, card6, card7, card8, card9 = st.columns(9, gap='small')
-
-            # Wrap the columns with a div and the custom class
-            st.markdown("<div class='column-section'>", unsafe_allow_html=True)
             card1, card2, card3, card4, card5, card6, card7, card8, card9 = st.columns(9, gap='small')
-            st.markdown("</div>", unsafe_allow_html=True)
 
             with card1:
                 st.markdown('<div class="custom-box"><h4>Current Date</h4><p>{}</p></div>'.format(formatted_date), unsafe_allow_html=True)
