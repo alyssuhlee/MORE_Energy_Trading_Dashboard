@@ -33,12 +33,13 @@ REFRESH_INTERVAL = 900
 
 # ------ from current_interval.py file ------
 # MySQL connection details
-db_config = {
-    'user': 'cesra_dbm',
-    'password': 'ibIDN0NcnGYo71qDZuHw',
-    'host': 'cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com',
-    'database': 'myDb'
-}
+# db_config = {
+#     'user': 'cesra_dbm',
+#     'password': 'ibIDN0NcnGYo71qDZuHw',
+#     'host': 'cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com',
+#     'database': 'myDb',
+#     'port': 3309  # Default MySQL port
+# }
 
 # List of functions
 
@@ -79,7 +80,17 @@ def get_time_interval(current_time):
 # Function to insert the time interval into the database
 def insert_time_interval(time_interval):
     try:
-        conn = mysql.connector.connect(**db_config)
+        # conn = mysql.connector.connect(**db_config)
+
+        conn = mysql.connector.connect(
+            host='cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com',
+            port=3309,
+            database='myDb',
+            user='cesra_dbm',
+            password='ibIDN0NcnGYo71qDZuHw'
+        )
+    
+        # Create MySQL table if it doesn't exist
         cursor = conn.cursor()
         
         # Create table if not exists
@@ -300,9 +311,10 @@ def forecasted_energy_file():
         host='cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com',
         database='myDb',
         user='cesra_dbm',
-        password='ibIDN0NcnGYo71qDZuHw'
+        password='ibIDN0NcnGYo71qDZuHw',
+        port=3309
     )
-
+    
     # Create MySQL table if it doesn't exist
     cursor = conn.cursor()
     cursor.execute("""
@@ -714,7 +726,8 @@ def total_bcq_nomination_file():
         host='cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com',
         database='myDb',
         user='cesra_dbm',
-        password='ibIDN0NcnGYo71qDZuHw'
+        password='ibIDN0NcnGYo71qDZuHw',
+        port=3309
     )
 
     # Create MySQL table if it doesn't exist
@@ -911,7 +924,8 @@ def contestable_energy_file():
         host='cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com',
         database='myDb',
         user='cesra_dbm',
-        password='ibIDN0NcnGYo71qDZuHw'
+        password='ibIDN0NcnGYo71qDZuHw',
+        port=3309
     )
 
     # Create MySQL table if it doesn't exist
@@ -10608,7 +10622,8 @@ def more_trading_node_2nd_part_file():
             host='cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com',
             database='myDb',
             user='cesra_dbm',
-            password='ibIDN0NcnGYo71qDZuHw'
+            password='ibIDN0NcnGYo71qDZuHw',
+            port=3309
         )
         cursor = conn.cursor()
         cursor.execute("""
@@ -10816,7 +10831,8 @@ def total_substation_load_final_file():
             host='cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com',
             database='myDb',
             user='cesra_dbm',
-            password='ibIDN0NcnGYo71qDZuHw'
+            password='ibIDN0NcnGYo71qDZuHw',
+            port=3309
         )
 
         cursor = conn.cursor()
@@ -11015,7 +11031,8 @@ def actual_energy_file():
         host='cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com',
         database='myDb',
         user='cesra_dbm',
-        password='ibIDN0NcnGYo71qDZuHw'
+        password='ibIDN0NcnGYo71qDZuHw',
+        port=3309
     )
 
     # Create MySQL table if it doesn't exist
@@ -11242,7 +11259,8 @@ def wesm_exposure_file():
         host='cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com',
         database='myDb',
         user='cesra_dbm',
-        password='ibIDN0NcnGYo71qDZuHw'
+        password='ibIDN0NcnGYo71qDZuHw',
+        port=3309
     )
 
     # Create MySQL table if it doesn't exist
@@ -22739,7 +22757,8 @@ def current_rate_file():
         host='cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com',
         database='myDb',
         user='cesra_dbm',
-        password='ibIDN0NcnGYo71qDZuHw'
+        password='ibIDN0NcnGYo71qDZuHw',
+        port=3309
     )
 
     # Create MySQL table if it doesn't exist
@@ -22905,7 +22924,8 @@ def store_temp_weather_db_file():
         host='cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com',
         database='myDb',
         user='cesra_dbm',
-        password='ibIDN0NcnGYo71qDZuHw'
+        password='ibIDN0NcnGYo71qDZuHw',
+        port=3309
     )
 
     # Create MySQL table if it doesn't exist
@@ -23199,7 +23219,7 @@ def store_temp_weather_db_file():
 #     mo_thread.start()
 
 def view_all_data():
-    c.execute('select * from timeintervals order by id asc')
+    c.execute('select * from TimeIntervals order by id asc')
     data=c.fetchall()
     return data
 
@@ -23339,7 +23359,8 @@ def load_data_from_excel():
             host='cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com',
             database='myDb',
             user='cesra_dbm',
-            password='ibIDN0NcnGYo71qDZuHw'
+            password='ibIDN0NcnGYo71qDZuHw',
+            port=3309
         )
 
         if connection.is_connected():
@@ -26346,7 +26367,7 @@ if authentication_status == True:
         # Connection
         conn=mysql.connector.connect(
             host = "cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com",
-            port = "3309",
+            port = 3309,
             user = "cesra_dbm",
             passwd = "ibIDN0NcnGYo71qDZuHw",
             db = "myDb"
