@@ -154,28 +154,47 @@ def forecasted_energy():
     current_date = datetime.now()
     current_month_numeric = current_date.strftime("%m")
     current_month_name = current_date.strftime("%B")
-    current_day = current_date.strftime("%d")
+    current_day = int(current_date.strftime("%d"))
     current_year = current_date.strftime("%Y")
+    current_day_not_int = current_date.strftime("%d")
 
-    folder_path = os.path.join(base_directory, current_year)
+    check_current_month = current_date.strftime("%B")
+    # If the current month is December, increment the year
+    if check_current_month == "December" and current_day > 25:
+        year_to_be_used = str(int(current_year) + 1)
+    # Otherwise, use the current year
+    else: 
+        year_to_be_used = current_date.strftime("%Y")
 
+    folder_path = os.path.join(base_directory, year_to_be_used)
+    
     #List of all month names
     months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     #Find index of current month
     current_month_index = months.index(current_month_name)
 
-    if (current_day>'25') and (current_date.strftime("%m")==current_month_numeric):
-        #Increment current month by converting to integer, adding 1, and formatting back to zero-padded string
-        current_month_numeric_increment = '{:02d}'.format((int(current_month_numeric) % 12) + 1)
-        #Calculate index of next month
-        next_month_index = (current_month_index + 1) % 12
-        current_month_name = months[next_month_index]
-    elif(current_day<='25') and (current_date.strftime("%m")==current_month_numeric):
-        current_month_numeric_increment = current_month_numeric
+    # if (current_day>'25') and (current_date.strftime("%m") == current_month_numeric):
+    #     #Increment current month by converting to integer, adding 1, and formatting back to zero-padded string
+    #     current_month_numeric_increment = '{:02d}'.format((int(current_month_numeric) % 12) + 1)
+    #     # Calculate index of next month
+    #     next_month_index = (current_month_index + 1) % 12
+    #     current_month_name = months[next_month_index]
+    # elif(current_day<='25') and (current_date.strftime("%m")==current_month_numeric):
+    #     current_month_numeric_increment = current_month_numeric
 
-    # Constructing the folder name
-    folder_prefix = current_month_numeric_increment.zfill(3)  # Zero-padded three-digit month number (e.g., '006' for June)
-    folder_name = f"{folder_prefix}. {current_month_name} {current_year}"
+    # Check if the day is past the 25th of the current month
+    if current_day > 25 :
+        # If it's past the 25th, increment the month
+        next_month_index = (current_month_index + 1) % 12 # This handles the rollover from December to January
+        current_month_name = months[next_month_index]
+        # Set the numeric month increment (for the next month), ensuring 3-digit format 
+        current_month_numeric_increment = f'{(int(current_month_numeric) % 12) + 1:03d}'
+    else:
+        # If it's before or on the 25th, don't change the month
+        current_month_numeric_increment = f'{int(current_month_numeric):03d}'
+
+    # Construct the folder name
+    folder_name = f"{current_month_numeric_increment}. {current_month_name} {year_to_be_used}"
 
     # Constructing the directory path
     folder_path_2 = os.path.join(folder_path, folder_name)
@@ -185,7 +204,8 @@ def forecasted_energy():
     extension = ".xlsx"
 
     # Folder Name (Example: Daily Rate Simulation_06252024) 
-    folder_name_2 = f"{drs}{current_month_numeric}{current_day}{current_year}{extension}"
+
+    folder_name_2 = f"{drs}{current_month_numeric}{current_day_not_int}{current_year}{extension}"
     folder_path_3 = os.path.join(folder_path_2, folder_name_2)
 
     # For creating a new Excel file with the HOUR and NET columns 
@@ -329,28 +349,47 @@ def total_bcq_nomination():
     current_date = datetime.now()
     current_month_numeric = current_date.strftime("%m")
     current_month_name = current_date.strftime("%B")
-    current_day = current_date.strftime("%d")
+    current_day = int(current_date.strftime("%d"))
     current_year = current_date.strftime("%Y")
+    current_day_not_int = current_date.strftime("%d")
 
-    folder_path = os.path.join(base_directory, current_year)
+    check_current_month = current_date.strftime("%B")
+    # If the current month is December, increment the year
+    if check_current_month == "December" and current_day > 25:
+        year_to_be_used = str(int(current_year) + 1)
+    # Otherwise, use the current year
+    else: 
+        year_to_be_used = current_date.strftime("%Y")
 
+    folder_path = os.path.join(base_directory, year_to_be_used)
+    
     #List of all month names
     months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     #Find index of current month
     current_month_index = months.index(current_month_name)
 
-    if (current_day>'25') and (current_date.strftime("%m")==current_month_numeric):
-        #Increment current month by converting to integer, adding 1, and formatting back to zero-padded string
-        current_month_numeric_increment = '{:02d}'.format((int(current_month_numeric) % 12) + 1)
-        #Calculate index of next month
-        next_month_index = (current_month_index + 1) % 12
-        current_month_name = months[next_month_index]
-    elif(current_day<='25') and (current_date.strftime("%m")==current_month_numeric):
-        current_month_numeric_increment = current_month_numeric
+    # if (current_day>'25') and (current_date.strftime("%m") == current_month_numeric):
+    #     #Increment current month by converting to integer, adding 1, and formatting back to zero-padded string
+    #     current_month_numeric_increment = '{:02d}'.format((int(current_month_numeric) % 12) + 1)
+    #     # Calculate index of next month
+    #     next_month_index = (current_month_index + 1) % 12
+    #     current_month_name = months[next_month_index]
+    # elif(current_day<='25') and (current_date.strftime("%m")==current_month_numeric):
+    #     current_month_numeric_increment = current_month_numeric
 
-    # Constructing the folder name
-    folder_prefix = current_month_numeric_increment.zfill(3)  # Zero-padded three-digit month number (e.g., '006' for June)
-    folder_name = f"{folder_prefix}. {current_month_name} {current_year}"
+    # Check if the day is past the 25th of the current month
+    if current_day > 25 :
+        # If it's past the 25th, increment the month
+        next_month_index = (current_month_index + 1) % 12 # This handles the rollover from December to January
+        current_month_name = months[next_month_index]
+        # Set the numeric month increment (for the next month), ensuring 3-digit format 
+        current_month_numeric_increment = f'{(int(current_month_numeric) % 12) + 1:03d}'
+    else:
+        # If it's before or on the 25th, don't change the month
+        current_month_numeric_increment = f'{int(current_month_numeric):03d}'
+
+    # Construct the folder name
+    folder_name = f"{current_month_numeric_increment}. {current_month_name} {year_to_be_used}"
 
     # Constructing the directory path
     folder_path_2 = os.path.join(folder_path, folder_name)
@@ -360,7 +399,8 @@ def total_bcq_nomination():
     extension = ".xlsx"
 
     # Folder Name (Example: Daily Rate Simulation_06252024) 
-    folder_name_2 = f"{drs}{current_month_numeric}{current_day}{current_year}{extension}"
+
+    folder_name_2 = f"{drs}{current_month_numeric}{current_day_not_int}{current_year}{extension}"
     folder_path_3 = os.path.join(folder_path_2, folder_name_2)
 
     # For creating a new Excel file with the HOUR and TOTAL BCQ NOMINATION columns 
@@ -721,28 +761,47 @@ def contestable_energy_ce():
     current_date = datetime.now()
     current_month_numeric = current_date.strftime("%m")
     current_month_name = current_date.strftime("%B")
-    current_day = current_date.strftime("%d")
+    current_day = int(current_date.strftime("%d"))
     current_year = current_date.strftime("%Y")
+    current_day_not_int = current_date.strftime("%d")
 
-    folder_path = os.path.join(base_directory, current_year)
+    check_current_month = current_date.strftime("%B")
+    # If the current month is December, increment the year
+    if check_current_month == "December" and current_day > 25:
+        year_to_be_used = str(int(current_year) + 1)
+    # Otherwise, use the current year
+    else: 
+        year_to_be_used = current_date.strftime("%Y")
 
+    folder_path = os.path.join(base_directory, year_to_be_used)
+    
     #List of all month names
     months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     #Find index of current month
     current_month_index = months.index(current_month_name)
 
-    if (current_day>'25') and (current_date.strftime("%m")==current_month_numeric):
-        #Increment current month by converting to integer, adding 1, and formatting back to zero-padded string
-        current_month_numeric_increment = '{:02d}'.format((int(current_month_numeric) % 12) + 1)
-        #Calculate index of next month
-        next_month_index = (current_month_index + 1) % 12
-        current_month_name = months[next_month_index]
-    elif(current_day<='25') and (current_date.strftime("%m")==current_month_numeric):
-        current_month_numeric_increment = current_month_numeric
+    # if (current_day>'25') and (current_date.strftime("%m") == current_month_numeric):
+    #     #Increment current month by converting to integer, adding 1, and formatting back to zero-padded string
+    #     current_month_numeric_increment = '{:02d}'.format((int(current_month_numeric) % 12) + 1)
+    #     # Calculate index of next month
+    #     next_month_index = (current_month_index + 1) % 12
+    #     current_month_name = months[next_month_index]
+    # elif(current_day<='25') and (current_date.strftime("%m")==current_month_numeric):
+    #     current_month_numeric_increment = current_month_numeric
 
-    # Constructing the folder name
-    folder_prefix = current_month_numeric_increment.zfill(3)  # Zero-padded three-digit month number (e.g., '006' for June)
-    folder_name = f"{folder_prefix}. {current_month_name} {current_year}"
+    # Check if the day is past the 25th of the current month
+    if current_day > 25 :
+        # If it's past the 25th, increment the month
+        next_month_index = (current_month_index + 1) % 12 # This handles the rollover from December to January
+        current_month_name = months[next_month_index]
+        # Set the numeric month increment (for the next month), ensuring 3-digit format 
+        current_month_numeric_increment = f'{(int(current_month_numeric) % 12) + 1:03d}'
+    else:
+        # If it's before or on the 25th, don't change the month
+        current_month_numeric_increment = f'{int(current_month_numeric):03d}'
+
+    # Construct the folder name
+    folder_name = f"{current_month_numeric_increment}. {current_month_name} {year_to_be_used}"
 
     # Constructing the directory path
     folder_path_2 = os.path.join(folder_path, folder_name)
@@ -752,7 +811,8 @@ def contestable_energy_ce():
     extension = ".xlsx"
 
     # Folder Name (Example: Daily Rate Simulation_06252024) 
-    folder_name_2 = f"{drs}{current_month_numeric}{current_day}{current_year}{extension}"
+
+    folder_name_2 = f"{drs}{current_month_numeric}{current_day_not_int}{current_year}{extension}"
     folder_path_3 = os.path.join(folder_path_2, folder_name_2)
 
     # For creating a new Excel file with the HOUR and CC columns 
@@ -11263,28 +11323,47 @@ def initial_function():
     current_date = datetime.now()
     current_month_numeric = current_date.strftime("%m")
     current_month_name = current_date.strftime("%B")
-    current_day = current_date.strftime("%d")
+    current_day = int(current_date.strftime("%d"))
     current_year = current_date.strftime("%Y")
+    current_day_not_int = current_date.strftime("%d")
 
-    folder_path = os.path.join(base_directory, current_year)
+    check_current_month = current_date.strftime("%B")
+    # If the current month is December, increment the year
+    if check_current_month == "December" and current_day > 25:
+        year_to_be_used = str(int(current_year) + 1)
+    # Otherwise, use the current year
+    else: 
+        year_to_be_used = current_date.strftime("%Y")
 
+    folder_path = os.path.join(base_directory, year_to_be_used)
+    
     #List of all month names
     months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     #Find index of current month
     current_month_index = months.index(current_month_name)
 
-    if (current_day>'25') and (current_date.strftime("%m")==current_month_numeric):
-        #Increment current month by converting to integer, adding 1, and formatting back to zero-padded string
-        current_month_numeric_increment = '{:02d}'.format((int(current_month_numeric) % 12) + 1)
-        #Calculate index of next month
-        next_month_index = (current_month_index + 1) % 12
-        current_month_name = months[next_month_index]
-    elif(current_day<='25') and (current_date.strftime("%m")==current_month_numeric):
-        current_month_numeric_increment = current_month_numeric
+    # if (current_day>'25') and (current_date.strftime("%m") == current_month_numeric):
+    #     #Increment current month by converting to integer, adding 1, and formatting back to zero-padded string
+    #     current_month_numeric_increment = '{:02d}'.format((int(current_month_numeric) % 12) + 1)
+    #     # Calculate index of next month
+    #     next_month_index = (current_month_index + 1) % 12
+    #     current_month_name = months[next_month_index]
+    # elif(current_day<='25') and (current_date.strftime("%m")==current_month_numeric):
+    #     current_month_numeric_increment = current_month_numeric
 
-    # Constructing the folder name
-    folder_prefix = current_month_numeric_increment.zfill(3)  # Zero-padded three-digit month number (e.g., '006' for June)
-    folder_name = f"{folder_prefix}. {current_month_name} {current_year}"
+    # Check if the day is past the 25th of the current month
+    if current_day > 25 :
+        # If it's past the 25th, increment the month
+        next_month_index = (current_month_index + 1) % 12 # This handles the rollover from December to January
+        current_month_name = months[next_month_index]
+        # Set the numeric month increment (for the next month), ensuring 3-digit format 
+        current_month_numeric_increment = f'{(int(current_month_numeric) % 12) + 1:03d}'
+    else:
+        # If it's before or on the 25th, don't change the month
+        current_month_numeric_increment = f'{int(current_month_numeric):03d}'
+
+    # Construct the folder name
+    folder_name = f"{current_month_numeric_increment}. {current_month_name} {year_to_be_used}"
 
     # Constructing the directory path
     folder_path_2 = os.path.join(folder_path, folder_name)
@@ -11294,7 +11373,8 @@ def initial_function():
     extension = ".xlsx"
 
     # Folder Name (Example: Daily Rate Simulation_06252024) 
-    folder_name_2 = f"{drs}{current_month_numeric}{current_day}{current_year}{extension}"
+
+    folder_name_2 = f"{drs}{current_month_numeric}{current_day_not_int}{current_year}{extension}"
     folder_path_3 = os.path.join(folder_path_2, folder_name_2)
     
     # For creating a new Excel file with the needed columns
@@ -11589,9 +11669,17 @@ def initial_function():
     else:
         next_month_date = date_currently.replace(day=1) + timedelta(days=32)
         month_var = calendar.month_name[next_month_date.month] # Example: "September"
+    
+    check_current_month = current_date.strftime("%B")
+    # If the current month is December, increment the year
+    if check_current_month == "December" and current_day > 25:
+        year_to_be_used = str(int(current_year) + 1)
+    # Otherwise, use the current year
+    else: 
+        year_to_be_used = current_date.strftime("%Y")
 
     extension = ".xlsx"
-    supplier_rates_folder = f"{srftm}{month_var} {current_year}{extension}"
+    supplier_rates_folder = f"{srftm}{month_var} {year_to_be_used}{extension}"
     supplier_rates_path = os.path.join(folder_path_2, supplier_rates_folder)
 
     # File path for destination Excel file
@@ -23458,15 +23546,15 @@ def sub_load_func():
     # Modify the labels for Molo and Mobile SS 1
     chart_data['Label'] = chart_data.apply(lambda row: (
         'Loaned to NEPC' if row['Substation'] == 'Mobile SS 1' else
-        'On Standby' if row['Substation'] == 'Mobile SS 2' else
+        # 'On Standby' if row['Substation'] == 'Mobile SS 2' else
         f"{row['kW']:,.0f}" if row['kW'] != 0 else ''
     ), axis=1)
 
-    # Add priority column to control the order of Mobile SS 1 and Mobile SS 2
-    chart_data['Priority'] = chart_data['Substation'].apply(lambda x: 1 if x == 'Mobile SS 1' else (2 if x == 'Mobile SS 2' else 3))
+    # # Add priority column to control the order of Mobile SS 1 and Mobile SS 2
+    # chart_data['Priority'] = chart_data['Substation'].apply(lambda x: 1 if x == 'Mobile SS 1' else (2 if x == 'Mobile SS 2' else 3))
 
-    # # Add Priority column where 'Mobile SS 1' is 1 and the rest is 2
-    # chart_data['Priority'] = chart_data['Substation'].apply(lambda x: 1 if x == 'Mobile SS 1' else 2)
+    # Add Priority column where 'Mobile SS 1' is 1 and the rest is 2
+    chart_data['Priority'] = chart_data['Substation'].apply(lambda x: 1 if x == 'Mobile SS 1' else 2)
 
     # Sort data by 'Priority' and 'kW' values (Molo and Mobile SS 1 first, then by kW)
     chart_data = chart_data.sort_values(by=['Priority', 'kW'], ascending=[True, True])
