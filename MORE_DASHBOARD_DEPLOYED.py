@@ -34,9 +34,9 @@ REFRESH_INTERVAL = 900
 # ------ from current_interval.py file ------
 # MySQL connection details
 db_config = {
-    'user': 'root',
-    'password': '',
-    'host': 'localhost',
+    'user': 'cesra_dbm',
+    'password': 'ibIDN0NcnGYo71qDZuHw',
+    'host': 'cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com',
     'database': 'myDb'
 }
 
@@ -297,10 +297,10 @@ def forecasted_energy_file():
     excel_file = 'forecasted_energy.xlsx'
 
     conn = mysql.connector.connect(
-        host='localhost',
+        host='cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com',
         database='myDb',
-        user='root',
-        password=''
+        user='cesra_dbm',
+        password='ibIDN0NcnGYo71qDZuHw'
     )
 
     # Create MySQL table if it doesn't exist
@@ -711,10 +711,10 @@ def total_bcq_nomination_file():
     excel_file = 'total_bcq_nomination.xlsx'
 
     conn = mysql.connector.connect(
-        host='localhost',
+        host='cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com',
         database='myDb',
-        user='root',
-        password=''
+        user='cesra_dbm',
+        password='ibIDN0NcnGYo71qDZuHw'
     )
 
     # Create MySQL table if it doesn't exist
@@ -908,10 +908,10 @@ def contestable_energy_file():
     excel_file = 'contestable_energy.xlsx'
 
     conn = mysql.connector.connect(
-        host='localhost',
+        host='cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com',
         database='myDb',
-        user='root',
-        password=''
+        user='cesra_dbm',
+        password='ibIDN0NcnGYo71qDZuHw'
     )
 
     # Create MySQL table if it doesn't exist
@@ -10605,10 +10605,10 @@ def more_trading_node_2nd_part_file():
     conn = None
     try:
         conn = mysql.connector.connect(
-            host='localhost',
+            host='cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com',
             database='myDb',
-            user='root',
-            password=''
+            user='cesra_dbm',
+            password='ibIDN0NcnGYo71qDZuHw'
         )
         cursor = conn.cursor()
         cursor.execute("""
@@ -10813,10 +10813,10 @@ def total_substation_load_final_file():
 
     try:
         conn = mysql.connector.connect(
-            host='localhost',
+            host='cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com',
             database='myDb',
-            user='root',
-            password=''
+            user='cesra_dbm',
+            password='ibIDN0NcnGYo71qDZuHw'
         )
 
         cursor = conn.cursor()
@@ -11012,10 +11012,10 @@ def actual_energy_file():
     excel_file = destination_file_path
 
     conn = mysql.connector.connect(
-        host='localhost',
+        host='cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com',
         database='myDb',
-        user='root',
-        password=''
+        user='cesra_dbm',
+        password='ibIDN0NcnGYo71qDZuHw'
     )
 
     # Create MySQL table if it doesn't exist
@@ -11239,10 +11239,10 @@ def wesm_exposure_file():
     excel_file = 'wesm_exposure.xlsx'
     # excel_file = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\wesm_exposure.xlsx'
     conn = mysql.connector.connect(
-        host='localhost',
+        host='cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com',
         database='myDb',
-        user='root',
-        password=''
+        user='cesra_dbm',
+        password='ibIDN0NcnGYo71qDZuHw'
     )
 
     # Create MySQL table if it doesn't exist
@@ -22736,10 +22736,10 @@ def current_rate_file():
     
     # while True:
     conn = mysql.connector.connect(
-        host='localhost',
+        host='cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com',
         database='myDb',
-        user='root',
-        password=''
+        user='cesra_dbm',
+        password='ibIDN0NcnGYo71qDZuHw'
     )
 
     # Create MySQL table if it doesn't exist
@@ -22902,10 +22902,10 @@ def store_temp_weather_db_file():
     excel_file = 'temp_data.xlsx'
 
     conn = mysql.connector.connect(
-        host='localhost',
+        host='cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com',
         database='myDb',
-        user='root',
-        password=''
+        user='cesra_dbm',
+        password='ibIDN0NcnGYo71qDZuHw'
     )
 
     # Create MySQL table if it doesn't exist
@@ -23336,10 +23336,10 @@ def load_data_from_excel():
     # Connect to the MySQL Database
     try:
         connection = mysql.connector.connect(
-            host='localhost',
+            host='cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com',
             database='myDb',
-            user='root',
-            password=''
+            user='cesra_dbm',
+            password='ibIDN0NcnGYo71qDZuHw'
         )
 
         if connection.is_connected():
@@ -26345,10 +26345,10 @@ if authentication_status == True:
 
         # Connection
         conn=mysql.connector.connect(
-            host = "localhost",
-            port = "3306",
-            user = "root",
-            passwd = "",
+            host = "cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com",
+            port = "3309",
+            user = "cesra_dbm",
+            passwd = "ibIDN0NcnGYo71qDZuHw",
             db = "myDb"
         )
 
