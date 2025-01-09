@@ -22805,9 +22805,6 @@ def fetch_weather_data():
     # Initialize the WebDriver with the specified options
     # driver = webdriver.Chrome(executable_path=ChromeDriverManager().install(), options=chrome_options)
 
-    # Set path to the Chromium binary (this path is typical for cloud environments)
-    os.environ["PATH"] += ":/usr/lib/chromium-browser/chromium-browser"
-
     # Initialize WebDriver with ChromeDriver and Chrome options
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
 
