@@ -22802,8 +22802,7 @@ def fetch_weather_data():
     # chrome_options.add_argument("--window-size=1920,1080")  # Set the window size (optional)
 
     # Initialize the WebDriver with the specified options
-    driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
-
+    driver = webdriver.Chrome(executable_path=ChromeDriverManager().install(), options=chrome_options)
     # URL of The Weather Channel
     url = 'https://weather.com/en-TT/weather/today/l/d5c2f0e4c2053e855f8c6f30f8c21aedcedfe8c9f8842071a894732e8b0eff99'
     driver.get(url)
