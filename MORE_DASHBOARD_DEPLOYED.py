@@ -22799,11 +22799,11 @@ def fetch_weather_data():
     # Set up options for headless mode
     chrome_options = Options()
     chrome_options.add_argument("--headless")
-    chrome_options.add_argument('--disable-gpu')
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument('--log-level=3')
     
-    chrome_service = Service(ChromeDriverManager().install())
     # Initialize WebDriver with ChromeDriver and Chrome options
-    driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
+    driver = webdriver.Chrome('chromedriver.exe', options=chrome_options)
     
     # URL of The Weather Channel
     url = 'https://weather.com/en-TT/weather/today/l/d5c2f0e4c2053e855f8c6f30f8c21aedcedfe8c9f8842071a894732e8b0eff99'
