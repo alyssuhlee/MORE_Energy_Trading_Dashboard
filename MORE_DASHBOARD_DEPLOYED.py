@@ -9,6 +9,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options  # Import Options for headless mode
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support import expected_conditions as EC
 from sqlalchemy import create_engine
 import calendar
@@ -22802,7 +22803,14 @@ def fetch_weather_data():
     # chrome_options.add_argument("--window-size=1920,1080")  # Set the window size (optional)
 
     # Initialize the WebDriver with the specified options
-    driver = webdriver.Chrome(executable_path=ChromeDriverManager().install(), options=chrome_options)
+    # driver = webdriver.Chrome(executable_path=ChromeDriverManager().install(), options=chrome_options)
+
+    # Set up the Service object with ChromeDriver
+    service = Service(ChromeDriverManager().install())
+
+    # Initialize WebDriver with ChromeDriver and Chrome options
+    driver = webdriver.Chrome(service=service, options=chrome_options)
+
     # URL of The Weather Channel
     url = 'https://weather.com/en-TT/weather/today/l/d5c2f0e4c2053e855f8c6f30f8c21aedcedfe8c9f8842071a894732e8b0eff99'
     driver.get(url)
