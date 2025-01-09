@@ -22798,12 +22798,8 @@ def fetch_weather_data():
 
     # Set up options for headless mode
     chrome_options = Options()
-    chrome_options.add_argument("--headless=old")
-    # chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration (optional)
-    # chrome_options.add_argument("--window-size=1920,1080")  # Set the window size (optional)
-
-    # Initialize the WebDriver with the specified options
-    # driver = webdriver.Chrome(executable_path=ChromeDriverManager().install(), options=chrome_options)
+    # chrome_options.add_argument("--headless=old")
+    chrome_options.add_argument("--headless")
 
     # Initialize WebDriver with ChromeDriver and Chrome options
     driver = webdriver.Chrome(options=chrome_options)
