@@ -22802,7 +22802,6 @@ def fetch_weather_data():
     
     # Initialize WebDriver with ChromeDriver and Chrome options
     driver = webdriver.Chrome(options=chrome_options)
-    
     # driver = webdriver.Chrome(ChromeDriverManager().install())
     # URL of The Weather Channel
     url = 'https://weather.com/en-TT/weather/today/l/d5c2f0e4c2053e855f8c6f30f8c21aedcedfe8c9f8842071a894732e8b0eff99'
@@ -22816,7 +22815,7 @@ def fetch_weather_data():
     temperature = temp_element.text.replace("°", "") if temp_element else "Not found"
     # Extract the weather condition 
     weather = weather_element.text if weather_element else 'Not found'
-    
+
     # Close the webdriver
     driver.quit()
 
@@ -26312,8 +26311,8 @@ if authentication_status == True:
         # actual_energy_file()
         # wesm_exposure_file()
         # current_rate_file()
-        get_temp_weather_data_file()
-        store_temp_weather_db_file()
+        # get_temp_weather_data_file()
+        # store_temp_weather_db_file()
         # so_advisories_file()
         # mo_advisories_file()
         # advisories_file()
