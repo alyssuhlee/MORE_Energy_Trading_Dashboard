@@ -22816,7 +22816,7 @@ def fetch_weather_data():
     temperature = temp_element.text.replace("°", "") if temp_element else "Not found"
     # Extract the weather condition 
     weather = weather_element.text if weather_element else 'Not found'
-
+    
     # Close the webdriver
     driver.quit()
 
