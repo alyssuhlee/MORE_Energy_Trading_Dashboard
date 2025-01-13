@@ -155,7 +155,7 @@ def copy_values_fe(source_sheet, dest_sheet, source_range, dest_range):
                 break
 
 def forecasted_energy():
-    base_directory = '01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections'
+    base_directory = r'01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections'
     # base_directory = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections"
     # base_directory = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections"
     current_date = datetime.now()
@@ -354,7 +354,7 @@ def copy_values_bcq(source_sheet, dest_sheet, source_range, dest_range):
 
 def total_bcq_nomination():
     # base_directory = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections"
-    base_directory = '01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections'
+    base_directory = r'01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections'
     # base_directory = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections"
     current_date = datetime.now()
     current_month_numeric = current_date.strftime("%m")
@@ -769,7 +769,7 @@ def copy_values_ce(source_sheet, dest_sheet, source_range, dest_range):
 
 def contestable_energy_ce():
     # base_directory = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections"
-    base_directory = '01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections'
+    base_directory = r'01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections'
     # base_directory = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections"
     current_date = datetime.now()
     current_month_numeric = current_date.strftime("%m")
@@ -11343,7 +11343,7 @@ def initial_function():
     # folder_path_2 = os.path.join(folder_path, folder_name_2)
 
     # base_directory = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections"
-    base_directory = '01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections'
+    base_directory = r'01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections'
     # base_directory = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections"
     current_date = datetime.now()
     current_month_numeric = current_date.strftime("%m")
