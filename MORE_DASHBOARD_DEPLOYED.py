@@ -11,6 +11,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.core.os_manager import ChromeType
 from sqlalchemy import create_engine
 import calendar
 import csv
@@ -22791,6 +22792,18 @@ def current_rate_file():
         # Close the connection
         conn.close()
 
+def get_driver():
+    options = Options()
+    options.add_argument("--disable-gpu")
+    options.add_argument("--headless")
+
+    return webdriver.Chrome(
+        service=Service(
+            ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+        ),
+        options=options,
+    )
+
 # ------ from get_temp_weather_data.py ------
 def fetch_weather_data():
     # # Set up Selenium options
@@ -22801,11 +22814,12 @@ def fetch_weather_data():
     # driver = webdriver.Chrome()
 
     # Set up options for headless mode
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")
+    # options = Options()
+    # options.add_argument("--disable-gpu")
+    # options.add_argument("--headless")
     
     # Initialize WebDriver with ChromeDriver and Chrome options
-    driver = webdriver.Chrome(options=chrome_options)
+    driver = get_driver()
     # driver = webdriver.Chrome(ChromeDriverManager().install())
     # URL of The Weather Channel
     url = 'https://weather.com/en-TT/weather/today/l/d5c2f0e4c2053e855f8c6f30f8c21aedcedfe8c9f8842071a894732e8b0eff99'
