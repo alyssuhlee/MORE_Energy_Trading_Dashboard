@@ -225,7 +225,7 @@ def forecasted_energy():
     workbook.save('forecasted_energy.xlsx')
     workbook.close()
     print("Excel file 'forecasted_energy.xlsx' created successfully.")
-
+    
     # File path for destination Excel file
     # destination_file_path = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\forecasted_energy.xlsx'
     destination_file_path = 'forecasted_energy.xlsx'
