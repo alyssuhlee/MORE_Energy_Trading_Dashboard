@@ -3,15 +3,15 @@ from datetime import datetime, timedelta
 from ftplib import FTP, error_perm, all_errors
 from mysql.connector import Error
 from openpyxl import load_workbook
-from selenium import webdriver
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options  # Import Options for headless mode
-from selenium.webdriver.support.ui import WebDriverWait
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.core.os_manager import ChromeType
+# from selenium import webdriver
+# from selenium.common.exceptions import TimeoutException
+# from selenium.webdriver.common.by import By
+# from selenium.webdriver.chrome.options import Options  # Import Options for headless mode
+# from selenium.webdriver.support.ui import WebDriverWait
+# from webdriver_manager.chrome import ChromeDriverManager
+# from selenium.webdriver.chrome.service import Service
+# from selenium.webdriver.support import expected_conditions as EC
+# from webdriver_manager.core.os_manager import ChromeType
 from sqlalchemy import create_engine
 import calendar
 import csv
