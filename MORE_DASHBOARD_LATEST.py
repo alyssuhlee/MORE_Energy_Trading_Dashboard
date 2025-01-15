@@ -176,7 +176,7 @@ def forecasted_energy():
     #     current_month_numeric_increment = current_month_numeric
 
     # Check if the day is past the 25th of the current month
-    if current_day > 25 :
+    if current_day > 25:
         # If it's past the 25th, increment the month
         next_month_index = (current_month_index + 1) % 12 # This handles the rollover from December to January
         current_month_name = months[next_month_index]
