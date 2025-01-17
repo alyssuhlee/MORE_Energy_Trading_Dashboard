@@ -223,7 +223,7 @@ def forecasted_energy():
 
     # Sheet name of the destination workbook
     dest_sheet = dest_wb['Sheet']
-
+    
     # Define source and destination ranges
     source_ranges = [('C11', 'C34'), ('F11', 'F34')]
     dest_ranges = [('A2', 'A25'), ('B2', 'B25')]
