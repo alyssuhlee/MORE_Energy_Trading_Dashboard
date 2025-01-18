@@ -3,15 +3,6 @@ from datetime import datetime, timedelta
 from ftplib import FTP, error_perm, all_errors
 from mysql.connector import Error
 from openpyxl import load_workbook
-# from selenium import webdriver
-# from selenium.common.exceptions import TimeoutException
-# from selenium.webdriver.common.by import By
-# from selenium.webdriver.chrome.options import Options  # Import Options for headless mode
-# from selenium.webdriver.support.ui import WebDriverWait
-# from webdriver_manager.chrome import ChromeDriverManager
-# from selenium.webdriver.chrome.service import Service
-# from selenium.webdriver.support import expected_conditions as EC
-# from webdriver_manager.core.os_manager import ChromeType
 from sqlalchemy import create_engine
 import calendar
 import csv
@@ -26,6 +17,7 @@ import plotly.graph_objs as go
 import streamlit as st
 import threading
 import time
+import pytz
 # Authenticator Imports
 import pickle
 from pathlib import Path
@@ -33,18 +25,6 @@ import streamlit_authenticator as stauth
 
 # Refresh Interval Value (900 seconds/15 minutes)
 REFRESH_INTERVAL = 900
-
-# ------ from current_interval.py file ------
-# MySQL connection details
-# db_config = {
-#     'user': 'cesra_dbm',
-#     'password': 'ibIDN0NcnGYo71qDZuHw',
-#     'host': 'cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com',
-#     'database': 'myDb',
-#     'port': 3309  # Default MySQL port
-# }
-
-# List of functions
 
 # Function to save chart as JSON
 def save_chart(chart, file_path):
@@ -83,7 +63,6 @@ def get_time_interval(current_time):
 # Function to insert the time interval into the database
 def insert_time_interval(time_interval):
     try:
-        # conn = mysql.connector.connect(**db_config)
 
         conn = mysql.connector.connect(
             host='cesra-db.cxkuksua06qz.ap-southeast-1.rds.amazonaws.com',
@@ -120,20 +99,15 @@ def insert_time_interval(time_interval):
         conn.close()
 
 def current_interval_file():
-    # # Main loop to update the database every minute
-    # while True:
-    # Get the current time
-    now = datetime.now()
+    timezone = pytz.timezone('Asia/Manila')
+
+    now = datetime.now(timezone)
     
     # Determine the time interval
     time_interval = get_time_interval(now)
     
     # Insert the time interval into the database
     insert_time_interval(time_interval)
-    
-    # # Wait for 800 seconds before checking again
-    # time.sleep(800)
-
 # ------ from forecasted_energy.py file ------
 # Function to copy values from source range to destination range
 def copy_values_fe(source_sheet, dest_sheet, source_range, dest_range):
@@ -160,7 +134,8 @@ def forecasted_energy():
     base_directory = os.path.join('01_Energy Sourcing Files', '03_Daily Reports', '01_Day Ahead Projections')
     # base_directory = r"C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections"
     # base_directory = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections"
-    current_date = datetime.now()
+    timezone = pytz.timezone('Asia/Manila')
+    current_date = datetime.now(timezone)
     current_month_numeric = current_date.strftime("%m")
     current_month_name = current_date.strftime("%B")
     current_day = int(current_date.strftime("%d"))
@@ -259,7 +234,8 @@ def forecasted_energy():
 
 # Function to retrieve the current hour in 24-hour format
 def get_current_hour_fe():
-    now = datetime.now()
+    timezone = pytz.timezone('Asia/Manila')
+    now = datetime.now(timezone)
     current_hour = now.hour
     if current_hour == 0:
         return 24
@@ -359,7 +335,8 @@ def total_bcq_nomination():
     # base_directory = r'01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections'
     base_directory = os.path.join('01_Energy Sourcing Files', '03_Daily Reports', '01_Day Ahead Projections')
     # base_directory = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections"
-    current_date = datetime.now()
+    timezone = pytz.timezone('Asia/Manila')
+    current_date = datetime.now(timezone)
     current_month_numeric = current_date.strftime("%m")
     current_month_name = current_date.strftime("%B")
     current_day = int(current_date.strftime("%d"))
@@ -682,7 +659,9 @@ def total_bcq_nomination():
 
 # Function to retrieve the current hour in 24-hour format
 def get_current_hour_bcq():
-    now = datetime.now()
+    timezone = pytz.timezone('Asia/Manila')
+    now = datetime.now(timezone)
+
     current_hour = now.hour
     if current_hour == 0:
         return 24
@@ -775,7 +754,8 @@ def contestable_energy_ce():
     # base_directory = r'01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections'
     base_directory = os.path.join('01_Energy Sourcing Files', '03_Daily Reports', '01_Day Ahead Projections')
     # base_directory = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections"
-    current_date = datetime.now()
+    timezone = pytz.timezone('Asia/Manila')
+    current_date = datetime.now(timezone)
     current_month_numeric = current_date.strftime("%m")
     current_month_name = current_date.strftime("%B")
     current_day = int(current_date.strftime("%d"))
@@ -874,7 +854,9 @@ def contestable_energy_ce():
 
 # Function to retrieve the current hour in 24-hour format
 def get_current_hour_ce():
-    now = datetime.now()
+    timezone = pytz.timezone('Asia/Manila')
+    now = datetime.now(timezone)
+    
     current_hour = now.hour
     if current_hour == 0:
         return 24
@@ -969,7 +951,9 @@ def connect_ftp():
 
 # Function to download files from the FTP server
 def download_files():
-    now = datetime.now()  
+    timezone = pytz.timezone('Asia/Manila')
+    now = datetime.now(timezone)
+
     date_today = now.strftime("%Y%m%d")
 
     # Connect to FTP server
@@ -1034,7 +1018,8 @@ def find_total_mtn():
     # directory = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MORE Trading Node'
     directory = r'MORE Trading Node'
     # directory = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MORE Trading Node'
-    now = datetime.now()
+    timezone = pytz.timezone('Asia/Manila')
+    now = datetime.now(timezone)
     # Example folder name: 20240711
     date_today = now.strftime("%Y%m%d")
     contents = os.listdir(directory)
@@ -10775,7 +10760,8 @@ def query_substation_data():
         print(f"Error: {e}")
 
 def get_current_hour_tsl():
-    now = datetime.now()
+    timezone = pytz.timezone('Asia/Manila')
+    now = datetime.now(timezone)
     current_hour = now.hour
     if current_hour == 0:
         return 24
@@ -10934,7 +10920,8 @@ def calculate_actual_energy(dest_sheet):
 
 # Function to retrieve the current hour in 24-hour format
 def get_current_hour_ae():
-    now = datetime.now()
+    timezone = pytz.timezone('Asia/Manila')
+    now = datetime.now(timezone)
     current_hour = now.hour
     if current_hour == 0:
         return 24
@@ -11183,7 +11170,8 @@ def wesm_exposure_we():
 
 # Function to retrieve the current hour in 24-hour format
 def get_current_hour_we():
-    now = datetime.now()
+    timezone = pytz.timezone('Asia/Manila')
+    now = datetime.now(timezone)
     current_hour = now.hour
     if current_hour == 0:
         return 24
@@ -11350,7 +11338,8 @@ def initial_function():
     # base_directory = r'01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections'
     base_directory = os.path.join('01_Energy Sourcing Files', '03_Daily Reports', '01_Day Ahead Projections')
     # base_directory = r"E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\01_Energy Sourcing Files\03_Daily Reports\01_Day Ahead Projections"
-    current_date = datetime.now()
+    timezone = pytz.timezone('Asia/Manila')
+    current_date = datetime.now(timezone)
     current_month_numeric = current_date.strftime("%m")
     current_month_name = current_date.strftime("%B")
     current_day = int(current_date.strftime("%d"))
@@ -11693,7 +11682,8 @@ def initial_function():
 
     # Example: Supplier Rates for the Month_August 2024
     srftm = "Supplier Rates for the Month_"
-    date_currently = datetime.now()
+    timezone = pytz.timezone('Asia/Manila')
+    date_currently = datetime.now(timezone)
     day_today = date_currently.strftime("%d")
     if day_today < '26':
         month_var = date_currently.strftime("%B") # Example: "August"
@@ -12202,7 +12192,8 @@ def find_total_cr():
     # directory = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MORE Trading Node'
     directory = r'MORE Trading Node'
     # directory = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MORE Trading Node'
-    now = datetime.now()
+    timezone = pytz.timezone('Asia/Manila')
+    now = datetime.now(timezone)
     # Example folder name: 20240711
     date_today = now.strftime("%Y%m%d")
     contents = os.listdir(directory)
@@ -21743,8 +21734,8 @@ def find_total_2():
     # destination_file_path = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\current_rate.xlsx'
     dest_wb = load_workbook(destination_file_path)
     dest_sheet = dest_wb['Sheet']
-    
-    c = datetime.now()
+    timezone = pytz.timezone('Asia/Manila')
+    c = datetime.now(timezone)
     hour_now = c.strftime('%H')
     if hour_now == '01':
         wesm_rate_var = find_total_cr()
@@ -21874,7 +21865,8 @@ def find_total_3():
     # destination_file_path = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\current_rate.xlsx'
     dest_wb = load_workbook(destination_file_path)
     dest_sheet = dest_wb['Sheet']
-    c = datetime.now()
+    timezone = pytz.timezone('Asia/Manila')
+    c = datetime.now(timezone)
     hour_now = c.strftime('%H')
 
     if hour_now == '01':
@@ -22646,7 +22638,9 @@ def find_total_3():
 
 # Function to retrieve the current hour in 24-hour format
 def get_current_hour_cr():
-    now = datetime.now()
+    timezone = pytz.timezone('Asia/Manila')
+    now = datetime.now(timezone)
+    
     current_hour = now.hour
     if current_hour == 0:
         return 24
@@ -22670,7 +22664,8 @@ def get_current_rate_for_current_hour(excel_file, current_hour, default_value=0.
 
     if current_rate_value.empty or pd.isna(current_rate_value.iloc[0]):
         # Get today's date and time
-        now = datetime.now()
+        timezone = pytz.timezone('Asia/Manila')
+        now = datetime.now(timezone)
         # Subtract one hour to get the previous hour
         previous_hour = now - timedelta(hours=1)
         # Extract the hour part
@@ -22837,7 +22832,8 @@ def fetch_weather_data():
     # Close the webdriver
     driver.quit()
 
-    now = datetime.now()
+    timezone = pytz.timezone('Asia/Manila')
+    now = datetime.now(timezone)
     date_today = now.strftime("%m/%d/%Y")
     current_hour = now.strftime("%H")
 
@@ -22874,13 +22870,15 @@ def get_temp_weather_data_file():
 # ------ from store_temp_weather_db.py ------
 # Function to retrieve the current date
 def get_current_date():
-    now = datetime.now()
+    timezone = pytz.timezone('Asia/Manila')
+    now = datetime.now(timezone)
     current_date = now.strftime("%m/%d/%Y")
     return current_date
 
 # Function to retrieve the current hour 
 def get_current_hour_stwd():
-    now = datetime.now()
+    timezone = pytz.timezone('Asia/Manila')
+    now = datetime.now(timezone)
     current_hour = now.hour
     if current_hour == 0:
         return 24
@@ -23565,7 +23563,8 @@ def sub_load_func():
     df_excel = load_data_from_excel()
 
     # For getting the current hour
-    now = datetime.now()
+    timezone = pytz.timezone('Asia/Manila')
+    now = datetime.now(timezone)
     now_hour = now.hour
     if now_hour == 0:
         now_hour = 24
@@ -23838,7 +23837,8 @@ def actual_vs_forecasted():
     actual_energy_sheet = actual_energy_wb.active
     actual_energy_values = []
 
-    now = datetime.now()
+    timezone = pytz.timezone('Asia/Manila')
+    now = datetime.now(timezone)
     current_hour = now.hour
     if current_hour == 0:
         current_hour = 24
@@ -24132,7 +24132,8 @@ def tipc_func():
         # directory = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MORE Trading Node'
         directory = r'MORE Trading Node'
         # directory = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MORE Trading Node'
-        now = datetime.now()
+        timezone = pytz.timezone('Asia/Manila')
+        now = datetime.now(timezone)
         date_today = now.strftime("%Y%m%d")
         contents = os.listdir(directory)
         for item in contents:
@@ -24791,7 +24792,9 @@ def tipc_func():
                     average_pedc_u02 = average_every_12(list_pedc_u02)
                     average_pedc_u03 = average_every_12(list_pedc_u03)
 
-        current_time = datetime.now()
+        timezone = pytz.timezone('Asia/Manila')
+    
+        current_time = datetime.now(timezone)
         hour_value = current_time.strftime("%H")
 
         if hour_value == "01":
@@ -25717,7 +25720,8 @@ def genmix_func():
         # CASE B. ACTUAL ENERGY > BCQ
         # SCPC, KSPC1, KSPC2, EDC, WESM
 
-        now = datetime.now()
+        timezone = pytz.timezone('Asia/Manila')
+        now = datetime.now(timezone)
         current_hour = now.hour
         if current_hour == 0:
             current_hour = 24
@@ -26598,7 +26602,9 @@ if authentication_status == True:
         weather_condition = df10['weather'].iloc[-1]
 
         # Define the current date
-        c = datetime.now()
+        timezone = pytz.timezone('Asia/Manila')
+    
+        c = datetime.now(timezone)
         formatted_date = c.strftime("%Y-%m-%d")
 
         # Current Interval Aesthetics
