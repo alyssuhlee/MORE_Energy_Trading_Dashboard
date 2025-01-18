@@ -938,7 +938,7 @@ FTP_USER = "MORE_01"
 FTP_PASSWD = "ar@pNkRW4v"
 FTP_DIRECTORY = "/LMP/DIPC/"
 # LOCAL_DIRECTORY = "C:\\Users\\aslee\\OneDrive - MORE ELECTRIC AND POWER CORPORATION\\Desktop\\DASHBOARD_FINAL\\MORE Trading Node\\"
-LOCAL_DIRECTORY = r'MORE Trading Node'
+LOCAL_DIRECTORY = 'MORE Trading Node'
 # LOCAL_DIRECTORY = "E:\\OneDrive - MORE ELECTRIC AND POWER CORPORATION\\Desktop\\DASHBOARD_FINAL\\MORE Trading Node\\"
 CHECK_INTERVAL = 300  # In seconds
 
@@ -1016,7 +1016,7 @@ def more_trading_node_file():
 # ------ from more_trading_node_2nd_part.py file ------
 def find_total_mtn():
     # directory = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MORE Trading Node'
-    directory = r'MORE Trading Node'
+    directory = 'MORE Trading Node'
     # directory = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MORE Trading Node'
     timezone = pytz.timezone('Asia/Manila')
     now = datetime.now(timezone)
@@ -12190,7 +12190,7 @@ def contestable_energy():
 
 def find_total_cr():
     # directory = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MORE Trading Node'
-    directory = r'MORE Trading Node'
+    directory = 'MORE Trading Node'
     # directory = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MORE Trading Node'
     timezone = pytz.timezone('Asia/Manila')
     now = datetime.now(timezone)
@@ -24130,7 +24130,7 @@ def tipc_func():
             # -- START OF TRADING INTERVAL PRICE CALCULATION LINE CHART --
 
         # directory = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MORE Trading Node'
-        directory = r'MORE Trading Node'
+        directory = 'MORE Trading Node'
         # directory = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MORE Trading Node'
         timezone = pytz.timezone('Asia/Manila')
         now = datetime.now(timezone)
