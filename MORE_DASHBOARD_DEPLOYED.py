@@ -18,6 +18,12 @@ import streamlit as st
 import threading
 import time
 import pytz
+from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options  # Import Options for headless mode
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 # Authenticator Imports
 import pickle
 from pathlib import Path
@@ -22787,36 +22793,13 @@ def current_rate_file():
         # Close the connection
         conn.close()
 
-def get_driver():
-    options = Options()
-    options.add_argument("--disable-gpu")
-    options.add_argument("--headless")
-
-    return webdriver.Chrome(
-        service=Service(
-            ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
-        ),
-        options=options,
-    )
-
 # ------ from get_temp_weather_data.py ------
 def fetch_weather_data():
-    # # Set up Selenium options
-    # chrome_options = Options()
-    # chrome_options.add_argument("--headless")  # Run in headless mode (no browser window)
+    # Set up Selenium options
+    chrome_options = Options()
+    chrome_options.add_argument("--headless=old")
 
-    # # Initialize the webdriver
-    # driver = webdriver.Chrome()
-
-    # Set up options for headless mode
-    # options = Options()
-    # options.add_argument("--disable-gpu")
-    # options.add_argument("--headless")
-    
-    # Initialize WebDriver with ChromeDriver and Chrome options
-    driver = get_driver()
-    # driver = webdriver.Chrome(ChromeDriverManager().install())
-    # URL of The Weather Channel
+    driver = webdriver.Chrome(options=chrome_options)
     url = 'https://weather.com/en-TT/weather/today/l/d5c2f0e4c2053e855f8c6f30f8c21aedcedfe8c9f8842071a894732e8b0eff99'
     driver.get(url)
 
