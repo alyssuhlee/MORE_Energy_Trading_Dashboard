@@ -24254,122 +24254,6 @@ def tipc_func():
                                 list_calaca_g02.append(last_known_value)
                             continue
                     
-                    # # 03KAL_G01
-                    # for i in range(1, len(files_in_folder)):
-                    #     filepath = os.path.join(folder_path, files_in_folder[i]) 
-
-                    #     try: 
-                    #         df = pd.read_csv(filepath)
-                    #     except pd.errors.EmptyDataError:
-                    #         if last_known_value is not None:
-                    #             list_kal_g01.append(last_known_value)
-                    #         continue
-                    #     except IndexError:
-                    #         break
-                    #     try: 
-                    #         search_value = '03KAL_G01'
-                    #         matching_row = df[df['RESOURCE_NAME'] == search_value]
-                    #         if not matching_row.empty:
-                    #             file_03KAL_G01 = matching_row['DIPC_PRICE'].values[0]
-                    #             list_kal_g01.append(file_03KAL_G01)
-                    #             last_known_value = file_03KAL_G01
-                    #         else:
-                    #             # If no matching row is found, use the last known value
-                    #             if last_known_value is not None:
-                    #                 list_kal_g01.append(last_known_value)
-                    #     except KeyError:
-                    #         # If RESOURCE_NAME column is missing, use the last known value
-                    #         if last_known_value is not None:
-                    #             list_kal_g01.append(last_known_value)
-                    #         continue
-                    
-                    # # 03KAL_G02
-                    # for i in range(1, len(files_in_folder)):
-                    #     filepath = os.path.join(folder_path, files_in_folder[i]) 
-
-                    #     try: 
-                    #         df = pd.read_csv(filepath)
-                    #     except pd.errors.EmptyDataError:
-                    #         if last_known_value is not None:
-                    #             list_kal_g02.append(last_known_value)
-                    #         continue
-                    #     except IndexError:
-                    #         break
-                    #     try: 
-                    #         search_value = '03KAL_G02'
-                    #         matching_row = df[df['RESOURCE_NAME'] == search_value]
-                    #         if not matching_row.empty:
-                    #             file_03KAL_G02 = matching_row['DIPC_PRICE'].values[0]
-                    #             list_kal_g02.append(file_03KAL_G02)
-                    #             last_known_value = file_03KAL_G02
-                    #         else:
-                    #             # If no matching row is found, use the last known value
-                    #             if last_known_value is not None:
-                    #                 list_kal_g02.append(last_known_value)
-                    #     except KeyError:
-                    #         # If RESOURCE_NAME column is missing, use the last known value
-                    #         if last_known_value is not None:
-                    #             list_kal_g02.append(last_known_value)
-                    #         continue
-                    
-                    # # 03KAL_G03
-                    # for i in range(1, len(files_in_folder)):
-                    #     filepath = os.path.join(folder_path, files_in_folder[i]) 
-
-                    #     try: 
-                    #         df = pd.read_csv(filepath)
-                    #     except pd.errors.EmptyDataError:
-                    #         if last_known_value is not None:
-                    #             list_kal_g03.append(last_known_value)
-                    #         continue
-                    #     except IndexError:
-                    #         break
-                    #     try: 
-                    #         search_value = '03KAL_G03'
-                    #         matching_row = df[df['RESOURCE_NAME'] == search_value]
-                    #         if not matching_row.empty:
-                    #             file_03KAL_G03 = matching_row['DIPC_PRICE'].values[0]
-                    #             list_kal_g03.append(file_03KAL_G03)
-                    #             last_known_value = file_03KAL_G03
-                    #         else:
-                    #             # If no matching row is found, use the last known value
-                    #             if last_known_value is not None:
-                    #                 list_kal_g03.append(last_known_value)
-                    #     except KeyError:
-                    #         # If RESOURCE_NAME column is missing, use the last known value
-                    #         if last_known_value is not None:
-                    #             list_kal_g03.append(last_known_value)
-                    #         continue
-                    
-                    # # 03KAL_G04
-                    # for i in range(1, len(files_in_folder)):
-                    #     filepath = os.path.join(folder_path, files_in_folder[i]) 
-
-                    #     try: 
-                    #         df = pd.read_csv(filepath)
-                    #     except pd.errors.EmptyDataError:
-                    #         if last_known_value is not None:
-                    #             list_kal_g04.append(last_known_value)
-                    #         continue
-                    #     except IndexError:
-                    #         break
-                    #     try: 
-                    #         search_value = '03KAL_G04'
-                    #         matching_row = df[df['RESOURCE_NAME'] == search_value]
-                    #         if not matching_row.empty:
-                    #             file_03KAL_G04 = matching_row['DIPC_PRICE'].values[0]
-                    #             list_kal_g04.append(file_03KAL_G04)
-                    #             last_known_value = file_03KAL_G04
-                    #         else:
-                    #             # If no matching row is found, use the last known value
-                    #             if last_known_value is not None:
-                    #                 list_kal_g04.append(last_known_value)
-                    #     except KeyError:
-                    #         # If RESOURCE_NAME column is missing, use the last known value
-                    #         if last_known_value is not None:
-                    #             list_kal_g04.append(last_known_value)
-                    #         continue
-                    
                     # 04LEYTE_A
                     for i in range(1, len(files_in_folder)):
                         filepath = os.path.join(folder_path, files_in_folder[i]) 
@@ -26315,8 +26199,8 @@ if authentication_status == True:
         # actual_energy_file()
         # wesm_exposure_file()
         # current_rate_file()
-        # get_temp_weather_data_file()
-        # store_temp_weather_db_file()
+        get_temp_weather_data_file()
+        store_temp_weather_db_file()
         # so_advisories_file()
         # mo_advisories_file()
         # advisories_file()
