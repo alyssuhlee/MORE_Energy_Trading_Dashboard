@@ -24114,7 +24114,6 @@ def tipc_func():
 
         # directory = r'C:\Users\aslee\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MORE Trading Node'
         directory = 'MORE Trading Node'
-        # directory = r'E:\OneDrive - MORE ELECTRIC AND POWER CORPORATION\Desktop\DASHBOARD_FINAL\MORE Trading Node'
         timezone = pytz.timezone('Asia/Manila')
         now = datetime.now(timezone)
         date_today = now.strftime("%Y%m%d")
